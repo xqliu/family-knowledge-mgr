@@ -190,62 +190,61 @@ class RelationshipSelectorWidget(forms.SelectMultiple):
         # Get the base select widget
         select_html = super().render(name, value, attrs, renderer)
         
-        # Add visual relationship interface
-        visual_html = '''
-        <div class="relationship-visual">
-            <div class="family-tree-mini">
-                <div class="tree-level" data-generation="2">
-                    <div class="tree-node grandparents">祖父母辈</div>
+        # Simplified, clean relationship interface
+        visual_html = f'''
+        <div class="relationship-widget-container">
+            <div class="relationship-categories">
+                <div class="relationship-section blood-relations">
+                    <div class="section-header">
+                        <span class="section-icon">👨‍👩‍👧‍👦</span>
+                        <h4>血缘关系</h4>
+                    </div>
+                    <div class="relation-grid">
+                        <button type="button" class="relation-btn blood" data-relation="父亲">父亲</button>
+                        <button type="button" class="relation-btn blood" data-relation="母亲">母亲</button>
+                        <button type="button" class="relation-btn blood" data-relation="儿子">儿子</button>
+                        <button type="button" class="relation-btn blood" data-relation="女儿">女儿</button>
+                        <button type="button" class="relation-btn blood" data-relation="兄弟">兄弟</button>
+                        <button type="button" class="relation-btn blood" data-relation="姐妹">姐妹</button>
+                    </div>
                 </div>
-                <div class="tree-level" data-generation="1">
-                    <div class="tree-node parents">父母辈</div>
+                
+                <div class="relationship-section marriage-relations">
+                    <div class="section-header">
+                        <span class="section-icon">💑</span>
+                        <h4>姻亲关系</h4>
+                    </div>
+                    <div class="relation-grid">
+                        <button type="button" class="relation-btn marriage" data-relation="配偶">配偶</button>
+                        <button type="button" class="relation-btn marriage" data-relation="岳父">岳父</button>
+                        <button type="button" class="relation-btn marriage" data-relation="岳母">岳母</button>
+                        <button type="button" class="relation-btn marriage" data-relation="女婿">女婿</button>
+                        <button type="button" class="relation-btn marriage" data-relation="儿媳">儿媳</button>
+                    </div>
                 </div>
-                <div class="tree-level current" data-generation="0">
-                    <div class="tree-node self">本人</div>
-                </div>
-                <div class="tree-level" data-generation="-1">
-                    <div class="tree-node children">子女辈</div>
-                </div>
-                <div class="tree-level" data-generation="-2">
-                    <div class="tree-node grandchildren">孙辈</div>
+                
+                <div class="relationship-section other-relations">
+                    <div class="section-header">
+                        <span class="section-icon">👥</span>
+                        <h4>其他关系</h4>
+                    </div>
+                    <div class="relation-grid">
+                        <button type="button" class="relation-btn other" data-relation="朋友">朋友</button>
+                        <button type="button" class="relation-btn other" data-relation="同事">同事</button>
+                        <button type="button" class="relation-btn other" data-relation="邻居">邻居</button>
+                        <button type="button" class="relation-btn other" data-relation="其他">其他</button>
+                    </div>
                 </div>
             </div>
-            <div class="relationship-types">
-                <div class="relationship-category">
-                    <h4>血缘关系</h4>
-                    <div class="relationship-options">
-                        <button type="button" class="relation-btn" data-relation="父亲">父亲</button>
-                        <button type="button" class="relation-btn" data-relation="母亲">母亲</button>
-                        <button type="button" class="relation-btn" data-relation="儿子">儿子</button>
-                        <button type="button" class="relation-btn" data-relation="女儿">女儿</button>
-                        <button type="button" class="relation-btn" data-relation="兄弟">兄弟</button>
-                        <button type="button" class="relation-btn" data-relation="姐妹">姐妹</button>
-                    </div>
-                </div>
-                <div class="relationship-category">
-                    <h4>姻亲关系</h4>
-                    <div class="relationship-options">
-                        <button type="button" class="relation-btn" data-relation="配偶">配偶</button>
-                        <button type="button" class="relation-btn" data-relation="岳父">岳父</button>
-                        <button type="button" class="relation-btn" data-relation="岳母">岳母</button>
-                        <button type="button" class="relation-btn" data-relation="女婿">女婿</button>
-                        <button type="button" class="relation-btn" data-relation="儿媳">儿媳</button>
-                    </div>
-                </div>
-                <div class="relationship-category">
-                    <h4>其他关系</h4>
-                    <div class="relationship-options">
-                        <button type="button" class="relation-btn" data-relation="朋友">朋友</button>
-                        <button type="button" class="relation-btn" data-relation="同事">同事</button>
-                        <button type="button" class="relation-btn" data-relation="邻居">邻居</button>
-                        <button type="button" class="relation-btn" data-relation="其他">其他</button>
-                    </div>
-                </div>
+            
+            <div class="relationship-select-wrapper">
+                <label>选择的关系类型:</label>
+                {select_html}
             </div>
         </div>
         '''
         
-        return mark_safe(visual_html + select_html)
+        return mark_safe(visual_html)
     
     class Media:
         css = {
