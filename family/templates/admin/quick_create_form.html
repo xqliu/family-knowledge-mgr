@@ -1,0 +1,220 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_urls static %}
+
+{% block title %}新建 {{ verbose_name }}{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+    <style>
+        .quick-create-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .form-title {
+            color: var(--family-primary);
+            border-bottom: 2px solid var(--family-border);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            margin-bottom: 15px;
+        }
+        
+        .form-row label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--family-text);
+        }
+        
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--family-border);
+            border-radius: 4px;
+            font-family: var(--family-font-primary);
+        }
+        
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            outline: none;
+            border-color: var(--family-primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        
+        .errorlist {
+            color: var(--family-error);
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0 0;
+        }
+        
+        .errorlist li {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        
+        .help {
+            font-size: 0.9rem;
+            color: var(--family-text-secondary);
+            margin-top: 5px;
+        }
+        
+        .submit-buttons {
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--family-border);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--family-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--family-primary-dark);
+        }
+        
+        .btn-secondary {
+            background: var(--family-text-secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--family-text);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="quick-create-form">
+    <h2 class="form-title">新建 {{ verbose_name }}</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-row">
+                {{ field.label_tag }}
+                {{ field }}
+                
+                {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                
+                {% if field.help_text %}
+                    <div class="help">{{ field.help_text }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        {% if form.non_field_errors %}
+            <div class="form-row">
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <div class="submit-buttons">
+            <button type="button" class="btn btn-secondary" onclick="window.close()">取消</button>
+            <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // If this is opened in a popup, adjust the form submission
+    if (window.opener) {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            fetch(form.action || window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Notify parent window
+                    if (window.opener && window.opener.addNewOptionToField) {
+                        window.opener.addNewOptionToField(data);
+                    }
+                    window.close();
+                } else {
+                    // Show errors in the form
+                    showFormErrors(data.errors);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('保存时出错: ' + error.message);
+            });
+        });
+    }
+});
+
+function showFormErrors(errors) {
+    // Clear existing errors
+    const existingErrors = document.querySelectorAll('.errorlist');
+    existingErrors.forEach(el => el.remove());
+    
+    // Show new errors
+    for (const [fieldName, fieldErrors] of Object.entries(errors)) {
+        const field = document.querySelector(`[name="${fieldName}"]`);
+        if (field) {
+            const errorList = document.createElement('ul');
+            errorList.className = 'errorlist';
+            
+            if (Array.isArray(fieldErrors)) {
+                fieldErrors.forEach(error => {
+                    const li = document.createElement('li');
+                    li.textContent = error;
+                    errorList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = fieldErrors;
+                errorList.appendChild(li);
+            }
+            
+            field.parentNode.appendChild(errorList);
+        }
+    }
+}
+</script>
+{% endblock %}

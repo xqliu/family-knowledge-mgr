@@ -1,0 +1,365 @@
+/* Inline Create Widget Styles */
+
+.inline-create-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: var(--spacing-xs);
+    width: 100%;
+}
+
+.inline-create-wrapper .vManyToManyRawIdAdminField,
+.inline-create-wrapper .vSelectMultipleField,
+.inline-create-wrapper .vForeignKeyRawIdAdminField {
+    flex: 1;
+    min-width: 0;
+}
+
+.inline-create-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    background: var(--family-primary);
+    color: white;
+    border: 1px solid var(--family-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    text-decoration: none;
+    transition: var(--transition-normal);
+    font-size: 0.9rem;
+    font-family: var(--family-font-primary);
+    min-height: 36px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.inline-create-btn:hover {
+    background: var(--family-primary-dark);
+    border-color: var(--family-primary-dark);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.inline-create-btn:active {
+    transform: translateY(0);
+}
+
+.create-icon {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.create-text {
+    font-size: 0.85rem;
+}
+
+/* Popup Modal Styles */
+.inline-create-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.inline-create-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.inline-create-modal-content {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.inline-create-modal.show .inline-create-modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--family-border);
+    background: var(--family-bg);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--family-text);
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--family-text-secondary);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+    line-height: 1;
+}
+
+.modal-close:hover {
+    background: var(--family-border);
+    color: var(--family-text);
+}
+
+.modal-body {
+    padding: var(--spacing-lg);
+}
+
+.modal-form .form-row {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    color: var(--family-text);
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--family-font-primary);
+    transition: var(--transition-normal);
+}
+
+.modal-form input:focus,
+.modal-form select:focus,
+.modal-form textarea:focus {
+    outline: none;
+    border-color: var(--family-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--family-border);
+    background: var(--family-bg);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.modal-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--family-font-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    min-width: 80px;
+}
+
+.modal-btn-primary {
+    background: var(--family-primary);
+    color: white;
+}
+
+.modal-btn-primary:hover {
+    background: var(--family-primary-dark);
+}
+
+.modal-btn-secondary {
+    background: var(--family-text-secondary);
+    color: white;
+}
+
+.modal-btn-secondary:hover {
+    background: var(--family-text);
+}
+
+/* Loading state */
+.inline-create-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    color: var(--family-text-secondary);
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--family-border);
+    border-top: 2px solid var(--family-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.inline-create-error {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    color: var(--family-error);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.error-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.error-list li {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Success feedback */
+.inline-create-success {
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: var(--family-success);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.success-icon::before {
+    content: '✓';
+    font-weight: bold;
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+    .inline-create-modal-content {
+        width: 95%;
+        max-height: 90vh;
+        margin: var(--spacing-sm);
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: var(--spacing-sm);
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-btn {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .inline-create-btn .create-text {
+        display: none;
+    }
+    
+    .inline-create-btn {
+        min-width: 44px;
+        padding: var(--spacing-sm);
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .inline-create-btn {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .modal-close {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .modal-btn {
+        min-height: 44px;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .inline-create-btn {
+        border-width: 2px;
+    }
+    
+    .inline-create-modal {
+        background: rgba(0, 0, 0, 0.8);
+    }
+    
+    .inline-create-modal-content {
+        border: 2px solid #000;
+    }
+}
+
+/* Animation for button feedback */
+@keyframes create-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.inline-create-btn.success {
+    animation: create-success 0.3s ease-out;
+    background: var(--family-success);
+    border-color: var(--family-success);
+}
+
+/* Integration with existing admin styles */
+.inline-create-wrapper .selector {
+    width: 100%;
+}
+
+.inline-create-wrapper .selector-filter {
+    width: 100%;
+}
+
+/* For FilteredSelectMultiple widgets */
+.inline-create-wrapper .selector-chooser {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.inline-create-wrapper .selector-chosen {
+    flex: 1;
+}
+
+.inline-create-wrapper .selector-available {
+    flex: 1;
+}

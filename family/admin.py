@@ -7,6 +7,7 @@ from .forms import (
     PersonAdminForm, StoryAdminForm, EventAdminForm, MultimediaAdminForm,
     RelationshipAdminForm, HealthAdminForm, LocationAdminForm, InstitutionAdminForm
 )
+from .admin_mixins import FamilyAdminMixin
 
 
 @admin.register(Person)
@@ -52,7 +53,8 @@ class InstitutionAdmin(admin.ModelAdmin):
 
 
 @admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['location', 'institution']
     form = EventAdminForm
     list_display = ['name', 'event_type', 'start_date', 'location', 'created_at']
     list_filter = ['event_type', 'start_date', 'created_at']
@@ -78,7 +80,8 @@ class EventAdmin(admin.ModelAdmin):
 
 
 @admin.register(Story)
-class StoryAdmin(admin.ModelAdmin):
+class StoryAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['location']
     form = StoryAdminForm
     list_display = ['title', 'story_type', 'date_occurred', 'location', 'created_at']
     list_filter = ['story_type', 'date_occurred', 'created_at']
@@ -104,7 +107,8 @@ class StoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Multimedia)
-class MultimediaAdmin(admin.ModelAdmin):
+class MultimediaAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['location']
     form = MultimediaAdminForm
     list_display = ['title', 'media_type', 'file', 'created_date', 'created_at']
     list_filter = ['media_type', 'created_date', 'created_at']
@@ -129,7 +133,8 @@ class MultimediaAdmin(admin.ModelAdmin):
 
 
 @admin.register(Relationship)
-class RelationshipAdmin(admin.ModelAdmin):
+class RelationshipAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['person_from', 'person_to']
     form = RelationshipAdminForm
     list_display = ['person_from', 'relationship_type', 'person_to', 'start_date', 'created_at']
     list_filter = ['relationship_type', 'start_date', 'created_at']
@@ -138,7 +143,8 @@ class RelationshipAdmin(admin.ModelAdmin):
 
 
 @admin.register(Health)
-class HealthAdmin(admin.ModelAdmin):
+class HealthAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['person', 'institution']
     form = HealthAdminForm
     list_display = ['person', 'record_type', 'title', 'date', 'is_hereditary', 'created_at']
     list_filter = ['record_type', 'is_hereditary', 'date', 'created_at']
@@ -148,7 +154,8 @@ class HealthAdmin(admin.ModelAdmin):
 
 
 @admin.register(Heritage)
-class HeritageAdmin(admin.ModelAdmin):
+class HeritageAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['origin_person']
     list_display = ['title', 'heritage_type', 'origin_person', 'importance', 'created_at']
     list_filter = ['heritage_type', 'importance', 'created_at']
     search_fields = ['title', 'description']
@@ -157,7 +164,8 @@ class HeritageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Planning)
-class PlanningAdmin(admin.ModelAdmin):
+class PlanningAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = []
     list_display = ['title', 'time_range', 'priority', 'status', 'target_date', 'created_at']
     list_filter = ['time_range', 'priority', 'status', 'created_at']
     search_fields = ['title', 'description', 'expected_outcome']
@@ -167,7 +175,8 @@ class PlanningAdmin(admin.ModelAdmin):
 
 
 @admin.register(Career)
-class CareerAdmin(admin.ModelAdmin):
+class CareerAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = ['person', 'institution']
     list_display = ['person', 'career_type', 'title', 'institution', 'start_date', 'end_date']
     list_filter = ['career_type', 'start_date', 'created_at']
     search_fields = ['person__name', 'title', 'description', 'achievements']
@@ -177,7 +186,8 @@ class CareerAdmin(admin.ModelAdmin):
 
 
 @admin.register(Assets)
-class AssetsAdmin(admin.ModelAdmin):
+class AssetsAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = []
     list_display = ['name', 'asset_type', 'legal_status', 'estimated_value', 'importance', 'created_at']
     list_filter = ['asset_type', 'legal_status', 'importance', 'created_at']
     search_fields = ['name', 'description', 'location']
@@ -186,7 +196,8 @@ class AssetsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Timeline)
-class TimelineAdmin(admin.ModelAdmin):
+class TimelineAdmin(FamilyAdminMixin, admin.ModelAdmin):
+    inline_create_fields = []
     list_display = ['title', 'timeline_type', 'date', 'end_date', 'importance', 'created_at']
     list_filter = ['timeline_type', 'importance', 'date', 'created_at']
     search_fields = ['title', 'description', 'historical_context']
