@@ -43,104 +43,103 @@ function handleRelationSelection(button, selectWidget) {
     const relation = button.dataset.relation;
     if (!relation) return;
     
-    // Find or create option in select widget
-    let option = Array.from(selectWidget.options).find(opt => opt.text === relation);
+    const container = selectWidget.closest('.relationship-widget-container');
+    const allButtons = container.querySelectorAll('.relation-btn');
     
-    if (!option) {
-        // Create new option if it doesn't exist
-        option = document.createElement('option');
-        option.value = relation;
-        option.text = relation;
-        selectWidget.appendChild(option);
+    // Check if this button is already selected
+    const isCurrentlySelected = button.classList.contains('selected');
+    
+    if (isCurrentlySelected) {
+        // Deselect if clicking the same button
+        button.classList.remove('selected');
+        clearSelectWidget(selectWidget);
+        updateCurrentSelection(container, null);
+    } else {
+        // Single-select: deselect all other buttons
+        allButtons.forEach(btn => btn.classList.remove('selected'));
+        
+        // Select this button
+        button.classList.add('selected');
+        
+        // Update select widget
+        updateSelectWidget(selectWidget, relation);
+        
+        // Update display
+        const relationType = getRelationType(relation);
+        updateCurrentSelection(container, relation, relationType);
+        
+        // Visual feedback
+        button.style.animation = 'relation-selected 0.3s ease-out';
+        setTimeout(() => {
+            button.style.animation = '';
+        }, 300);
     }
-    
-    // Toggle selection
-    const wasSelected = option.selected;
-    option.selected = !wasSelected;
-    
-    // Update button state
-    button.classList.toggle('selected', !wasSelected);
-    
-    // Update tags display
-    updateSelectedTags(selectWidget);
     
     // Trigger change event
     selectWidget.dispatchEvent(new Event('change', { bubbles: true }));
-    
-    // Visual feedback
-    if (!wasSelected) {
-        button.classList.add('selected');
-        // Brief animation
-        setTimeout(() => {
-            button.style.animation = 'relation-selected 0.3s ease-out';
-            setTimeout(() => {
-                button.style.animation = '';
-            }, 300);
-        }, 10);
-    }
 }
 
 function updateButtonStates(selectWidget, relationBtns) {
+    const container = selectWidget.closest('.relationship-widget-container');
     const selectedRelations = Array.from(selectWidget.selectedOptions).map(opt => opt.text);
+    const selectedRelation = selectedRelations.length > 0 ? selectedRelations[0] : null;
     
+    // Update button states
     relationBtns.forEach(btn => {
         const relation = btn.dataset.relation;
         const isSelected = selectedRelations.includes(relation);
         btn.classList.toggle('selected', isSelected);
     });
     
-    // Update tags display
-    updateSelectedTags(selectWidget);
+    // Update current selection display
+    if (selectedRelation) {
+        const relationType = getRelationType(selectedRelation);
+        updateCurrentSelection(container, selectedRelation, relationType);
+    } else {
+        updateCurrentSelection(container, null);
+    }
 }
 
-function updateSelectedTags(selectWidget) {
-    const container = selectWidget.closest('.relationship-widget-container');
-    if (!container) return;
-    
-    const tagsContainer = container.querySelector('.selected-tags');
-    const clearBtn = container.querySelector('.clear-all-btn');
-    if (!tagsContainer) return;
-    
-    // Clear existing tags
-    tagsContainer.innerHTML = '';
-    
-    const selectedRelations = Array.from(selectWidget.selectedOptions);
-    
-    // Update clear button state
-    if (clearBtn) {
-        clearBtn.disabled = selectedRelations.length === 0;
-    }
-    
-    // Create tags for each selected relation
-    selectedRelations.forEach(option => {
-        const relation = option.text;
-        const tag = createRelationTag(relation, selectWidget);
-        tagsContainer.appendChild(tag);
+function updateSelectWidget(selectWidget, relation) {
+    // Clear all selections first
+    Array.from(selectWidget.options).forEach(option => {
+        option.selected = false;
     });
     
-    // Show empty state if no selections
-    if (selectedRelations.length === 0) {
-        const emptyTag = document.createElement('span');
-        emptyTag.className = 'empty-selection';
-        emptyTag.textContent = '未选择关系';
-        emptyTag.style.color = 'var(--family-text-secondary)';
-        emptyTag.style.fontStyle = 'italic';
-        emptyTag.style.fontSize = '0.85rem';
-        tagsContainer.appendChild(emptyTag);
+    // Find or create the option
+    let option = Array.from(selectWidget.options).find(opt => opt.text === relation);
+    if (!option) {
+        option = document.createElement('option');
+        option.value = relation;
+        option.text = relation;
+        selectWidget.appendChild(option);
     }
+    
+    // Select the option
+    option.selected = true;
 }
 
-function createRelationTag(relation, selectWidget) {
-    const tag = document.createElement('span');
-    const relationType = getRelationType(relation);
-    tag.className = `selected-tag ${relationType}`;
+function clearSelectWidget(selectWidget) {
+    Array.from(selectWidget.options).forEach(option => {
+        option.selected = false;
+    });
+}
+
+function updateCurrentSelection(container, relation, relationType = null) {
+    const currentSelectionEl = container.querySelector('.current-selection');
+    const clearBtn = container.querySelector('.clear-selection-btn');
     
-    tag.innerHTML = `
-        ${relation}
-        <button type="button" class="remove-tag" onclick="removeRelationTag('${relation}', this)" title="移除">×</button>
-    `;
+    if (!currentSelectionEl) return;
     
-    return tag;
+    if (relation) {
+        currentSelectionEl.textContent = relation;
+        currentSelectionEl.className = `current-selection has-selection ${relationType}`;
+        if (clearBtn) clearBtn.disabled = false;
+    } else {
+        currentSelectionEl.textContent = '未选择';
+        currentSelectionEl.className = 'current-selection empty';
+        if (clearBtn) clearBtn.disabled = true;
+    }
 }
 
 function getRelationType(relation) {
@@ -153,32 +152,7 @@ function getRelationType(relation) {
 }
 
 // Global functions for HTML onclick handlers
-window.removeRelationTag = function(relation, tagButton) {
-    const container = tagButton.closest('.relationship-widget-container');
-    if (!container) return;
-    
-    const selectWidget = container.querySelector('.relationship-selector');
-    const relationBtn = container.querySelector(`[data-relation="${relation}"]`);
-    
-    if (selectWidget && relationBtn) {
-        // Find and deselect the option
-        const option = Array.from(selectWidget.options).find(opt => opt.text === relation);
-        if (option) {
-            option.selected = false;
-        }
-        
-        // Update button state
-        relationBtn.classList.remove('selected');
-        
-        // Update display
-        updateSelectedTags(selectWidget);
-        
-        // Trigger change event
-        selectWidget.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-};
-
-window.clearAllRelations = function(fieldName) {
+window.clearSelection = function(fieldName) {
     const containers = document.querySelectorAll('.relationship-widget-container');
     let targetContainer = null;
     
@@ -196,10 +170,8 @@ window.clearAllRelations = function(fieldName) {
     const relationBtns = targetContainer.querySelectorAll('.relation-btn');
     
     if (selectWidget) {
-        // Deselect all options
-        Array.from(selectWidget.options).forEach(option => {
-            option.selected = false;
-        });
+        // Clear selection
+        clearSelectWidget(selectWidget);
         
         // Update all button states
         relationBtns.forEach(btn => {
@@ -207,7 +179,7 @@ window.clearAllRelations = function(fieldName) {
         });
         
         // Update display
-        updateSelectedTags(selectWidget);
+        updateCurrentSelection(targetContainer, null);
         
         // Trigger change event
         selectWidget.dispatchEvent(new Event('change', { bubbles: true }));

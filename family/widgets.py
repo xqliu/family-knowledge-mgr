@@ -173,7 +173,7 @@ class FamilyPhotoWidget(forms.ClearableFileInput):
         js = ('admin/js/family_photo_widget.js',)
 
 
-class RelationshipSelectorWidget(forms.SelectMultiple):
+class RelationshipSelectorWidget(forms.Select):
     """
     Visual relationship selector with family tree interface
     """
@@ -190,18 +190,20 @@ class RelationshipSelectorWidget(forms.SelectMultiple):
         # Get the base select widget
         select_html = super().render(name, value, attrs, renderer)
         
-        # Thoughtfully designed relationship interface with integrated selection
+        # Clean single-select relationship interface
         visual_html = f'''
         <div class="relationship-widget-container">
             <div class="relationship-header">
-                <h3 class="widget-title">选择关系类型</h3>
-                <div class="selected-summary">
-                    <span class="summary-label">已选择:</span>
-                    <div class="selected-tags" id="selected-tags-{name}"></div>
-                    <button type="button" class="clear-all-btn" onclick="clearAllRelations('{name}')" title="清除所有选择">
-                        <span>清除</span>
-                    </button>
+                <div class="header-left">
+                    <span class="widget-title">关系类型</span>
+                    <div class="selected-display">
+                        <span class="summary-label">已选择:</span>
+                        <span class="current-selection" id="current-selection-{name}">未选择</span>
+                    </div>
                 </div>
+                <button type="button" class="clear-selection-btn" onclick="clearSelection('{name}')" title="清除选择">
+                    <span>清除</span>
+                </button>
             </div>
             
             <div class="relationship-categories">

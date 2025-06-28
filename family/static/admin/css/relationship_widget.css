@@ -8,38 +8,37 @@
     margin-bottom: var(--spacing-md);
 }
 
-/* Integrated Header with Selection Summary */
+/* Clean Single-Select Header */
 .relationship-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--spacing-lg);
-    padding: var(--spacing-md);
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     background: rgba(46, 125, 50, 0.05);
     border: 1px solid rgba(46, 125, 50, 0.2);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex: 1;
 }
 
 .widget-title {
-    margin: 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--family-primary);
-    display: flex;
-    align-items: center;
+    margin: 0;
+    white-space: nowrap;
 }
 
-.widget-title::before {
-    content: '🏠';
-    margin-right: var(--spacing-sm);
-}
-
-.selected-summary {
+.selected-display {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    flex: 1;
-    margin-left: var(--spacing-lg);
 }
 
 .summary-label {
@@ -49,89 +48,61 @@
     white-space: nowrap;
 }
 
-.selected-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs);
-    flex: 1;
-    min-height: 24px;
-    align-items: center;
-}
-
-.selected-tag {
-    background: var(--family-primary);
-    color: white;
-    padding: 2px var(--spacing-xs);
+.current-selection {
+    background: white;
+    border: 1px solid var(--family-border);
     border-radius: var(--radius-sm);
-    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    animation: tag-appear 0.3s ease-out;
+    min-width: 80px;
+    text-align: center;
+    transition: var(--transition-normal);
 }
 
-.selected-tag.blood {
+.current-selection.has-selection {
+    color: white;
+    border-color: transparent;
+}
+
+.current-selection.blood {
     background: #e53935;
 }
 
-.selected-tag.marriage {
+.current-selection.marriage {
     background: #1976d2;
 }
 
-.selected-tag.other {
+.current-selection.other {
     background: var(--family-success);
 }
 
-.selected-tag .remove-tag {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 2px;
-    font-size: 0.7rem;
-    line-height: 1;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
+.current-selection.empty {
+    color: var(--family-text-secondary);
+    font-style: italic;
 }
 
-.selected-tag .remove-tag:hover {
-    opacity: 1;
-}
-
-.clear-all-btn {
+.clear-selection-btn {
     background: var(--family-text-secondary);
     color: white;
     border: none;
     border-radius: var(--radius-sm);
     padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: var(--transition-normal);
     white-space: nowrap;
 }
 
-.clear-all-btn:hover {
+.clear-selection-btn:hover {
     background: var(--family-error);
     transform: translateY(-1px);
 }
 
-.clear-all-btn:disabled {
+.clear-selection-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
-}
-
-@keyframes tag-appear {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .relationship-categories {
@@ -302,13 +273,25 @@
         align-items: stretch;
     }
     
-    .selected-summary {
-        margin-left: 0;
-        flex-wrap: wrap;
+    .header-left {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: flex-start;
     }
     
-    .widget-title {
-        font-size: 1.1rem;
+    .selected-display {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .current-selection {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .clear-selection-btn {
+        align-self: stretch;
+        text-align: center;
     }
     
     .relationship-categories {
@@ -330,15 +313,6 @@
     
     .section-header h4 {
         font-size: 1rem;
-    }
-    
-    .selected-tags {
-        min-height: 32px;
-    }
-    
-    .clear-all-btn {
-        margin-top: var(--spacing-xs);
-        align-self: flex-start;
     }
 }
 
