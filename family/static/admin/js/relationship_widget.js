@@ -143,8 +143,8 @@ function updateCurrentSelection(container, relation, relationType = null) {
 }
 
 function getRelationType(relation) {
-    const bloodRelations = ['父亲', '母亲', '儿子', '女儿', '兄弟', '姐妹'];
-    const marriageRelations = ['配偶', '岳父', '岳母', '女婿', '儿媳'];
+    const bloodRelations = ['父子', '母子', '父女', '母女', '兄弟', '姐妹'];
+    const marriageRelations = ['夫妻', '翁婿', '姑嫂', '连襟'];
     
     if (bloodRelations.includes(relation)) return 'blood';
     if (marriageRelations.includes(relation)) return 'marriage';

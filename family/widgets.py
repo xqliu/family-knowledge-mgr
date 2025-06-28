@@ -213,10 +213,10 @@ class RelationshipSelectorWidget(forms.Select):
                         <h4>血缘关系</h4>
                     </div>
                     <div class="relation-grid">
-                        <button type="button" class="relation-btn blood" data-relation="父亲">父亲</button>
-                        <button type="button" class="relation-btn blood" data-relation="母亲">母亲</button>
-                        <button type="button" class="relation-btn blood" data-relation="儿子">儿子</button>
-                        <button type="button" class="relation-btn blood" data-relation="女儿">女儿</button>
+                        <button type="button" class="relation-btn blood" data-relation="父子">父子</button>
+                        <button type="button" class="relation-btn blood" data-relation="母子">母子</button>
+                        <button type="button" class="relation-btn blood" data-relation="父女">父女</button>
+                        <button type="button" class="relation-btn blood" data-relation="母女">母女</button>
                         <button type="button" class="relation-btn blood" data-relation="兄弟">兄弟</button>
                         <button type="button" class="relation-btn blood" data-relation="姐妹">姐妹</button>
                     </div>
@@ -228,11 +228,10 @@ class RelationshipSelectorWidget(forms.Select):
                         <h4>姻亲关系</h4>
                     </div>
                     <div class="relation-grid">
-                        <button type="button" class="relation-btn marriage" data-relation="配偶">配偶</button>
-                        <button type="button" class="relation-btn marriage" data-relation="岳父">岳父</button>
-                        <button type="button" class="relation-btn marriage" data-relation="岳母">岳母</button>
-                        <button type="button" class="relation-btn marriage" data-relation="女婿">女婿</button>
-                        <button type="button" class="relation-btn marriage" data-relation="儿媳">儿媳</button>
+                        <button type="button" class="relation-btn marriage" data-relation="夫妻">夫妻</button>
+                        <button type="button" class="relation-btn marriage" data-relation="翁婿">翁婿</button>
+                        <button type="button" class="relation-btn marriage" data-relation="姑嫂">姑嫂</button>
+                        <button type="button" class="relation-btn marriage" data-relation="连襟">连襟</button>
                     </div>
                 </div>
                 
