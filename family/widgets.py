@@ -267,47 +267,50 @@ class RichTextWidget(forms.Textarea):
     def render(self, name, value, attrs=None, renderer=None):
         textarea_html = super().render(name, value, attrs, renderer)
         
-        toolbar_html = '''
-        <div class="rich-text-toolbar">
-            <div class="toolbar-group">
-                <button type="button" class="toolbar-btn" data-command="bold" title="粗体">
-                    <strong>B</strong>
-                </button>
-                <button type="button" class="toolbar-btn" data-command="italic" title="斜体">
-                    <em>I</em>
-                </button>
-                <button type="button" class="toolbar-btn" data-command="underline" title="下划线">
-                    <u>U</u>
-                </button>
+        complete_html = f'''
+        <div class="rich-text-container">
+            <div class="rich-text-toolbar">
+                <div class="toolbar-group">
+                    <button type="button" class="toolbar-btn" data-command="bold" title="粗体">
+                        <strong>B</strong>
+                    </button>
+                    <button type="button" class="toolbar-btn" data-command="italic" title="斜体">
+                        <em>I</em>
+                    </button>
+                    <button type="button" class="toolbar-btn" data-command="underline" title="下划线">
+                        <u>U</u>
+                    </button>
+                </div>
+                <div class="toolbar-group">
+                    <button type="button" class="toolbar-btn" data-command="heading" title="标题">
+                        H
+                    </button>
+                    <button type="button" class="toolbar-btn" data-command="paragraph" title="段落">
+                        P
+                    </button>
+                </div>
+                <div class="toolbar-group">
+                    <button type="button" class="toolbar-btn" data-command="quote" title="引用">
+                        "
+                    </button>
+                    <button type="button" class="toolbar-btn" data-command="list" title="列表">
+                        •
+                    </button>
+                </div>
+                <div class="toolbar-group">
+                    <button type="button" class="toolbar-btn" data-command="photo" title="插入照片">
+                        📷
+                    </button>
+                    <button type="button" class="toolbar-btn" data-command="emoji" title="表情">
+                        😊
+                    </button>
+                </div>
             </div>
-            <div class="toolbar-group">
-                <button type="button" class="toolbar-btn" data-command="heading" title="标题">
-                    H
-                </button>
-                <button type="button" class="toolbar-btn" data-command="paragraph" title="段落">
-                    P
-                </button>
-            </div>
-            <div class="toolbar-group">
-                <button type="button" class="toolbar-btn" data-command="quote" title="引用">
-                    "
-                </button>
-                <button type="button" class="toolbar-btn" data-command="list" title="列表">
-                    •
-                </button>
-            </div>
-            <div class="toolbar-group">
-                <button type="button" class="toolbar-btn" data-command="photo" title="插入照片">
-                    📷
-                </button>
-                <button type="button" class="toolbar-btn" data-command="emoji" title="表情">
-                    😊
-                </button>
-            </div>
+            {textarea_html}
         </div>
         '''
         
-        return mark_safe(toolbar_html + textarea_html)
+        return mark_safe(complete_html)
     
     class Media:
         css = {

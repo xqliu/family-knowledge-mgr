@@ -1,5 +1,11 @@
 /* Rich Text Widget Styles */
 
+.rich-text-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .rich-text-toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -10,6 +16,7 @@
     border-bottom: none;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
     margin-bottom: 0;
+    order: 1;
 }
 
 .toolbar-group {
@@ -60,6 +67,8 @@
     min-height: 120px;
     font-family: var(--family-font-primary);
     line-height: 1.6;
+    order: 2;
+    width: 100%;
 }
 
 .rich-text-editor:focus {
