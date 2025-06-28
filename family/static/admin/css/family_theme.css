@@ -1,0 +1,284 @@
+/* Family Knowledge Management System - Theme Colors & Branding */
+
+:root {
+    /* Primary Family Colors - Warm and Welcoming */
+    --family-primary: #2E7D32;          /* Forest Green - Stability & Growth */
+    --family-primary-light: #4CAF50;     /* Light Green - Fresh & Vibrant */
+    --family-primary-dark: #1B5E20;      /* Dark Green - Trust & Security */
+    
+    /* Secondary Colors - Warm Family Tones */
+    --family-accent: #FF8F00;            /* Warm Orange - Joy & Energy */
+    --family-accent-light: #FFB74D;      /* Light Orange - Warmth */
+    --family-accent-dark: #F57C00;       /* Dark Orange - Enthusiasm */
+    
+    /* Neutral Colors - Soft and Readable */
+    --family-bg: #FAFAFA;                /* Very Light Gray - Clean Background */
+    --family-card-bg: #FFFFFF;           /* White - Card Backgrounds */
+    --family-border: #E0E0E0;            /* Light Gray - Subtle Borders */
+    --family-text: #212121;              /* Dark Gray - Primary Text */
+    --family-text-secondary: #757575;    /* Medium Gray - Secondary Text */
+    --family-text-light: #BDBDBD;        /* Light Gray - Disabled Text */
+    
+    /* Emotional Colors - Gentle and Meaningful */
+    --family-love: #E91E63;               /* Pink - Love & Affection */
+    --family-joy: #FFC107;                /* Yellow - Happiness & Joy */
+    --family-memory: #9C27B0;             /* Purple - Memories & Nostalgia */
+    --family-wisdom: #3F51B5;             /* Indigo - Wisdom & Knowledge */
+    
+    /* Status Colors - Clear Communication */
+    --family-success: #4CAF50;            /* Green - Success & Completion */
+    --family-warning: #FF9800;            /* Orange - Caution & Attention */
+    --family-error: #F44336;              /* Red - Error & Important */
+    --family-info: #2196F3;               /* Blue - Information & Help */
+    
+    /* Typography */
+    --family-font-primary: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+    --family-font-display: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', serif;
+    
+    /* Spacing Scale - Consistent & Harmonious */
+    --spacing-xs: 0.25rem;    /* 4px */
+    --spacing-sm: 0.5rem;     /* 8px */
+    --spacing-md: 1rem;       /* 16px */
+    --spacing-lg: 1.5rem;     /* 24px */
+    --spacing-xl: 2rem;       /* 32px */
+    --spacing-xxl: 3rem;      /* 48px */
+    
+    /* Border Radius - Friendly & Modern */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* Shadows - Subtle & Warm */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --shadow-md: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    --shadow-lg: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    
+    /* Transitions - Smooth & Pleasant */
+    --transition-fast: 0.15s ease-in-out;
+    --transition-normal: 0.25s ease-in-out;
+    --transition-slow: 0.35s ease-in-out;
+}
+
+/* Override Django Admin Color Scheme */
+body {
+    background-color: var(--family-bg);
+    color: var(--family-text);
+    font-family: var(--family-font-primary);
+    line-height: 1.6;
+}
+
+/* Header and Branding */
+#header {
+    background: linear-gradient(135deg, var(--family-primary) 0%, var(--family-primary-dark) 100%);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+#family-branding {
+    padding: var(--spacing-md) var(--spacing-lg);
+}
+
+#site-name a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: var(--family-font-display);
+}
+
+.family-logo {
+    height: 32px;
+    width: 32px;
+}
+
+.family-tagline {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: var(--spacing-xs);
+    font-style: italic;
+}
+
+/* Navigation */
+#family-nav {
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.family-nav-section {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.family-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: var(--transition-normal);
+    font-size: 0.9rem;
+    min-height: 44px; /* Touch-friendly */
+}
+
+.family-nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+}
+
+.nav-text {
+    font-weight: 500;
+}
+
+/* Cards and Containers */
+.card {
+    background: var(--family-card-bg);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Buttons - Family Friendly */
+.btn, button, input[type="submit"], input[type="button"] {
+    background: var(--family-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-family: var(--family-font-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    min-height: 44px; /* Touch-friendly */
+}
+
+.btn:hover, button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background: var(--family-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+    background: var(--family-text-secondary);
+}
+
+.btn-accent {
+    background: var(--family-accent);
+}
+
+.btn-accent:hover {
+    background: var(--family-accent-dark);
+}
+
+/* Forms - User Friendly */
+input, textarea, select {
+    border: 2px solid var(--family-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--family-font-primary);
+    font-size: 1rem;
+    transition: var(--transition-normal);
+    min-height: 44px; /* Touch-friendly */
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--family-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Error and Success States */
+.error, .errorlist {
+    color: var(--family-error);
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+}
+
+.success {
+    color: var(--family-success);
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+}
+
+/* Footer */
+#family-footer {
+    background: var(--family-text);
+    color: white;
+    margin-top: var(--spacing-xxl);
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.family-footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-help a {
+    color: var(--family-accent-light);
+    text-decoration: none;
+}
+
+.footer-help a:hover {
+    text-decoration: underline;
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --family-border: #000000;
+        --family-text: #000000;
+        --family-bg: #FFFFFF;
+    }
+}
+
+/* Print Styles */
+@media print {
+    #header, #family-nav, #family-footer {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .card {
+        border: 1px solid black;
+        box-shadow: none;
+    }
+}

@@ -1,0 +1,144 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content %}
+<div id="family-dashboard">
+    <!-- Welcome Section -->
+    <div class="dashboard-welcome">
+        <h2>欢迎回到家族知识管理系统</h2>
+        <p class="welcome-message">记录每一个珍贵时刻，传承家族的温暖回忆</p>
+    </div>
+
+    <!-- Quick Actions Panel -->
+    <div class="dashboard-section">
+        <h3>快速操作</h3>
+        <div class="quick-actions">
+            <a href="{% url 'admin:family_person_add' %}" class="quick-action-card family-card">
+                <div class="action-icon">👥</div>
+                <div class="action-title">添加家庭成员</div>
+                <div class="action-desc">记录新的家庭成员信息</div>
+            </a>
+            <a href="{% url 'admin:family_story_add' %}" class="quick-action-card story-card">
+                <div class="action-icon">📖</div>
+                <div class="action-title">记录家族故事</div>
+                <div class="action-desc">分享珍贵的家族回忆</div>
+            </a>
+            <a href="{% url 'admin:family_event_add' %}" class="quick-action-card event-card">
+                <div class="action-icon">🎉</div>
+                <div class="action-title">创建重要事件</div>
+                <div class="action-desc">记录特殊的日子和庆祝</div>
+            </a>
+            <a href="{% url 'admin:family_multimedia_add' %}" class="quick-action-card media-card">
+                <div class="action-icon">📸</div>
+                <div class="action-title">上传照片视频</div>
+                <div class="action-desc">保存珍贵的影像记忆</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Family Statistics -->
+    <div class="dashboard-section">
+        <h3>家族概览</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="family-count">{{ family_stats.person_count|default:"0" }}</div>
+                <div class="stat-label">家庭成员</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="story-count">{{ family_stats.story_count|default:"0" }}</div>
+                <div class="stat-label">家族故事</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="event-count">{{ family_stats.event_count|default:"0" }}</div>
+                <div class="stat-label">重要事件</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="media-count">{{ family_stats.multimedia_count|default:"0" }}</div>
+                <div class="stat-label">照片视频</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="dashboard-section">
+        <h3>最近活动</h3>
+        <div class="recent-activity">
+            {% if recent_activities %}
+                {% for activity in recent_activities %}
+                <div class="activity-item">
+                    <div class="activity-icon">{{ activity.icon }}</div>
+                    <div class="activity-content">
+                        <div class="activity-title">{{ activity.title }}</div>
+                        <div class="activity-time">{{ activity.time }}</div>
+                    </div>
+                    <a href="{{ activity.url }}" class="activity-link">查看</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-activity">
+                    <p>还没有活动记录，开始记录您的家族回忆吧！</p>
+                    <a href="{% url 'admin:family_story_add' %}" class="start-recording-btn">开始记录</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="dashboard-section">
+        <h3>即将到来的事件</h3>
+        <div class="upcoming-events">
+            {% if upcoming_events %}
+                {% for event in upcoming_events %}
+                <div class="event-item">
+                    <div class="event-date">
+                        <div class="event-day">{{ event.date.day }}</div>
+                        <div class="event-month">{{ event.date.month }}月</div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-title">{{ event.title }}</div>
+                        <div class="event-time">{{ event.date|date:"Y年m月d日" }}</div>
+                    </div>
+                    <a href="{% url 'admin:family_event_change' event.id %}" class="event-link">详情</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-events">
+                    <p>暂无即将到来的事件</p>
+                    <a href="{% url 'admin:family_event_add' %}" class="add-event-btn">创建事件</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Original Django Admin Content -->
+<div id="original-admin-content" style="margin-top: 2rem;">
+    {{ block.super }}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load family statistics
+    loadFamilyStats();
+    
+    // Add touch-friendly interactions for mobile
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+    }
+});
+
+function loadFamilyStats() {
+    // This would typically load from an AJAX endpoint
+    // For now, we'll use placeholder logic
+    console.log('Family dashboard loaded');
+}
+</script>
+
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+/* Dashboard specific styles will be in family_admin.css */
+</style>
+{% endblock %}

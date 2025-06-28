@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | 家族知识管理系统{% endblock %}
+
+{% block branding %}
+<div id="family-branding">
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <img src="{% static 'admin/img/family_icons/family_logo.svg' %}" alt="家族" class="family-logo" onerror="this.style.display='none'">
+            家族知识管理
+        </a>
+    </h1>
+    <div class="family-tagline">记录家族回忆，传承家族智慧</div>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/family_theme.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/family_admin.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/mobile.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="icon" type="image/svg+xml" href="{% static 'admin/img/family_icons/favicon.svg' %}">
+<link rel="alternate icon" href="{% static 'admin/img/family_icons/favicon.ico' %}">
+<meta name="theme-color" content="#2E7D32">
+<meta name="description" content="家族知识管理系统 - 记录和分享家族回忆">
+{% endblock %}
+
+{% block nav-global %}
+<div id="family-nav">
+    {% if user.is_authenticated %}
+    <div class="family-nav-section">
+        <a href="{% url 'admin:family_person_changelist' %}" class="family-nav-link">
+            <span class="nav-icon">👥</span>
+            <span class="nav-text">家庭成员</span>
+        </a>
+        <a href="{% url 'admin:family_story_changelist' %}" class="family-nav-link">
+            <span class="nav-icon">📖</span>
+            <span class="nav-text">家族故事</span>
+        </a>
+        <a href="{% url 'admin:family_event_changelist' %}" class="family-nav-link">
+            <span class="nav-icon">🎉</span>
+            <span class="nav-text">重要事件</span>
+        </a>
+        <a href="{% url 'admin:family_multimedia_changelist' %}" class="family-nav-link">
+            <span class="nav-icon">📸</span>
+            <span class="nav-text">照片视频</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{{ block.super }}
+{% endblock %}
+
+{% block footer %}
+<div id="family-footer">
+    <div class="family-footer-content">
+        <p>家族知识管理系统 | 为家庭而设计</p>
+        <p class="footer-help">
+            <a href="#" onclick="showHelp(); return false;">使用帮助</a> | 
+            <a href="#" onclick="showPrivacy(); return false;">隐私保护</a>
+        </p>
+    </div>
+</div>
+
+<script>
+function showHelp() {
+    alert('家族知识管理系统使用提示：\n\n1. 点击"家庭成员"添加或查看家庭成员\n2. 点击"家族故事"记录美好回忆\n3. 点击"重要事件"记录重要时刻\n4. 点击"照片视频"上传和管理多媒体\n\n如需更多帮助，请联系家庭管理员。');
+}
+
+function showPrivacy() {
+    alert('隐私保护承诺：\n\n• 所有家族数据仅在家庭内部共享\n• 我们不会向第三方分享您的个人信息\n• 定期备份确保数据安全\n• 支持数据导出，您完全拥有自己的数据\n\n家族隐私，我们守护。');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,384 @@
+/* Family Knowledge Management System - Mobile Responsive Styles */
+
+/* Mobile-First Approach */
+
+/* Small devices (phones, 576px and down) */
+@media (max-width: 575.98px) {
+    /* Layout adjustments */
+    #family-dashboard {
+        padding: var(--spacing-md);
+    }
+    
+    .dashboard-welcome {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .dashboard-welcome h2 {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-message {
+        font-size: 1rem;
+    }
+    
+    /* Quick actions - single column on small screens */
+    .quick-actions {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .quick-action-card {
+        padding: var(--spacing-lg);
+        min-height: 100px;
+    }
+    
+    .action-icon {
+        font-size: 2.5rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .action-title {
+        font-size: 1.1rem;
+    }
+    
+    /* Statistics - two columns */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    .stat-card {
+        padding: var(--spacing-lg);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    /* Navigation improvements */
+    #family-nav {
+        padding: var(--spacing-sm);
+        justify-content: center;
+    }
+    
+    .family-nav-section {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .family-nav-link {
+        flex: 1;
+        justify-content: center;
+        min-width: 0;
+        font-size: 0.8rem;
+    }
+    
+    .nav-text {
+        display: none; /* Show only icons on very small screens */
+    }
+    
+    /* Activity and events */
+    .activity-item, .event-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md);
+    }
+    
+    .activity-icon {
+        margin-right: 0;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .event-date {
+        margin-right: 0;
+        margin-bottom: var(--spacing-sm);
+        align-self: flex-start;
+    }
+    
+    .activity-link, .event-link {
+        align-self: stretch;
+        text-align: center;
+    }
+    
+    /* Form improvements */
+    .form-row input, .form-row textarea, .form-row select {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    /* Footer adjustments */
+    #family-footer {
+        padding: var(--spacing-md);
+    }
+    
+    .family-footer-content p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Medium devices (tablets, 576px to 767.98px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .family-nav-link .nav-text {
+        display: inline; /* Show text on tablets */
+    }
+    
+    .activity-item, .event-item {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .activity-icon {
+        margin-right: var(--spacing-md);
+        margin-bottom: 0;
+    }
+    
+    .event-date {
+        margin-right: var(--spacing-lg);
+        margin-bottom: 0;
+    }
+}
+
+/* Large devices (desktops, 768px and up) */
+@media (min-width: 768px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Enhanced hover effects for desktop */
+    .quick-action-card:hover {
+        transform: translateY(-6px);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-3px);
+    }
+}
+
+/* Extra large devices (large desktops, 992px and up) */
+@media (min-width: 992px) {
+    .quick-actions {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    #family-dashboard {
+        padding: var(--spacing-xl);
+    }
+    
+    .dashboard-welcome {
+        padding: var(--spacing-xxl) var(--spacing-xl);
+    }
+    
+    .dashboard-welcome h2 {
+        font-size: 2.5rem;
+    }
+    
+    .welcome-message {
+        font-size: 1.2rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .quick-action-card:hover,
+    .stat-card:hover,
+    .activity-item:hover,
+    .event-item:hover {
+        transform: none;
+    }
+    
+    /* Larger touch targets */
+    .family-nav-link {
+        min-height: 48px;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .activity-link, .event-link {
+        min-height: 48px;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .quick-action-card {
+        min-height: 120px;
+    }
+    
+    /* Improved button spacing */
+    .start-recording-btn, .add-event-btn {
+        min-height: 48px;
+        padding: var(--spacing-md) var(--spacing-xl);
+    }
+}
+
+/* Landscape phone optimizations */
+@media (max-width: 767.98px) and (orientation: landscape) {
+    .dashboard-welcome {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .dashboard-welcome h2 {
+        font-size: 1.3rem;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .quick-action-card {
+        min-height: 80px;
+        padding: var(--spacing-md);
+    }
+    
+    .action-icon {
+        font-size: 2rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .action-title {
+        font-size: 1rem;
+    }
+    
+    .action-desc {
+        font-size: 0.8rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Sharper borders and shadows */
+    .card, .quick-action-card, .stat-card {
+        border-width: 0.5px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --family-bg: #121212;
+        --family-card-bg: #1E1E1E;
+        --family-border: #333333;
+        --family-text: #FFFFFF;
+        --family-text-secondary: #AAAAAA;
+        --family-text-light: #666666;
+    }
+    
+    .dashboard-welcome {
+        background: linear-gradient(135deg, var(--family-primary-dark) 0%, #1B5E20 100%);
+    }
+    
+    #family-footer {
+        background: #000000;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .quick-action-card,
+    .stat-card,
+    .activity-item,
+    .event-item {
+        transition: none;
+    }
+    
+    .quick-action-card:hover,
+    .stat-card:hover {
+        transform: none;
+    }
+    
+    .animate-in {
+        animation: none;
+    }
+    
+    .loading::after {
+        animation: none;
+    }
+}
+
+/* Print styles for mobile */
+@media print {
+    #family-nav,
+    #family-footer,
+    .activity-link,
+    .event-link,
+    .start-recording-btn,
+    .add-event-btn {
+        display: none;
+    }
+    
+    #family-dashboard {
+        padding: 0;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .quick-action-card {
+        border: 1px solid #000;
+        box-shadow: none;
+        padding: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-welcome {
+        background: none;
+        color: #000;
+        border: 1px solid #000;
+    }
+}
+
+/* Accessibility enhancements for mobile */
+@media (max-width: 767.98px) {
+    /* Larger text for small screens */
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    
+    /* Better contrast for small text */
+    .activity-time,
+    .event-time,
+    .action-desc {
+        color: var(--family-text);
+        opacity: 0.8;
+    }
+    
+    /* Focus indicators */
+    .family-nav-link:focus,
+    .quick-action-card:focus,
+    .activity-link:focus,
+    .event-link:focus {
+        outline: 3px solid var(--family-primary);
+        outline-offset: 2px;
+    }
+    
+    /* High contrast mode */
+    @media (prefers-contrast: high) {
+        .quick-action-card,
+        .stat-card,
+        .recent-activity,
+        .upcoming-events {
+            border: 2px solid #000;
+        }
+        
+        .family-nav-link {
+            border: 1px solid #000;
+        }
+    }
+}
