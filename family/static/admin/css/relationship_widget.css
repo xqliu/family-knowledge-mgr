@@ -1,0 +1,357 @@
+/* Relationship Widget Styles */
+
+.relationship-visual {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--family-bg);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-md);
+}
+
+/* Family Tree Mini Visualization */
+.family-tree-mini {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--family-card-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--family-border);
+}
+
+.tree-level {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.tree-level:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: var(--family-border);
+}
+
+.tree-node {
+    background: var(--family-primary);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 80px;
+}
+
+.tree-level.current .tree-node {
+    background: var(--family-accent);
+    font-weight: 600;
+    box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.3);
+}
+
+.tree-node.grandparents {
+    background: var(--family-text-secondary);
+}
+
+.tree-node.parents {
+    background: var(--family-primary-dark);
+}
+
+.tree-node.children {
+    background: var(--family-success);
+}
+
+.tree-node.grandchildren {
+    background: var(--family-info);
+}
+
+/* Relationship Types Section */
+.relationship-types {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.relationship-category {
+    background: var(--family-card-bg);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+}
+
+.relationship-category h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--family-border);
+    color: var(--family-text);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.relationship-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: var(--spacing-xs);
+    align-items: stretch;
+}
+
+.relation-btn {
+    background: var(--family-card-bg);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+    font-family: var(--family-font-primary);
+    color: var(--family-text);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.relation-btn:hover {
+    background: var(--family-primary);
+    color: white;
+    border-color: var(--family-primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.relation-btn:active {
+    transform: translateY(0);
+}
+
+.relation-btn.selected {
+    background: var(--family-primary);
+    color: white;
+    border-color: var(--family-primary);
+    font-weight: 500;
+}
+
+/* Blood relations - warm colors */
+.relationship-category:nth-child(1) .relation-btn {
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.relationship-category:nth-child(1) .relation-btn:hover,
+.relationship-category:nth-child(1) .relation-btn.selected {
+    background: #e53935;
+    border-color: #e53935;
+}
+
+/* Marriage relations - blue colors */
+.relationship-category:nth-child(2) .relation-btn {
+    border-color: rgba(33, 150, 243, 0.3);
+}
+
+.relationship-category:nth-child(2) .relation-btn:hover,
+.relationship-category:nth-child(2) .relation-btn.selected {
+    background: #1976d2;
+    border-color: #1976d2;
+}
+
+/* Other relations - green colors */
+.relationship-category:nth-child(3) .relation-btn {
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.relationship-category:nth-child(3) .relation-btn:hover,
+.relationship-category:nth-child(3) .relation-btn.selected {
+    background: var(--family-success);
+    border-color: var(--family-success);
+}
+
+/* Hide the default select widget or style it */
+.relationship-selector {
+    margin-top: var(--spacing-md);
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    background: var(--family-card-bg);
+}
+
+.relationship-selector option {
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    margin-bottom: 2px;
+}
+
+.relationship-selector option:checked {
+    background: var(--family-primary);
+    color: white;
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+    .relationship-visual {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .family-tree-mini {
+        flex: none;
+        order: 2;
+    }
+    
+    .relationship-types {
+        order: 1;
+    }
+    
+    .relationship-options {
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        gap: var(--spacing-xs);
+    }
+    
+    .relation-btn {
+        font-size: 0.85rem;
+        min-height: 40px;
+        padding: var(--spacing-xs);
+    }
+    
+    .tree-node {
+        font-size: 0.8rem;
+        min-width: 70px;
+        padding: var(--spacing-xs);
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .relation-btn {
+        min-height: 44px;
+        padding: var(--spacing-sm);
+    }
+    
+    .relation-btn:hover {
+        background: var(--family-card-bg);
+        color: var(--family-text);
+        border-color: var(--family-border);
+        transform: none;
+    }
+    
+    .relation-btn:active {
+        background: var(--family-primary);
+        color: white;
+        border-color: var(--family-primary);
+    }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    .relationship-options {
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+    }
+    
+    .family-tree-mini {
+        flex: 0 0 160px;
+    }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1200px) {
+    .relationship-options {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    }
+    
+    .relationship-visual {
+        gap: var(--spacing-xl);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .relation-btn {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .relation-btn:hover,
+    .relation-btn.selected {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+    }
+    
+    .tree-node {
+        border: 2px solid #000;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .relationship-visual {
+        background: var(--family-border);
+        border-color: var(--family-text-secondary);
+    }
+    
+    .family-tree-mini,
+    .relationship-category {
+        background: var(--family-text);
+        border-color: var(--family-text-secondary);
+    }
+    
+    .relation-btn {
+        background: var(--family-border);
+        color: var(--family-text);
+        border-color: var(--family-text-secondary);
+    }
+    
+    .relationship-selector {
+        background: var(--family-text);
+        color: var(--family-text);
+        border-color: var(--family-text-secondary);
+    }
+}
+
+/* Animation for button selection */
+@keyframes relation-selected {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.relation-btn.selected {
+    animation: relation-selected 0.3s ease-out;
+}
+
+/* Accessibility improvements */
+.relation-btn:focus {
+    outline: 2px solid var(--family-primary);
+    outline-offset: 2px;
+}
+
+.relationship-selector:focus {
+    outline: 2px solid var(--family-primary);
+    outline-offset: 2px;
+}
+
+/* Category icons for better visual distinction */
+.relationship-category:nth-child(1) h4::before {
+    content: '👨‍👩‍👧‍👦 ';
+    margin-right: var(--spacing-xs);
+}
+
+.relationship-category:nth-child(2) h4::before {
+    content: '💑 ';
+    margin-right: var(--spacing-xs);
+}
+
+.relationship-category:nth-child(3) h4::before {
+    content: '👥 ';
+    margin-right: var(--spacing-xs);
+}
