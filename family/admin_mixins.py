@@ -68,25 +68,105 @@ class InlineCreateMixin:
                 
                 # Add the create button
                 create_url = reverse(f'admin:{app_label}_{model_name}_add')
-                create_button = format_html(
+                # Check if this is a FilteredSelectMultiple widget (transfer widget)
+                is_transfer_widget = 'FilteredSelectMultiple' in str(type(self.widget))
+                
+                if is_transfer_widget:
+                    # For transfer widgets, inject the button into the available objects area
+                    create_button = self._inject_button_into_transfer_widget(
+                        original_html, create_url, name, related_model._meta.verbose_name
+                    )
+                else:
+                    # For regular widgets, wrap normally
+                    create_button = format_html(
+                        '''
+                        <div class="inline-create-wrapper">
+                            {original}
+                            <a href="{url}" class="inline-create-btn" 
+                               onclick="return showInlineCreatePopup(this, '{field_name}');"
+                               title="添加新{verbose_name}">
+                                <span class="create-icon">+</span>
+                                <span class="create-text">新建</span>
+                            </a>
+                        </div>
+                        ''',
+                        original=original_html,
+                        url=create_url,
+                        field_name=name,
+                        verbose_name=related_model._meta.verbose_name
+                    )
+                
+                return create_button
+            
+            def _inject_button_into_transfer_widget(self, original_html, create_url, field_name, verbose_name):
+                """
+                Inject the create button into the available objects section of transfer widget
+                """
+                # Look for the available objects section header or filter input
+                import re
+                
+                # Try to find the "Available" header or filter input in the transfer widget
+                available_pattern = r'(<h2[^>]*>.*?可选.*?</h2>|<p[^>]*class="help"[^>]*>.*?可选.*?</p>|<label[^>]*>.*?Filter.*?</label>)'
+                filter_pattern = r'(<input[^>]*id="id_' + re.escape(field_name) + r'_input"[^>]*>)'
+                
+                create_button_html = format_html(
                     '''
-                    <div class="inline-create-wrapper">
-                        {original}
-                        <a href="{url}" class="inline-create-btn" 
+                    <div class="transfer-widget-create-btn">
+                        <a href="{url}" class="inline-create-btn compact" 
                            onclick="return showInlineCreatePopup(this, '{field_name}');"
                            title="添加新{verbose_name}">
                             <span class="create-icon">+</span>
-                            <span class="create-text">新建</span>
+                            <span class="create-text">新建{verbose_name}</span>
                         </a>
                     </div>
                     ''',
-                    original=original_html,
                     url=create_url,
-                    field_name=name,
-                    verbose_name=related_model._meta.verbose_name
+                    field_name=field_name,
+                    verbose_name=verbose_name
                 )
                 
-                return create_button
+                # Try to inject after the filter input
+                modified_html = re.sub(
+                    filter_pattern,
+                    r'\1' + str(create_button_html),
+                    original_html,
+                    count=1
+                )
+                
+                # If that didn't work, try to inject after any available objects header
+                if modified_html == original_html:
+                    modified_html = re.sub(
+                        available_pattern,
+                        r'\1' + str(create_button_html),
+                        original_html,
+                        count=1,
+                        flags=re.IGNORECASE
+                    )
+                
+                # If still no match, inject at the beginning of the selector-available div
+                if modified_html == original_html:
+                    available_div_pattern = r'(<div[^>]*class="[^"]*selector-available[^"]*"[^>]*>)'
+                    modified_html = re.sub(
+                        available_div_pattern,
+                        r'\1' + str(create_button_html),
+                        original_html,
+                        count=1
+                    )
+                
+                # Final fallback: wrap the entire widget
+                if modified_html == original_html:
+                    modified_html = format_html(
+                        '''
+                        <div class="inline-create-wrapper transfer-widget">
+                            {create_button}
+                            {original}
+                        </div>
+                        ''',
+                        create_button=create_button_html,
+                        original=original_html
+                    )
+                
+                return modified_html
             
             def __getattr__(self, name):
                 # Delegate attribute access to the wrapped widget

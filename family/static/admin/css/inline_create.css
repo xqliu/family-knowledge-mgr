@@ -341,6 +341,41 @@
     border-color: var(--family-success);
 }
 
+/* Transfer widget specific styling */
+.transfer-widget-create-btn {
+    margin: var(--spacing-sm) 0;
+    padding: var(--spacing-xs);
+    border-bottom: 1px solid var(--family-border);
+    background: rgba(46, 125, 50, 0.05);
+}
+
+.transfer-widget-create-btn .inline-create-btn {
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 0.85rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px dashed var(--family-primary);
+    background: transparent;
+    color: var(--family-primary);
+}
+
+.transfer-widget-create-btn .inline-create-btn:hover {
+    background: var(--family-primary);
+    color: white;
+    border-style: solid;
+}
+
+.transfer-widget-create-btn .inline-create-btn.compact .create-text {
+    margin-left: var(--spacing-xs);
+}
+
+/* Position within selector-available div */
+.selector-available .transfer-widget-create-btn {
+    margin: 0 0 var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--family-border);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
 /* Integration with existing admin styles */
 .inline-create-wrapper .selector {
     width: 100%;
@@ -350,16 +385,18 @@
     width: 100%;
 }
 
-/* For FilteredSelectMultiple widgets */
-.inline-create-wrapper .selector-chooser {
+/* For FilteredSelectMultiple widgets - adjust layout */
+.inline-create-wrapper.transfer-widget .selector-chooser {
     display: flex;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
 }
 
-.inline-create-wrapper .selector-chosen {
+.inline-create-wrapper.transfer-widget .selector-chosen,
+.inline-create-wrapper.transfer-widget .selector-available {
     flex: 1;
 }
 
-.inline-create-wrapper .selector-available {
-    flex: 1;
+/* Ensure transfer widget create button doesn't break layout */
+.selector-available .transfer-widget-create-btn + * {
+    clear: both;
 }

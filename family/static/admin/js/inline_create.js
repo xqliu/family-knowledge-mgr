@@ -249,6 +249,39 @@ function addNewOptionToField(data) {
         field.dispatchEvent(new Event('change', { bubbles: true }));
     }
     
+    // Handle FilteredSelectMultiple widgets (transfer widgets)
+    const availableSelect = document.querySelector(`#id_${currentFieldName}_from`);
+    const chosenSelect = document.querySelector(`#id_${currentFieldName}_to`);
+    
+    if (availableSelect && chosenSelect) {
+        // Add to available options first
+        const availableOption = document.createElement('option');
+        availableOption.value = data.id;
+        availableOption.textContent = data.name;
+        availableSelect.appendChild(availableOption);
+        
+        // Automatically move to chosen (selected) options
+        availableOption.selected = true;
+        
+        // Trigger the transfer widget's move function if available
+        const moveButton = document.querySelector(`#id_${currentFieldName}_add_link`);
+        if (moveButton && typeof moveButton.onclick === 'function') {
+            moveButton.onclick();
+        } else {
+            // Manual transfer if automatic doesn't work
+            const chosenOption = document.createElement('option');
+            chosenOption.value = data.id;
+            chosenOption.textContent = data.name;
+            chosenOption.selected = true;
+            chosenSelect.appendChild(chosenOption);
+            availableOption.remove();
+        }
+        
+        // Trigger change events
+        availableSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        chosenSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    
     // Update any associated display elements
     updateRelatedDisplays(field, data);
 }
