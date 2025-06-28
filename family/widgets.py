@@ -123,7 +123,6 @@ class FamilyPhotoWidget(forms.ClearableFileInput):
     """
     Enhanced photo upload widget with preview and drag-drop
     """
-    template_name = 'admin/widgets/family_photo_widget.html'
     
     def __init__(self, attrs=None):
         default_attrs = {

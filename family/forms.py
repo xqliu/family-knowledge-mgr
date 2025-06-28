@@ -249,21 +249,20 @@ class HealthAdminForm(forms.ModelForm):
         model = Health
         fields = '__all__'
         widgets = {
-            'record_date': FamilyDateWidget(),
+            'date': FamilyDateWidget(),
             'institution': InstitutionAutoCompleteWidget(institution_type='hospital'),
-            'notes': RichTextWidget(attrs={'rows': 4}),
-            'tags': TagsWidget(),
+            'description': RichTextWidget(attrs={'rows': 4}),
         }
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
         # Add privacy notice
-        self.fields['notes'].help_text = '健康信息将被安全保护，仅限家庭成员查看'
+        self.fields['description'].help_text = '健康信息将被安全保护，仅限家庭成员查看'
         
         # Set default date to today
         if not self.instance.pk:
-            self.fields['record_date'].initial = date.today()
+            self.fields['date'].initial = date.today()
 
 
 class LocationAdminForm(forms.ModelForm):

@@ -140,11 +140,11 @@ class RelationshipAdmin(admin.ModelAdmin):
 @admin.register(Health)
 class HealthAdmin(admin.ModelAdmin):
     form = HealthAdminForm
-    list_display = ['person', 'record_type', 'title', 'record_date', 'is_hereditary', 'created_at']
-    list_filter = ['record_type', 'is_hereditary', 'record_date', 'created_at']
-    search_fields = ['person__name', 'title', 'notes', 'doctor']
+    list_display = ['person', 'record_type', 'title', 'date', 'is_hereditary', 'created_at']
+    list_filter = ['record_type', 'is_hereditary', 'date', 'created_at']
+    search_fields = ['person__name', 'title', 'description', 'doctor']
     readonly_fields = ['created_at']
-    date_hierarchy = 'record_date'
+    date_hierarchy = 'date'
 
 
 @admin.register(Heritage)

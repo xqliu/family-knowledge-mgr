@@ -1,0 +1,105 @@
+/* Rich Text Widget Styles */
+
+.rich-text-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    background: var(--family-bg);
+    border: 1px solid var(--family-border);
+    border-bottom: none;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    margin-bottom: 0;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: var(--spacing-xs);
+    padding-right: var(--spacing-sm);
+    border-right: 1px solid var(--family-border);
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.toolbar-btn {
+    background: var(--family-card-bg);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: var(--family-font-primary);
+    color: var(--family-text);
+    transition: var(--transition-fast);
+    min-width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar-btn:hover {
+    background: var(--family-primary);
+    color: white;
+    border-color: var(--family-primary);
+}
+
+.toolbar-btn.active {
+    background: var(--family-primary);
+    color: white;
+    border-color: var(--family-primary);
+}
+
+.rich-text-editor {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    border-top: none;
+    resize: vertical;
+    min-height: 120px;
+    font-family: var(--family-font-primary);
+    line-height: 1.6;
+}
+
+.rich-text-editor:focus {
+    box-shadow: none;
+    border-color: var(--family-primary);
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+    .rich-text-toolbar {
+        justify-content: center;
+    }
+    
+    .toolbar-group {
+        padding-right: var(--spacing-xs);
+        border-right: none;
+    }
+    
+    .toolbar-btn {
+        min-width: 36px;
+        min-height: 36px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .toolbar-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .toolbar-btn:hover {
+        background: var(--family-card-bg);
+        color: var(--family-text);
+        border-color: var(--family-border);
+    }
+    
+    .toolbar-btn:active {
+        background: var(--family-primary);
+        color: white;
+        border-color: var(--family-primary);
+    }
+}
