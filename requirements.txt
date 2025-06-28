@@ -1,0 +1,28 @@
+# Django 家族知识管理系统依赖包 - MVP 版本（KISS 原则）
+
+# === 核心必需包 ===
+Django>=5.2.3,<6.0  # Django LTS 版本
+psycopg2-binary>=2.9.10  # PostgreSQL 数据库连接
+python-decouple>=3.8  # 环境变量管理
+Pillow>=11.2.1  # 图像文件处理（照片上传需要）
+
+# === 部署必需包 ===
+gunicorn>=23.0.0  # 生产环境 WSGI 服务器
+whitenoise>=6.9.0  # 静态文件服务
+
+# === 开发便利包 ===
+django-extensions>=3.2.3  # 开发工具（shell_plus 等）
+
+# ================================
+# 第二阶段再添加的包（AI功能）：
+# ================================
+# langchain>=0.3.26
+# langchain-anthropic>=0.3.16
+# langchain-postgres>=0.0.6
+# anthropic>=0.25.0
+
+# ================================
+# 第三阶段可选的包（性能优化）：
+# ================================
+# django-redis>=5.4.0  # Redis 缓存（当有性能需求时）
+# python-dotenv>=1.0.1  # 如果不用 python-decouple
