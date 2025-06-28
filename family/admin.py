@@ -18,16 +18,13 @@ class PersonAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
     fieldsets = (
         ('基本信息', {
-            'fields': ('name', 'nickname', 'gender', 'birth_date', 'death_date', 'photo')
+            'fields': ('name', 'gender', 'birth_date', 'death_date', 'photo')
         }),
         ('联系方式', {
             'fields': ('email', 'phone')
         }),
-        ('地址信息', {
-            'fields': ('birth_place', 'current_location')
-        }),
         ('个人描述', {
-            'fields': ('description', 'tags')
+            'fields': ('bio',)
         }),
         ('时间戳', {
             'fields': ('created_at', 'updated_at'),
@@ -57,24 +54,21 @@ class InstitutionAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     form = EventAdminForm
-    list_display = ['title', 'event_type', 'date', 'location', 'created_at']
-    list_filter = ['event_type', 'date', 'created_at']
-    search_fields = ['title', 'description']
+    list_display = ['name', 'event_type', 'start_date', 'location', 'created_at']
+    list_filter = ['event_type', 'start_date', 'created_at']
+    search_fields = ['name', 'description']
     readonly_fields = ['created_at', 'updated_at']
-    filter_horizontal = ['people']
-    date_hierarchy = 'date'
+    filter_horizontal = ['participants']
+    date_hierarchy = 'start_date'
     fieldsets = (
         ('事件信息', {
-            'fields': ('title', 'event_type', 'description')
+            'fields': ('name', 'event_type', 'description')
         }),
         ('时间地点', {
-            'fields': ('date', 'location')
+            'fields': ('start_date', 'end_date', 'location', 'institution')
         }),
         ('参与人员', {
-            'fields': ('people',)
-        }),
-        ('标签分类', {
-            'fields': ('tags',)
+            'fields': ('participants',)
         }),
         ('时间戳', {
             'fields': ('created_at', 'updated_at'),
@@ -86,8 +80,8 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
     form = StoryAdminForm
-    list_display = ['title', 'story_type', 'date', 'location', 'created_at']
-    list_filter = ['story_type', 'date', 'created_at']
+    list_display = ['title', 'story_type', 'date_occurred', 'location', 'created_at']
+    list_filter = ['story_type', 'date_occurred', 'created_at']
     search_fields = ['title', 'content']
     readonly_fields = ['created_at', 'updated_at']
     filter_horizontal = ['people', 'events']
@@ -97,13 +91,10 @@ class StoryAdmin(admin.ModelAdmin):
             'fields': ('title', 'story_type', 'content')
         }),
         ('时间地点', {
-            'fields': ('date', 'location')
+            'fields': ('date_occurred', 'location')
         }),
         ('相关人物事件', {
             'fields': ('people', 'events')
-        }),
-        ('标签分类', {
-            'fields': ('tags',)
         }),
         ('时间戳', {
             'fields': ('created_at', 'updated_at'),
@@ -115,23 +106,20 @@ class StoryAdmin(admin.ModelAdmin):
 @admin.register(Multimedia)
 class MultimediaAdmin(admin.ModelAdmin):
     form = MultimediaAdminForm
-    list_display = ['title', 'media_type', 'file', 'uploaded_at', 'created_at']
-    list_filter = ['media_type', 'uploaded_at', 'created_at']
+    list_display = ['title', 'media_type', 'file', 'created_date', 'created_at']
+    list_filter = ['media_type', 'created_date', 'created_at']
     search_fields = ['title', 'description']
-    readonly_fields = ['created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at', 'file_size']
     filter_horizontal = ['people', 'events', 'stories']
     fieldsets = (
         ('媒体信息', {
             'fields': ('title', 'media_type', 'description', 'file')
         }),
-        ('时间地点', {
-            'fields': ('uploaded_at', 'location')
+        ('元数据', {
+            'fields': ('file_size', 'created_date', 'location')
         }),
         ('相关内容', {
             'fields': ('people', 'events', 'stories')
-        }),
-        ('标签分类', {
-            'fields': ('tags',)
         }),
         ('时间戳', {
             'fields': ('created_at', 'updated_at'),
@@ -143,9 +131,9 @@ class MultimediaAdmin(admin.ModelAdmin):
 @admin.register(Relationship)
 class RelationshipAdmin(admin.ModelAdmin):
     form = RelationshipAdminForm
-    list_display = ['person1', 'relationship_type', 'person2', 'start_date', 'created_at']
+    list_display = ['person_from', 'relationship_type', 'person_to', 'start_date', 'created_at']
     list_filter = ['relationship_type', 'start_date', 'created_at']
-    search_fields = ['person1__name', 'person2__name', 'description']
+    search_fields = ['person_from__name', 'person_to__name', 'description']
     readonly_fields = ['created_at']
 
 

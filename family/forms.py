@@ -31,10 +31,7 @@ class PersonAdminForm(forms.ModelForm):
             'birth_date': FamilyDateWidget(),
             'death_date': FamilyDateWidget(),
             'photo': FamilyPhotoWidget(),
-            'birth_place': LocationAutoCompleteWidget(),
-            'current_location': LocationAutoCompleteWidget(),
-            'description': RichTextWidget(attrs={'rows': 4}),
-            'tags': TagsWidget(),
+            'bio': RichTextWidget(attrs={'rows': 4}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -46,12 +43,12 @@ class PersonAdminForm(forms.ModelForm):
             'class': 'form-control'
         })
         
-        self.fields['nickname'].widget.attrs.update({
-            'placeholder': '昵称或小名'
-        })
-        
         self.fields['gender'].widget.attrs.update({
             'class': 'form-control'
+        })
+        
+        self.fields['bio'].widget.attrs.update({
+            'placeholder': '在这里记录关于这个人的信息...'
         })
         
         # Add age calculation help text
@@ -93,9 +90,8 @@ class StoryAdminForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'content': RichTextWidget(attrs={'rows': 8}),
-            'date': FamilyDateWidget(),
+            'date_occurred': FamilyDateWidget(),
             'location': LocationAutoCompleteWidget(),
-            'tags': TagsWidget(),
         }
     
     def __init__(self, *args, **kwargs):
@@ -112,7 +108,7 @@ class StoryAdminForm(forms.ModelForm):
         
         # Set default date to today
         if not self.instance.pk:
-            self.fields['date'].initial = date.today()
+            self.fields['date_occurred'].initial = date.today()
 
 
 class EventAdminForm(forms.ModelForm):
@@ -124,16 +120,16 @@ class EventAdminForm(forms.ModelForm):
         model = Event
         fields = '__all__'
         widgets = {
-            'date': FamilyDateWidget(),
+            'start_date': FamilyDateWidget(),
+            'end_date': FamilyDateWidget(),
             'location': LocationAutoCompleteWidget(),
             'description': RichTextWidget(attrs={'rows': 4}),
-            'tags': TagsWidget(),
         }
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        self.fields['title'].widget.attrs.update({
+        self.fields['name'].widget.attrs.update({
             'placeholder': '活动名称，如：小明生日聚会',
             'class': 'form-control'
         })
@@ -143,17 +139,17 @@ class EventAdminForm(forms.ModelForm):
         })
         
         # Add future date validation help
-        self.fields['date'].help_text = '可以是过去、今天或未来的日期'
+        self.fields['start_date'].help_text = '可以是过去、今天或未来的日期'
     
-    def clean_date(self):
-        event_date = self.cleaned_data.get('date')
-        if event_date:
+    def clean_start_date(self):
+        start_date = self.cleaned_data.get('start_date')
+        if start_date:
             # Allow past, present and future dates for events
             # But warn for very old dates
-            if event_date < date.today() - timedelta(days=365*10):
+            if start_date.date() < date.today() - timedelta(days=365*10):
                 # This is just a warning, not an error
                 pass
-        return event_date
+        return start_date
 
 
 class MultimediaAdminForm(forms.ModelForm):
@@ -166,10 +162,9 @@ class MultimediaAdminForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'file': FamilyPhotoWidget(),
-            'uploaded_at': FamilyDateWidget(),
+            'created_date': FamilyDateWidget(),
             'location': LocationAutoCompleteWidget(),
             'description': RichTextWidget(attrs={'rows': 3}),
-            'tags': TagsWidget(),
         }
     
     def __init__(self, *args, **kwargs):
@@ -185,7 +180,7 @@ class MultimediaAdminForm(forms.ModelForm):
         
         # Set default upload date to today
         if not self.instance.pk:
-            self.fields['uploaded_at'].initial = date.today()
+            self.fields['created_date'].initial = timezone.now()
     
     def clean_file(self):
         file = self.cleaned_data.get('file')
@@ -221,22 +216,22 @@ class RelationshipAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         # Add help text for relationship fields
-        self.fields['person1'].help_text = '选择关系中的第一个人'
-        self.fields['person2'].help_text = '选择关系中的第二个人'
+        self.fields['person_from'].help_text = '选择关系中的第一个人'
+        self.fields['person_to'].help_text = '选择关系中的第二个人'
         self.fields['relationship_type'].help_text = '选择他们之间的关系类型'
     
     def clean(self):
         cleaned_data = super().clean()
-        person1 = cleaned_data.get('person1')
-        person2 = cleaned_data.get('person2')
+        person_from = cleaned_data.get('person_from')
+        person_to = cleaned_data.get('person_to')
         
-        if person1 and person2 and person1 == person2:
+        if person_from and person_to and person_from == person_to:
             raise ValidationError('不能建立一个人与自己的关系')
         
         # Check for duplicate relationships
-        if person1 and person2:
+        if person_from and person_to:
             existing = Relationship.objects.filter(
-                person1=person1, person2=person2
+                person_from=person_from, person_to=person_to
             ).exclude(pk=self.instance.pk if self.instance else None)
             
             if existing.exists():
