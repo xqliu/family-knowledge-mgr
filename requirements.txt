@@ -9,6 +9,7 @@ Pillow>=11.2.1  # 图像文件处理（照片上传需要）
 # === 部署必需包 ===
 gunicorn>=23.0.0  # 生产环境 WSGI 服务器
 whitenoise>=6.9.0  # 静态文件服务
+dj-database-url>=2.1.0  # Heroku DATABASE_URL 解析
 
 # === 开发便利包 ===
 django-extensions>=3.2.3  # 开发工具（shell_plus 等）
