@@ -1,5 +1,10 @@
 /* Family Date Widget Styles */
 
+.family-date-container {
+    width: 100%;
+    margin: var(--spacing-sm) 0;
+}
+
 .family-date-picker {
     width: 100%;
     min-height: 44px;

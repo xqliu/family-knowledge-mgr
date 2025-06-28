@@ -98,19 +98,22 @@ class FamilyDateWidget(forms.DateInput):
     def render(self, name, value, attrs=None, renderer=None):
         html = super().render(name, value, attrs, renderer)
         
-        quick_dates_html = '''
-        <div class="quick-dates-wrapper">
-            <div class="quick-dates">
-                <button type="button" class="quick-date-btn" data-days="0">今天</button>
-                <button type="button" class="quick-date-btn" data-days="-1">昨天</button>
-                <button type="button" class="quick-date-btn" data-days="-7">一周前</button>
-                <button type="button" class="quick-date-btn" data-days="-30">一月前</button>
-                <button type="button" class="quick-date-btn" data-clear="true">清除</button>
+        complete_html = f'''
+        <div class="family-date-container" data-field-name="{name}">
+            {html}
+            <div class="quick-dates-wrapper">
+                <div class="quick-dates">
+                    <button type="button" class="quick-date-btn" data-days="0" onclick="setFamilyDate(this, '{name}', 0)">今天</button>
+                    <button type="button" class="quick-date-btn" data-days="-1" onclick="setFamilyDate(this, '{name}', -1)">昨天</button>
+                    <button type="button" class="quick-date-btn" data-days="-7" onclick="setFamilyDate(this, '{name}', -7)">一周前</button>
+                    <button type="button" class="quick-date-btn" data-days="-30" onclick="setFamilyDate(this, '{name}', -30)">一月前</button>
+                    <button type="button" class="quick-date-btn" data-clear="true" onclick="clearFamilyDate(this, '{name}')">清除</button>
+                </div>
             </div>
         </div>
         '''
         
-        return mark_safe(html + quick_dates_html)
+        return mark_safe(complete_html)
     
     class Media:
         css = {

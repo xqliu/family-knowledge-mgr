@@ -198,7 +198,68 @@ function clearMessages(dateInput) {
     });
 }
 
-// Global function for use in HTML (backwards compatibility)
+// Global functions for use in HTML onclick handlers
+window.setFamilyDate = function(button, fieldName, days) {
+    const container = button.closest('.family-date-container');
+    const input = container.querySelector('.family-date-picker') || 
+                  container.querySelector(`input[name="${fieldName}"]`) ||
+                  document.querySelector(`input[name="${fieldName}"]`);
+    
+    if (!input) {
+        console.warn('Could not find date input for field:', fieldName);
+        return;
+    }
+    
+    const today = new Date();
+    const targetDate = new Date(today.getTime() + (days * 24 * 60 * 60 * 1000));
+    
+    // Format date as YYYY-MM-DD for input[type="date"]
+    const formattedDate = targetDate.toISOString().split('T')[0];
+    input.value = formattedDate;
+    
+    // Trigger change event
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    
+    // Visual feedback
+    button.classList.add('selected');
+    setTimeout(() => button.classList.remove('selected'), 300);
+    
+    // Calculate age if this is a birth date field
+    calculateAge(input);
+    
+    console.log(`Set ${fieldName} to ${formattedDate}`);
+};
+
+window.clearFamilyDate = function(button, fieldName) {
+    const container = button.closest('.family-date-container');
+    const input = container.querySelector('.family-date-picker') || 
+                  container.querySelector(`input[name="${fieldName}"]`) ||
+                  document.querySelector(`input[name="${fieldName}"]`);
+    
+    if (!input) {
+        console.warn('Could not find date input for field:', fieldName);
+        return;
+    }
+    
+    input.value = '';
+    
+    // Trigger change event
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    
+    // Visual feedback
+    button.classList.add('selected');
+    setTimeout(() => button.classList.remove('selected'), 300);
+    
+    // Hide age display
+    hideAgeDisplay(input);
+    clearMessages(input);
+    
+    console.log(`Cleared ${fieldName}`);
+};
+
+// Legacy function for backwards compatibility
 window.setQuickDate = function(button, type) {
     const wrapper = button.parentElement.parentElement;
     const input = wrapper.querySelector('.family-date-picker') || 
@@ -275,3 +336,12 @@ if (document.readyState === 'loading') {
 } else {
     initializeDateWidgets();
 }
+
+// Also initialize after a short delay to catch any dynamically loaded content
+setTimeout(initializeDateWidgets, 500);
+
+// Ensure global functions are available immediately
+console.log('Family date widget JavaScript loaded, functions available:', {
+    setFamilyDate: typeof window.setFamilyDate,
+    clearFamilyDate: typeof window.clearFamilyDate
+});
