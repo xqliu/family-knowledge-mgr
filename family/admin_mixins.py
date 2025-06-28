@@ -20,24 +20,33 @@ class InlineCreateMixin:
     # Define which fields should have inline creation buttons
     inline_create_fields = []
     
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Override to add inline create button for foreign key fields
+        """
+        formfield = super().formfield_for_foreignkey(db_field, request, **kwargs)
         
-        # Add inline creation widgets to specified fields
-        for field_name in self.inline_create_fields:
-            if field_name in form.base_fields:
-                field = form.base_fields[field_name]
-                related_model = None
-                
-                # Get related model for ForeignKey or ManyToMany fields
-                if hasattr(field, 'queryset') and field.queryset is not None:
-                    related_model = field.queryset.model
-                
-                if related_model:
-                    # Add custom widget with create button
-                    field.widget = self.get_inline_create_widget(field.widget, related_model)
+        if db_field.name in self.inline_create_fields:
+            formfield.widget = self.get_inline_create_widget(
+                formfield.widget, 
+                db_field.related_model
+            )
         
-        return form
+        return formfield
+    
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        """
+        Override to add inline create button for many-to-many fields
+        """
+        formfield = super().formfield_for_manytomany(db_field, request, **kwargs)
+        
+        if db_field.name in self.inline_create_fields:
+            formfield.widget = self.get_inline_create_widget(
+                formfield.widget, 
+                db_field.related_model
+            )
+        
+        return formfield
     
     def get_inline_create_widget(self, original_widget, related_model):
         """
@@ -46,16 +55,16 @@ class InlineCreateMixin:
         app_label = related_model._meta.app_label
         model_name = related_model._meta.model_name
         
-        class InlineCreateWidget(original_widget.__class__):
-            def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
+        class InlineCreateWidgetWrapper:
+            def __init__(self, widget):
+                self.widget = widget
                 self.related_model = related_model
                 self.app_label = app_label
                 self.model_name = model_name
             
             def render(self, name, value, attrs=None, renderer=None):
                 # Get the original widget HTML
-                original_html = super().render(name, value, attrs, renderer)
+                original_html = self.widget.render(name, value, attrs, renderer)
                 
                 # Add the create button
                 create_url = reverse(f'admin:{app_label}_{model_name}_add')
@@ -79,13 +88,22 @@ class InlineCreateMixin:
                 
                 return create_button
             
-            class Media:
-                css = {
-                    'all': ('admin/css/inline_create.css',)
-                }
-                js = ('admin/js/inline_create.js',)
+            def __getattr__(self, name):
+                # Delegate attribute access to the wrapped widget
+                return getattr(self.widget, name)
+            
+            @property
+            def media(self):
+                # Combine original widget media with our custom media
+                from django import forms
+                widget_media = getattr(self.widget, 'media', forms.Media())
+                custom_media = forms.Media(
+                    css={'all': ('admin/css/inline_create.css',)},
+                    js=('admin/js/inline_create.js',)
+                )
+                return widget_media + custom_media
         
-        return InlineCreateWidget()
+        return InlineCreateWidgetWrapper(original_widget)
 
 
 class QuickCreateMixin:
