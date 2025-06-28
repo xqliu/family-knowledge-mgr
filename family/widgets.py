@@ -190,9 +190,20 @@ class RelationshipSelectorWidget(forms.SelectMultiple):
         # Get the base select widget
         select_html = super().render(name, value, attrs, renderer)
         
-        # Simplified, clean relationship interface
+        # Thoughtfully designed relationship interface with integrated selection
         visual_html = f'''
         <div class="relationship-widget-container">
+            <div class="relationship-header">
+                <h3 class="widget-title">选择关系类型</h3>
+                <div class="selected-summary">
+                    <span class="summary-label">已选择:</span>
+                    <div class="selected-tags" id="selected-tags-{name}"></div>
+                    <button type="button" class="clear-all-btn" onclick="clearAllRelations('{name}')" title="清除所有选择">
+                        <span>清除</span>
+                    </button>
+                </div>
+            </div>
+            
             <div class="relationship-categories">
                 <div class="relationship-section blood-relations">
                     <div class="section-header">
@@ -237,8 +248,8 @@ class RelationshipSelectorWidget(forms.SelectMultiple):
                 </div>
             </div>
             
-            <div class="relationship-select-wrapper">
-                <label>选择的关系类型:</label>
+            <!-- Hidden select for form submission -->
+            <div class="hidden-select-wrapper" style="display: none;">
                 {select_html}
             </div>
         </div>

@@ -1,4 +1,4 @@
-/* Relationship Widget - Clean Layout */
+/* Relationship Widget - Thoughtful Design */
 
 .relationship-widget-container {
     background: var(--family-card-bg);
@@ -6,6 +6,132 @@
     border-radius: var(--radius-md);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
+}
+
+/* Integrated Header with Selection Summary */
+.relationship-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: rgba(46, 125, 50, 0.05);
+    border: 1px solid rgba(46, 125, 50, 0.2);
+    border-radius: var(--radius-md);
+}
+
+.widget-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--family-primary);
+    display: flex;
+    align-items: center;
+}
+
+.widget-title::before {
+    content: '🏠';
+    margin-right: var(--spacing-sm);
+}
+
+.selected-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+    margin-left: var(--spacing-lg);
+}
+
+.summary-label {
+    font-size: 0.9rem;
+    color: var(--family-text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    flex: 1;
+    min-height: 24px;
+    align-items: center;
+}
+
+.selected-tag {
+    background: var(--family-primary);
+    color: white;
+    padding: 2px var(--spacing-xs);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: tag-appear 0.3s ease-out;
+}
+
+.selected-tag.blood {
+    background: #e53935;
+}
+
+.selected-tag.marriage {
+    background: #1976d2;
+}
+
+.selected-tag.other {
+    background: var(--family-success);
+}
+
+.selected-tag .remove-tag {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 2px;
+    font-size: 0.7rem;
+    line-height: 1;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.selected-tag .remove-tag:hover {
+    opacity: 1;
+}
+
+.clear-all-btn {
+    background: var(--family-text-secondary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    white-space: nowrap;
+}
+
+.clear-all-btn:hover {
+    background: var(--family-error);
+    transform: translateY(-1px);
+}
+
+.clear-all-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@keyframes tag-appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .relationship-categories {
@@ -159,47 +285,30 @@
     border-color: var(--family-success);
 }
 
-/* Select widget wrapper */
-.relationship-select-wrapper {
-    background: var(--family-bg);
-    border: 1px solid var(--family-border);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-md);
-}
-
-.relationship-select-wrapper label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: var(--spacing-sm);
-    color: var(--family-text);
-    font-size: 0.95rem;
-}
-
-.relationship-selector {
-    width: 100%;
-    min-height: 100px;
-    border: 1px solid var(--family-border);
-    border-radius: var(--radius-sm);
-    padding: var(--spacing-sm);
-    background: white;
-    font-family: var(--family-font-primary);
-    font-size: 0.9rem;
-}
-
-.relationship-selector option {
-    padding: var(--spacing-xs);
-    margin: 2px 0;
-}
-
-.relationship-selector option:checked {
-    background: var(--family-primary);
-    color: white;
+/* Hidden select widget for form submission */
+.hidden-select-wrapper {
+    display: none !important;
 }
 
 /* Mobile responsive */
 @media (max-width: 767.98px) {
     .relationship-widget-container {
         padding: var(--spacing-md);
+    }
+    
+    .relationship-header {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: stretch;
+    }
+    
+    .selected-summary {
+        margin-left: 0;
+        flex-wrap: wrap;
+    }
+    
+    .widget-title {
+        font-size: 1.1rem;
     }
     
     .relationship-categories {
@@ -221,6 +330,15 @@
     
     .section-header h4 {
         font-size: 1rem;
+    }
+    
+    .selected-tags {
+        min-height: 32px;
+    }
+    
+    .clear-all-btn {
+        margin-top: var(--spacing-xs);
+        align-self: flex-start;
     }
 }
 
