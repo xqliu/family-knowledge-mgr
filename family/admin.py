@@ -3,25 +3,33 @@ from .models import (
     Person, Location, Institution, Event, Story, Multimedia,
     Relationship, Health, Heritage, Planning, Career, Assets, Timeline
 )
+from .forms import (
+    PersonAdminForm, StoryAdminForm, EventAdminForm, MultimediaAdminForm,
+    RelationshipAdminForm, HealthAdminForm, LocationAdminForm, InstitutionAdminForm
+)
 
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
+    form = PersonAdminForm
     list_display = ['name', 'gender', 'birth_date', 'email', 'created_at']
     list_filter = ['gender', 'created_at']
     search_fields = ['name', 'email', 'bio']
     readonly_fields = ['created_at', 'updated_at']
     fieldsets = (
-        ('Basic Information', {
-            'fields': ('name', 'gender', 'birth_date', 'death_date', 'photo')
+        ('基本信息', {
+            'fields': ('name', 'nickname', 'gender', 'birth_date', 'death_date', 'photo')
         }),
-        ('Contact Information', {
+        ('联系方式', {
             'fields': ('email', 'phone')
         }),
-        ('Additional Information', {
-            'fields': ('bio',)
+        ('地址信息', {
+            'fields': ('birth_place', 'current_location')
         }),
-        ('Timestamps', {
+        ('个人描述', {
+            'fields': ('description', 'tags')
+        }),
+        ('时间戳', {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         })
@@ -30,6 +38,7 @@ class PersonAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
+    form = LocationAdminForm
     list_display = ['name', 'location_type', 'address', 'created_at']
     list_filter = ['location_type', 'created_at']
     search_fields = ['name', 'address', 'description']
@@ -38,6 +47,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Institution)
 class InstitutionAdmin(admin.ModelAdmin):
+    form = InstitutionAdminForm
     list_display = ['name', 'institution_type', 'website', 'phone', 'created_at']
     list_filter = ['institution_type', 'created_at']
     search_fields = ['name', 'description', 'email']
@@ -46,23 +56,27 @@ class InstitutionAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['name', 'event_type', 'start_date', 'location', 'created_at']
-    list_filter = ['event_type', 'start_date', 'created_at']
-    search_fields = ['name', 'description']
+    form = EventAdminForm
+    list_display = ['title', 'event_type', 'date', 'location', 'created_at']
+    list_filter = ['event_type', 'date', 'created_at']
+    search_fields = ['title', 'description']
     readonly_fields = ['created_at', 'updated_at']
-    filter_horizontal = ['participants']
-    date_hierarchy = 'start_date'
+    filter_horizontal = ['people']
+    date_hierarchy = 'date'
     fieldsets = (
-        ('Event Information', {
-            'fields': ('name', 'event_type', 'description')
+        ('事件信息', {
+            'fields': ('title', 'event_type', 'description')
         }),
-        ('Time & Location', {
-            'fields': ('start_date', 'end_date', 'location', 'institution')
+        ('时间地点', {
+            'fields': ('date', 'location')
         }),
-        ('Participants', {
-            'fields': ('participants',)
+        ('参与人员', {
+            'fields': ('people',)
         }),
-        ('Timestamps', {
+        ('标签分类', {
+            'fields': ('tags',)
+        }),
+        ('时间戳', {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         })
@@ -71,23 +85,27 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'story_type', 'date_occurred', 'location', 'created_at']
-    list_filter = ['story_type', 'date_occurred', 'created_at']
+    form = StoryAdminForm
+    list_display = ['title', 'story_type', 'date', 'location', 'created_at']
+    list_filter = ['story_type', 'date', 'created_at']
     search_fields = ['title', 'content']
     readonly_fields = ['created_at', 'updated_at']
     filter_horizontal = ['people', 'events']
     date_hierarchy = 'created_at'
     fieldsets = (
-        ('Story Information', {
+        ('故事信息', {
             'fields': ('title', 'story_type', 'content')
         }),
-        ('Context', {
-            'fields': ('date_occurred', 'location')
+        ('时间地点', {
+            'fields': ('date', 'location')
         }),
-        ('Relationships', {
+        ('相关人物事件', {
             'fields': ('people', 'events')
         }),
-        ('Timestamps', {
+        ('标签分类', {
+            'fields': ('tags',)
+        }),
+        ('时间戳', {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         })
@@ -96,22 +114,26 @@ class StoryAdmin(admin.ModelAdmin):
 
 @admin.register(Multimedia)
 class MultimediaAdmin(admin.ModelAdmin):
-    list_display = ['title', 'media_type', 'file', 'created_date', 'created_at']
-    list_filter = ['media_type', 'created_date', 'created_at']
+    form = MultimediaAdminForm
+    list_display = ['title', 'media_type', 'file', 'uploaded_at', 'created_at']
+    list_filter = ['media_type', 'uploaded_at', 'created_at']
     search_fields = ['title', 'description']
-    readonly_fields = ['created_at', 'updated_at', 'file_size']
+    readonly_fields = ['created_at', 'updated_at']
     filter_horizontal = ['people', 'events', 'stories']
     fieldsets = (
-        ('Media Information', {
+        ('媒体信息', {
             'fields': ('title', 'media_type', 'description', 'file')
         }),
-        ('Metadata', {
-            'fields': ('file_size', 'created_date', 'location')
+        ('时间地点', {
+            'fields': ('uploaded_at', 'location')
         }),
-        ('Relationships', {
+        ('相关内容', {
             'fields': ('people', 'events', 'stories')
         }),
-        ('Timestamps', {
+        ('标签分类', {
+            'fields': ('tags',)
+        }),
+        ('时间戳', {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         })
@@ -120,19 +142,21 @@ class MultimediaAdmin(admin.ModelAdmin):
 
 @admin.register(Relationship)
 class RelationshipAdmin(admin.ModelAdmin):
-    list_display = ['person_from', 'relationship_type', 'person_to', 'start_date', 'created_at']
+    form = RelationshipAdminForm
+    list_display = ['person1', 'relationship_type', 'person2', 'start_date', 'created_at']
     list_filter = ['relationship_type', 'start_date', 'created_at']
-    search_fields = ['person_from__name', 'person_to__name', 'description']
+    search_fields = ['person1__name', 'person2__name', 'description']
     readonly_fields = ['created_at']
 
 
 @admin.register(Health)
 class HealthAdmin(admin.ModelAdmin):
-    list_display = ['person', 'record_type', 'title', 'date', 'is_hereditary', 'created_at']
-    list_filter = ['record_type', 'is_hereditary', 'date', 'created_at']
-    search_fields = ['person__name', 'title', 'description', 'doctor']
+    form = HealthAdminForm
+    list_display = ['person', 'record_type', 'title', 'record_date', 'is_hereditary', 'created_at']
+    list_filter = ['record_type', 'is_hereditary', 'record_date', 'created_at']
+    search_fields = ['person__name', 'title', 'notes', 'doctor']
     readonly_fields = ['created_at']
-    date_hierarchy = 'date'
+    date_hierarchy = 'record_date'
 
 
 @admin.register(Heritage)

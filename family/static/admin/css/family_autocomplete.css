@@ -1,0 +1,288 @@
+/* Family Auto-complete Widgets Styles */
+
+.family-autocomplete,
+.location-autocomplete,
+.institution-autocomplete {
+    position: relative;
+    width: 100%;
+    min-height: 44px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--family-border);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: var(--family-font-primary);
+    transition: var(--transition-normal);
+    background: var(--family-card-bg);
+}
+
+.family-autocomplete:focus,
+.location-autocomplete:focus,
+.institution-autocomplete:focus {
+    border-color: var(--family-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Auto-complete dropdown */
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--family-card-bg);
+    border: 2px solid var(--family-primary);
+    border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.autocomplete-dropdown.show {
+    display: block;
+}
+
+.autocomplete-item {
+    padding: var(--spacing-md);
+    cursor: pointer;
+    border-bottom: 1px solid var(--family-border);
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+    background: var(--family-bg);
+    color: var(--family-primary);
+}
+
+.autocomplete-item-main {
+    flex: 1;
+    font-weight: 500;
+}
+
+.autocomplete-item-meta {
+    font-size: 0.85rem;
+    color: var(--family-text-secondary);
+}
+
+.autocomplete-item-icon {
+    font-size: 1.2rem;
+    margin-right: var(--spacing-sm);
+}
+
+/* Loading state */
+.autocomplete-loading {
+    padding: var(--spacing-md);
+    text-align: center;
+    color: var(--family-text-secondary);
+    font-style: italic;
+}
+
+.autocomplete-loading::before {
+    content: '⏳ ';
+    margin-right: var(--spacing-xs);
+}
+
+/* No results state */
+.autocomplete-no-results {
+    padding: var(--spacing-md);
+    text-align: center;
+    color: var(--family-text-secondary);
+    font-style: italic;
+}
+
+.autocomplete-no-results::before {
+    content: '🔍 ';
+    margin-right: var(--spacing-xs);
+}
+
+/* Different autocomplete types */
+.family-autocomplete-dropdown .autocomplete-item-icon::before {
+    content: '👤';
+}
+
+.location-autocomplete-dropdown .autocomplete-item-icon::before {
+    content: '📍';
+}
+
+.institution-autocomplete-dropdown .autocomplete-item-icon::before {
+    content: '🏢';
+}
+
+.institution-autocomplete-dropdown[data-type="hospital"] .autocomplete-item-icon::before {
+    content: '🏥';
+}
+
+.institution-autocomplete-dropdown[data-type="school"] .autocomplete-item-icon::before {
+    content: '🏫';
+}
+
+.institution-autocomplete-dropdown[data-type="company"] .autocomplete-item-icon::before {
+    content: '🏢';
+}
+
+/* Recent/frequent items */
+.autocomplete-item.frequent {
+    background: rgba(46, 125, 50, 0.05);
+}
+
+.autocomplete-item.frequent .autocomplete-item-meta::after {
+    content: ' • 常用';
+    color: var(--family-primary);
+    font-weight: 500;
+}
+
+/* Multiple selection support */
+.autocomplete-selected-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.selected-item {
+    background: var(--family-primary);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.selected-item-remove {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    margin-left: var(--spacing-xs);
+    font-size: 1.2rem;
+    line-height: 1;
+    opacity: 0.8;
+    transition: var(--transition-fast);
+}
+
+.selected-item-remove:hover {
+    opacity: 1;
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+    .autocomplete-dropdown {
+        max-height: 150px;
+    }
+    
+    .autocomplete-item {
+        padding: var(--spacing-md) var(--spacing-sm);
+        font-size: 1rem;
+        min-height: 48px;
+    }
+    
+    .autocomplete-item-meta {
+        display: block;
+        margin-top: var(--spacing-xs);
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .autocomplete-item {
+        min-height: 48px;
+        padding: var(--spacing-md);
+    }
+    
+    .autocomplete-item:hover {
+        background: var(--family-card-bg);
+    }
+    
+    .autocomplete-item:active {
+        background: var(--family-bg);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .family-autocomplete,
+    .location-autocomplete,
+    .institution-autocomplete {
+        border-width: 3px;
+        border-color: #000;
+    }
+    
+    .autocomplete-dropdown {
+        border-color: #000;
+        border-width: 3px;
+    }
+    
+    .autocomplete-item:hover,
+    .autocomplete-item.selected {
+        background: #000;
+        color: #fff;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .family-autocomplete,
+    .location-autocomplete,
+    .institution-autocomplete {
+        background: var(--family-card-bg);
+        color: var(--family-text);
+        border-color: var(--family-border);
+    }
+    
+    .autocomplete-dropdown {
+        background: var(--family-card-bg);
+        border-color: var(--family-primary);
+    }
+    
+    .autocomplete-item:hover,
+    .autocomplete-item.selected {
+        background: var(--family-border);
+    }
+}
+
+/* Animation for dropdown appearance */
+@keyframes dropdown-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.autocomplete-dropdown.show {
+    animation: dropdown-appear 0.2s ease-out;
+}
+
+/* Scrollbar styling for dropdown */
+.autocomplete-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-track {
+    background: var(--family-bg);
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+    background: var(--family-border);
+    border-radius: 3px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+    background: var(--family-text-secondary);
+}

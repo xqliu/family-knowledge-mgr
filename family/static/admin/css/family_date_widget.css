@@ -1,0 +1,308 @@
+/* Family Date Widget Styles */
+
+.family-date-picker {
+    width: 100%;
+    min-height: 44px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--family-border);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: var(--family-font-primary);
+    transition: var(--transition-normal);
+    background: var(--family-card-bg);
+}
+
+.family-date-picker:focus {
+    border-color: var(--family-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.quick-dates-wrapper {
+    margin-top: var(--spacing-sm);
+}
+
+.quick-dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    background: var(--family-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--family-border);
+}
+
+.quick-date-btn {
+    background: var(--family-card-bg);
+    border: 1px solid var(--family-border);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.85rem;
+    font-family: var(--family-font-primary);
+    color: var(--family-text);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    min-height: 32px;
+    white-space: nowrap;
+}
+
+.quick-date-btn:hover {
+    background: var(--family-primary);
+    color: white;
+    border-color: var(--family-primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.quick-date-btn:active {
+    transform: translateY(0);
+}
+
+.quick-date-btn[data-clear="true"] {
+    background: var(--family-text-secondary);
+    color: white;
+    border-color: var(--family-text-secondary);
+}
+
+.quick-date-btn[data-clear="true"]:hover {
+    background: var(--family-error);
+    border-color: var(--family-error);
+}
+
+/* Date picker enhancement icons */
+.quick-date-btn::before {
+    margin-right: var(--spacing-xs);
+}
+
+.quick-date-btn[data-days="0"]::before {
+    content: '📅 ';
+}
+
+.quick-date-btn[data-days="-1"]::before {
+    content: '⏪ ';
+}
+
+.quick-date-btn[data-days="-7"]::before {
+    content: '📆 ';
+}
+
+.quick-date-btn[data-days="-30"]::before {
+    content: '🗓️ ';
+}
+
+.quick-date-btn[data-clear="true"]::before {
+    content: '🗑️ ';
+}
+
+/* Custom date picker styles */
+.family-date-picker::-webkit-calendar-picker-indicator {
+    background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232E7D32"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>') no-repeat center;
+    background-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: var(--transition-fast);
+}
+
+.family-date-picker::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Date validation and feedback */
+.date-field-wrapper {
+    position: relative;
+}
+
+.date-validation-message {
+    margin-top: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    display: none;
+}
+
+.date-validation-message.show {
+    display: block;
+}
+
+.date-validation-message.error {
+    background: rgba(244, 67, 54, 0.1);
+    color: var(--family-error);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.date-validation-message.success {
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--family-success);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.date-validation-message.info {
+    background: rgba(33, 150, 243, 0.1);
+    color: var(--family-info);
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+/* Age calculator display */
+.age-display {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: var(--family-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--family-border);
+    font-size: 0.9rem;
+    color: var(--family-text-secondary);
+}
+
+.age-display.highlight {
+    background: rgba(46, 125, 50, 0.1);
+    border-color: var(--family-primary);
+    color: var(--family-primary);
+}
+
+.age-display::before {
+    content: '🎂 ';
+    margin-right: var(--spacing-xs);
+}
+
+/* Mobile optimizations */
+@media (max-width: 767.98px) {
+    .quick-dates {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .quick-date-btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+        font-size: 1rem;
+    }
+    
+    .family-date-picker {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .quick-date-btn {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .quick-date-btn:hover {
+        background: var(--family-card-bg);
+        color: var(--family-text);
+        border-color: var(--family-border);
+        transform: none;
+    }
+    
+    .quick-date-btn:active {
+        background: var(--family-primary);
+        color: white;
+        border-color: var(--family-primary);
+    }
+}
+
+/* Landscape phone optimizations */
+@media (max-width: 767.98px) and (orientation: landscape) {
+    .quick-dates {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .quick-date-btn {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .family-date-picker {
+        border-width: 3px;
+        border-color: #000;
+    }
+    
+    .quick-date-btn {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .quick-date-btn:hover {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .family-date-picker {
+        background: var(--family-card-bg);
+        color: var(--family-text);
+        border-color: var(--family-border);
+    }
+    
+    .quick-dates {
+        background: var(--family-border);
+    }
+    
+    .quick-date-btn {
+        background: var(--family-card-bg);
+        color: var(--family-text);
+        border-color: var(--family-border);
+    }
+    
+    .age-display {
+        background: var(--family-border);
+        color: var(--family-text);
+    }
+}
+
+/* Animation for quick date selection */
+@keyframes quick-date-selected {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.quick-date-btn.selected {
+    animation: quick-date-selected 0.3s ease-out;
+    background: var(--family-success);
+    color: white;
+    border-color: var(--family-success);
+}
+
+/* Accessibility improvements */
+.quick-date-btn:focus {
+    outline: 2px solid var(--family-primary);
+    outline-offset: 2px;
+}
+
+.family-date-picker:focus {
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+}
+
+/* Date range selector (for future use) */
+.date-range-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.date-range-separator {
+    font-weight: bold;
+    color: var(--family-text-secondary);
+}
+
+.date-range-wrapper .family-date-picker {
+    flex: 1;
+}
