@@ -236,7 +236,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy to Heroku
     needs: [test-backend, test-frontend]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && false  # Disabled until Heroku secrets are configured
     
     steps:
     - uses: actions/checkout@v4

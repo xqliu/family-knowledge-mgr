@@ -69,7 +69,9 @@ describe('App Component', () => {
     render(<App />)
     
     await waitFor(() => {
-      expect(screen.getByText(/API运行正常/)).toBeInTheDocument()
+      expect(screen.getByText((content, element) => 
+        element?.textContent?.includes('API运行正常') ?? false
+      )).toBeInTheDocument()
     })
     
     expect(mockFetch).toHaveBeenCalledWith('/api/health/')
@@ -115,7 +117,9 @@ describe('App Component', () => {
     render(<App />)
     
     await waitFor(() => {
-      expect(screen.getByText(/API连接失败/)).toBeInTheDocument()
+      expect(screen.getByText((content, element) => 
+        element?.textContent?.includes('API连接失败') ?? false
+      )).toBeInTheDocument()
     })
   })
 
@@ -137,7 +141,9 @@ describe('App Component', () => {
     render(<App />)
     
     await waitFor(() => {
-      expect(screen.getByText('API运行正常')).toBeInTheDocument()
+      expect(screen.getByText((content, element) => 
+        element?.textContent?.includes('API运行正常') ?? false
+      )).toBeInTheDocument()
     }, { timeout: 3000 })
 
     await waitFor(() => {
@@ -238,7 +244,9 @@ describe('App Component', () => {
     render(<App />)
     
     await waitFor(() => {
-      expect(screen.getByText(/API运行正常/)).toBeInTheDocument()
+      expect(screen.getByText((content, element) => 
+        element?.textContent?.includes('API运行正常') ?? false
+      )).toBeInTheDocument()
     })
     
     // Should not show family data section
