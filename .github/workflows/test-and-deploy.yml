@@ -129,40 +129,29 @@ jobs:
         # Extract frontend coverage percentage  
         FRONTEND_COVERAGE="Unknown"
         
-        # Debug: Check what files exist in frontend coverage directory
-        echo "=== Frontend coverage files ==="
-        ls -la ./coverage-reports/frontend/ || echo "Frontend directory not found"
-        find ./coverage-reports/frontend/ -name "*.json" || echo "No JSON files found"
-        
         if [ -f "./coverage-reports/frontend/coverage-final.json" ]; then
-          echo "Found coverage-final.json"
-          echo "=== JSON content structure ==="
-          python3 -c "import json; data=json.load(open('./coverage-reports/frontend/coverage-final.json')); print('Keys:', list(data.keys())); print('Total keys:', list(data.get('total', {}).keys()) if 'total' in data else 'No total key'); print('Sample file structure:'); first_key = list(data.keys())[0]; print('First file keys:', list(data[first_key].keys()) if data else 'Empty'); print('Sample statementMap:', len(data[first_key].get('statementMap', {})) if data else 0); print('Sample s:', len(data[first_key].get('s', {})) if data else 0)"
+          echo "Found coverage-final.json, extracting coverage..."
           
           # Create a simple Python script for Istanbul-format coverage extraction
           echo 'import json' > /tmp/extract_coverage.py
           echo 'try:' >> /tmp/extract_coverage.py
           echo '    with open("./coverage-reports/frontend/coverage-final.json") as f:' >> /tmp/extract_coverage.py
           echo '        data = json.load(f)' >> /tmp/extract_coverage.py
-          echo '    print("Debug: Found", len(data), "files")' >> /tmp/extract_coverage.py
           echo '    total_statements = 0' >> /tmp/extract_coverage.py
           echo '    covered_statements = 0' >> /tmp/extract_coverage.py
           echo '    for file_path, file_data in data.items():' >> /tmp/extract_coverage.py
           echo '        if "s" in file_data:' >> /tmp/extract_coverage.py
           echo '            execution_counts = file_data["s"]' >> /tmp/extract_coverage.py
-          echo '            print("Debug: File", file_path.split("/")[-1], "has", len(execution_counts), "statements")' >> /tmp/extract_coverage.py
           echo '            for stmt_id, hit_count in execution_counts.items():' >> /tmp/extract_coverage.py
           echo '                total_statements += 1' >> /tmp/extract_coverage.py
           echo '                if hit_count > 0:' >> /tmp/extract_coverage.py
           echo '                    covered_statements += 1' >> /tmp/extract_coverage.py
-          echo '    print("Debug: Total statements:", total_statements, "Covered:", covered_statements)' >> /tmp/extract_coverage.py
           echo '    if total_statements > 0:' >> /tmp/extract_coverage.py
           echo '        coverage_pct = (covered_statements / total_statements) * 100' >> /tmp/extract_coverage.py
           echo '        print(str(int(coverage_pct)) + "%")' >> /tmp/extract_coverage.py
           echo '    else:' >> /tmp/extract_coverage.py
           echo '        print("Unknown")' >> /tmp/extract_coverage.py
           echo 'except Exception as e:' >> /tmp/extract_coverage.py
-          echo '    print("Error:", str(e))' >> /tmp/extract_coverage.py
           echo '    print("Unknown")' >> /tmp/extract_coverage.py
           
           FRONTEND_COVERAGE=$(python3 /tmp/extract_coverage.py)
