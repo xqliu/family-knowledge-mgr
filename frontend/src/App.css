@@ -17,6 +17,7 @@
   margin: 0 auto;
   width: 100%;
   padding: 0 2rem;
+  box-sizing: border-box;
 }
 
 .app-header h1 {
@@ -38,7 +39,7 @@
   margin: 0 auto;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   box-sizing: border-box;
 }
@@ -142,6 +143,7 @@
   margin: 0 auto;
   width: 100%;
   padding: 0 2rem;
+  box-sizing: border-box;
 }
 
 .app-footer p {
