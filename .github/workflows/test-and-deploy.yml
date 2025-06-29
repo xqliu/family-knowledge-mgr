@@ -129,18 +129,7 @@ jobs:
         # Extract frontend coverage percentage  
         FRONTEND_COVERAGE="Unknown"
         if [ -f "./coverage-reports/frontend/coverage-final.json" ]; then
-          FRONTEND_COVERAGE=$(python3 -c "
-import json, sys
-try:
-    with open('./coverage-reports/frontend/coverage-final.json') as f:
-        data = json.load(f)
-    total = data.get('total', {})
-    lines = total.get('lines', {})
-    pct = lines.get('pct', 0)
-    print(f'{pct:.0f}%')
-except:
-    print('Unknown')
-")
+          FRONTEND_COVERAGE=$(python3 -c "import json; data=json.load(open('./coverage-reports/frontend/coverage-final.json')); print(f\"{data['total']['lines']['pct']:.0f}%\")" 2>/dev/null || echo "Unknown")
         fi
         
         # Determine status icons
