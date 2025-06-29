@@ -8,7 +8,7 @@
 .app-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 2rem;
+  padding: 2rem 0;
   text-align: center;
 }
 
@@ -16,6 +16,7 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  padding: 0 2rem;
 }
 
 .app-header h1 {
@@ -130,7 +131,7 @@
 
 .app-footer {
   background: #f7fafc;
-  padding: 1rem 2rem;
+  padding: 1rem 0;
   text-align: center;
   color: #718096;
   border-top: 1px solid #e2e8f0;
@@ -140,6 +141,7 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  padding: 0 2rem;
 }
 
 .app-footer p {
