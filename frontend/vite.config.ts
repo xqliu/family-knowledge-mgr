@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/app/',  // 设置基础路径为/app/
   build: {
     outDir: '../static/react',  // 构建到Django静态目录
     emptyOutDir: true,
