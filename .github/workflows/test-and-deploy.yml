@@ -128,8 +128,25 @@ jobs:
         
         # Extract frontend coverage percentage  
         FRONTEND_COVERAGE="Unknown"
+        
+        # Debug: Check what files exist in frontend coverage directory
+        echo "=== Frontend coverage files ==="
+        ls -la ./coverage-reports/frontend/ || echo "Frontend directory not found"
+        find ./coverage-reports/frontend/ -name "*.json" || echo "No JSON files found"
+        
         if [ -f "./coverage-reports/frontend/coverage-final.json" ]; then
+          echo "Found coverage-final.json"
           FRONTEND_COVERAGE=$(python3 -c "import json; data=json.load(open('./coverage-reports/frontend/coverage-final.json')); print(f\"{data['total']['lines']['pct']:.0f}%\")" 2>/dev/null || echo "Unknown")
+        else
+          echo "coverage-final.json not found, checking other JSON files..."
+          # Try alternative paths that vitest might use
+          for json_file in ./coverage-reports/frontend/*.json ./coverage-reports/frontend/**/coverage-final.json; do
+            if [ -f "$json_file" ]; then
+              echo "Trying: $json_file"
+              FRONTEND_COVERAGE=$(python3 -c "import json; data=json.load(open('$json_file')); print(f\"{data['total']['lines']['pct']:.0f}%\")" 2>/dev/null || echo "Unknown")
+              [ "$FRONTEND_COVERAGE" != "Unknown" ] && break
+            fi
+          done
         fi
         
         # Determine status icons
