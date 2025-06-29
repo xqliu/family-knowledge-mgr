@@ -144,12 +144,22 @@ jobs:
           echo 'try:' >> /tmp/extract_coverage.py
           echo '    with open("./coverage-reports/frontend/coverage-final.json") as f:' >> /tmp/extract_coverage.py
           echo '        data = json.load(f)' >> /tmp/extract_coverage.py
-          echo '    if "total" in data and "lines" in data["total"] and "pct" in data["total"]["lines"]:' >> /tmp/extract_coverage.py
-          echo '        print(f"{data[\"total\"][\"lines\"][\"pct\"]:.0f}%")' >> /tmp/extract_coverage.py
+          echo '    # Calculate overall coverage from individual files' >> /tmp/extract_coverage.py
+          echo '    total_lines = 0' >> /tmp/extract_coverage.py
+          echo '    covered_lines = 0' >> /tmp/extract_coverage.py
+          echo '    for file_path, file_data in data.items():' >> /tmp/extract_coverage.py
+          echo '        if "lines" in file_data:' >> /tmp/extract_coverage.py
+          echo '            lines_data = file_data["lines"]' >> /tmp/extract_coverage.py
+          echo '            if "total" in lines_data and "covered" in lines_data:' >> /tmp/extract_coverage.py
+          echo '                total_lines += lines_data["total"]' >> /tmp/extract_coverage.py
+          echo '                covered_lines += lines_data["covered"]' >> /tmp/extract_coverage.py
+          echo '    if total_lines > 0:' >> /tmp/extract_coverage.py
+          echo '        coverage_pct = (covered_lines / total_lines) * 100' >> /tmp/extract_coverage.py
+          echo '        print(f"{coverage_pct:.0f}%")' >> /tmp/extract_coverage.py
           echo '    else:' >> /tmp/extract_coverage.py
           echo '        print("Unknown")' >> /tmp/extract_coverage.py
           echo 'except Exception as e:' >> /tmp/extract_coverage.py
-          echo '    print(f"Error: {e}")' >> /tmp/extract_coverage.py
+          echo '    print("Error:", str(e))' >> /tmp/extract_coverage.py
           echo '    print("Unknown")' >> /tmp/extract_coverage.py
           
           FRONTEND_COVERAGE=$(python3 /tmp/extract_coverage.py)
