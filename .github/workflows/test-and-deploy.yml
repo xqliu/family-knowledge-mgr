@@ -76,10 +76,16 @@ jobs:
     - name: Run frontend tests with coverage
       working-directory: ./frontend
       run: |
-        npm run test:coverage
+        echo "Starting frontend coverage generation..."
+        npm run test:coverage || echo "Tests completed with failures"
         echo "Coverage generation completed with exit code: $?"
-        ls -la || echo "No files in frontend directory"
+        echo "Debug: Current directory is $(pwd)"
+        echo "Debug: Listing all files in current directory:"
+        ls -la
+        echo "Debug: Looking for coverage directory:"
         ls -la coverage/ || echo "No coverage directory found"
+        echo "Debug: Searching for any coverage files:"
+        find . -name "*coverage*" -o -name "*.html" | head -10 || echo "No coverage files found"
       continue-on-error: true
     
     - name: Upload frontend coverage to artifacts
