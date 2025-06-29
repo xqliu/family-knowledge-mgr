@@ -138,21 +138,31 @@ jobs:
           echo "Found coverage-final.json"
           echo "=== JSON content structure ==="
           python3 -c "import json; data=json.load(open('./coverage-reports/frontend/coverage-final.json')); print('Keys:', list(data.keys())); print('Total keys:', list(data.get('total', {}).keys()) if 'total' in data else 'No total key')"
-          FRONTEND_COVERAGE=$(python3 -c "
+          
+          # Create a temp Python script to avoid YAML issues
+          cat > /tmp/extract_coverage.py << 'PYEOF'
 import json
-data = json.load(open('./coverage-reports/frontend/coverage-final.json'))
-if 'total' in data and 'lines' in data['total'] and 'pct' in data['total']['lines']:
-    print(f\"{data['total']['lines']['pct']:.0f}%\")
-else:
-    # Try alternative structure
-    for key in data:
-        if isinstance(data[key], dict) and 'lines' in data[key]:
-            if 'pct' in data[key]['lines']:
-                print(f\"{data[key]['lines']['pct']:.0f}%\")
-                break
+try:
+    with open('./coverage-reports/frontend/coverage-final.json') as f:
+        data = json.load(f)
+    
+    if 'total' in data and 'lines' in data['total'] and 'pct' in data['total']['lines']:
+        print(f"{data['total']['lines']['pct']:.0f}%")
     else:
-        print('Unknown')
-" || echo "Unknown")
+        # Try alternative structure
+        for key in data:
+            if isinstance(data[key], dict) and 'lines' in data[key]:
+                if 'pct' in data[key]['lines']:
+                    print(f"{data[key]['lines']['pct']:.0f}%")
+                    break
+        else:
+            print('Unknown')
+except Exception as e:
+    print(f'Error: {e}')
+    print('Unknown')
+PYEOF
+          
+          FRONTEND_COVERAGE=$(python3 /tmp/extract_coverage.py)
         else
           echo "coverage-final.json not found, checking other JSON files..."
           # Try alternative paths that vitest might use
