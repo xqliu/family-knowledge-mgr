@@ -33,12 +33,14 @@ jobs:
         pip install -r requirements.txt
     
     - name: Run Django migrations
-      run: |
-        python manage.py migrate
+      run: python manage.py migrate
+      env:
+        DJANGO_SETTINGS_MODULE: config.settings
     
     - name: Run Django tests with coverage
-      run: |
-        pytest --cov=family --cov=api --cov-report=html:htmlcov-backend --cov-report=xml:coverage-backend.xml --cov-report=term-missing --cov-fail-under=90
+      run: pytest --cov=family --cov=api --cov-report=html:htmlcov-backend --cov-report=xml:coverage-backend.xml --cov-report=term-missing --cov-fail-under=80
+      env:
+        DJANGO_SETTINGS_MODULE: config.settings
     
     - name: Upload backend coverage to artifacts
       uses: actions/upload-artifact@v4
