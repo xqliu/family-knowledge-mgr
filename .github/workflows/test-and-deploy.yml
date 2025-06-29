@@ -121,7 +121,7 @@ jobs:
         mkdir -p coverage-dashboard
         
         # Create main index.html
-        cat > coverage-dashboard/index.html << 'EOF'
+        cat > coverage-dashboard/index.html << EOF
         <!DOCTYPE html>
         <html lang="zh-CN">
         <head>
