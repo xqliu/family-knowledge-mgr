@@ -137,8 +137,12 @@ describe('App Component', () => {
     render(<App />)
     
     await waitFor(() => {
+      expect(screen.getByText('API运行正常')).toBeInTheDocument()
+    }, { timeout: 3000 })
+
+    await waitFor(() => {
       expect(screen.getByText('家庭概览')).toBeInTheDocument()
-    })
+    }, { timeout: 3000 })
 
     // Should display 0 for missing stats
     const zeros = screen.getAllByText('0')
