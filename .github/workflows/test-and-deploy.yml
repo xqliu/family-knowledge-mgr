@@ -75,7 +75,11 @@ jobs:
     
     - name: Run frontend tests with coverage
       working-directory: ./frontend
-      run: npm run test:coverage
+      run: |
+        npm run test:coverage
+        echo "Coverage generation completed with exit code: $?"
+        ls -la || echo "No files in frontend directory"
+        ls -la coverage/ || echo "No coverage directory found"
       continue-on-error: true
     
     - name: Upload frontend coverage to artifacts
@@ -85,6 +89,7 @@ jobs:
       with:
         name: coverage-frontend
         path: coverage/
+        if-no-files-found: warn
 
   generate-coverage-report:
     runs-on: ubuntu-latest
