@@ -33,8 +33,10 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🏠 家庭知识库</h1>
-        <p className="subtitle">Family Knowledge Hub</p>
+        <div className="header-content">
+          <h1>🏠 家庭知识库</h1>
+          <p className="subtitle">Family Knowledge Hub</p>
+        </div>
       </header>
 
       <main className="app-main">
@@ -82,7 +84,9 @@ function App() {
       </main>
 
       <footer className="app-footer">
-        <p>✨ 单体部署架构演示 - React前端 + Django后端</p>
+        <div className="footer-content">
+          <p>✨ 单体部署架构演示 - React前端 + Django后端</p>
+        </div>
       </footer>
     </div>
   )

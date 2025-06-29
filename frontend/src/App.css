@@ -12,6 +12,12 @@
   text-align: center;
 }
 
+.app-header .header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .app-header h1 {
   margin: 0;
   font-size: 2.5rem;
@@ -33,6 +39,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+  box-sizing: border-box;
 }
 
 .status-card,
@@ -123,10 +130,16 @@
 
 .app-footer {
   background: #f7fafc;
-  padding: 1rem;
+  padding: 1rem 2rem;
   text-align: center;
   color: #718096;
   border-top: 1px solid #e2e8f0;
+}
+
+.app-footer .footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .app-footer p {
