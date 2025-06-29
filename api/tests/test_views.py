@@ -20,7 +20,7 @@ class TestAPIViews:
         assert data['message'] == 'API运行正常'
     
     def test_family_overview_get(self):
-        response = self.client.get('/api/family-overview/')
+        response = self.client.get('/api/family/overview/')
         
         assert response.status_code == 200
         data = response.json()
@@ -63,7 +63,7 @@ class TestAPIViews:
         }
         
         response = self.client.post(
-            '/api/family-overview/',
+            '/api/family/overview/',
             data=json.dumps(test_data),
             content_type='application/json'
         )
@@ -76,7 +76,7 @@ class TestAPIViews:
     
     def test_family_overview_post_invalid_json(self):
         response = self.client.post(
-            '/api/family-overview/',
+            '/api/family/overview/',
             data='invalid json',
             content_type='application/json'
         )
@@ -87,10 +87,10 @@ class TestAPIViews:
         assert data['message'] == 'Invalid JSON'
     
     def test_family_overview_method_not_allowed(self):
-        response = self.client.put('/api/family-overview/')
+        response = self.client.put('/api/family/overview/')
         assert response.status_code == 405
         
-        response = self.client.delete('/api/family-overview/')
+        response = self.client.delete('/api/family/overview/')
         assert response.status_code == 405
     
     def test_ai_chat_valid_message(self):
@@ -98,7 +98,7 @@ class TestAPIViews:
         test_data = {'message': test_message}
         
         response = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data=json.dumps(test_data),
             content_type='application/json'
         )
@@ -120,7 +120,7 @@ class TestAPIViews:
         test_data = {'message': ''}
         
         response = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data=json.dumps(test_data),
             content_type='application/json'
         )
@@ -134,7 +134,7 @@ class TestAPIViews:
         test_data = {}
         
         response = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data=json.dumps(test_data),
             content_type='application/json'
         )
@@ -146,7 +146,7 @@ class TestAPIViews:
     
     def test_ai_chat_invalid_json(self):
         response = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data='invalid json',
             content_type='application/json'
         )
@@ -157,13 +157,13 @@ class TestAPIViews:
         assert data['message'] == 'Invalid JSON'
     
     def test_ai_chat_method_not_allowed(self):
-        response = self.client.get('/api/ai-chat/')
+        response = self.client.get('/api/ai/chat/')
         assert response.status_code == 405
         
-        response = self.client.put('/api/ai-chat/')
+        response = self.client.put('/api/ai/chat/')
         assert response.status_code == 405
         
-        response = self.client.delete('/api/ai-chat/')
+        response = self.client.delete('/api/ai/chat/')
         assert response.status_code == 405
     
     def test_ai_chat_csrf_exempt(self):
@@ -172,7 +172,7 @@ class TestAPIViews:
         
         # This should work without CSRF token
         response = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data=json.dumps(test_data),
             content_type='application/json'
         )
@@ -185,7 +185,7 @@ class TestAPIViews:
         
         # This should work without CSRF token
         response = self.client.post(
-            '/api/family-overview/',
+            '/api/family/overview/',
             data=json.dumps(test_data),
             content_type='application/json'
         )
@@ -208,7 +208,7 @@ class TestAPIIntegration:
         assert health_response.status_code == 200
         
         # 2. Get family overview
-        overview_response = self.client.get('/api/family-overview/')
+        overview_response = self.client.get('/api/family/overview/')
         assert overview_response.status_code == 200
         
         # 3. Post new data
@@ -222,7 +222,7 @@ class TestAPIIntegration:
         
         # 4. Test AI chat
         chat_response = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data=json.dumps({'message': '告诉我关于这个新成员'}),
             content_type='application/json'
         )
@@ -241,7 +241,7 @@ class TestAPIIntegration:
         
         # Invalid JSON in AI chat
         response2 = self.client.post(
-            '/api/ai-chat/',
+            '/api/ai/chat/',
             data='invalid',
             content_type='application/json'
         )
