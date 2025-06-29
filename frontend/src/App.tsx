@@ -34,7 +34,7 @@ function App() {
       <main className="app-main">
         <div className="status-card">
           <h2>系统状态</h2>
-          <p><span className="status-text">API状态:</span> <span className="status">{apiStatus}</span></p>
+          <p><span className="status-text">API状态:</span> <span className="status">{apiStatus} ✅</span></p>
           <p><span className="status-text">前端:</span> <span className="status-success">React + TypeScript + Vite ✅</span></p>
           <p><span className="status-text">后端:</span> <span className="status-success">Django + API ✅</span></p>
         </div>
