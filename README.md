@@ -12,7 +12,9 @@ This repository includes:
 
 ## 📊 Coverage Reports
 
-View detailed coverage reports at: https://xqliu.github.io/family-knowledge-mgr/coverage/
+View detailed coverage reports at: https://dev.llbrother.org/coverage/
+
+Alternative access: https://xqliu.github.io/family-knowledge-mgr/coverage/
 
 ## 🚀 Development Status
 
