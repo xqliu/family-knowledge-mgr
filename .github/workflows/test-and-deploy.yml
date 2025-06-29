@@ -77,9 +77,14 @@ jobs:
       working-directory: ./frontend
       run: |
         echo "Starting frontend coverage generation..."
+        echo "Debug: Current working directory is $(pwd)"
+        echo "Debug: Node.js version: $(node --version)"
+        echo "Debug: NPM version: $(npm --version)"
+        echo "Debug: Checking if @vitest/coverage-v8 is installed:"
+        npm list @vitest/coverage-v8 || echo "Coverage package not found"
+        echo "Debug: Running coverage tests..."
         npm run test:coverage || echo "Tests completed with failures"
         echo "Coverage generation completed with exit code: $?"
-        echo "Debug: Current directory is $(pwd)"
         echo "Debug: Listing all files in current directory:"
         ls -la
         echo "Debug: Looking for coverage directory:"

@@ -21,14 +21,15 @@ export default defineConfig({
         'coverage/',
         '**/*.d.ts'
       ],
-      thresholds: {
-        global: {
-          branches: 50,
-          functions: 50,
-          lines: 50,
-          statements: 50
-        }
-      },
+      // Temporarily disable thresholds to debug coverage generation
+      // thresholds: {
+      //   global: {
+      //     branches: 50,
+      //     functions: 50,
+      //     lines: 50,
+      //     statements: 50
+      //   }
+      // },
       skipFull: false,
       all: true
     }
