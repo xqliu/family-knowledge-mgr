@@ -258,9 +258,8 @@ jobs:
     
     - name: Copy frontend build to Django static
       run: |
-        rm -rf static/react/*
-        mkdir -p static/react
-        cp -r frontend/dist/* static/react/
+        # Frontend builds directly to static/react via vite.config.ts
+        ls -la static/react/ || echo "static/react directory does not exist yet"
     
     - name: Deploy to Heroku
       uses: akhileshns/heroku-deploy@v3.13.15
