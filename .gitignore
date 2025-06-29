@@ -95,3 +95,5 @@ coverage-dashboard/
 # Test artifacts
 test.dbscreenshots/
 ..bfg-report/
+package.json
+package-lock.json
