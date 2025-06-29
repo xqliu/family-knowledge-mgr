@@ -148,6 +148,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Heroku static files handling
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# WhiteNoise设置 - 排除React构建文件，避免哈希重命名
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['js', 'css', 'svg']
+WHITENOISE_USE_FINDERS = True
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

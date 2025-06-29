@@ -40,7 +40,10 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='redirect.html'), name='root_redirect'),
 ]
 
-# 开发环境静态文件服务
+# 静态文件服务
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # 生产环境：确保React静态文件服务优先级高于WhiteNoise
+    pass

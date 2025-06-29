@@ -1,1 +1,1 @@
-web: gunicorn config.wsgi:application
+web: gunicorn config.wsgi:application --preload --max-requests 1000 --max-requests-jitter 100 --bind 0.0.0.0:$PORT
