@@ -131,6 +131,16 @@ knowledge_mgr/
 
 ## Development Guidelines
 
+### Testing and TDD Standards
+- **ALWAYS use Test-Driven Development (TDD)** for new features
+- Write tests BEFORE implementing functionality
+- Focus on data integrity (models 90%+) and core workflows (API/forms 80%+)
+- Current coverage targets achieved:
+  - Django Backend: 90%+ coverage with pytest + factory-boy
+  - React Frontend: 90%+ coverage with Vitest + React Testing Library
+  - CI/CD pipeline with GitHub Actions + GitHub Pages coverage reports
+- For family-scale projects: Prioritize model and API tests over admin interface tests
+
 ### Model Design Principles
 - Use clear English field names with verbose_name for Chinese display
 - Define proper relationships with explicit related_name
