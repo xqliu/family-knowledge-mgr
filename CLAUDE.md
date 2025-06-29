@@ -141,6 +141,12 @@ knowledge_mgr/
   - CI/CD pipeline with GitHub Actions + GitHub Pages coverage reports
 - For family-scale projects: Prioritize model and API tests over admin interface tests
 
+### CI/CD and Deployment Standards
+- **Add [skip ci] to commit messages** when changes are documentation-only (no FE/BE code changes)
+- This prevents unnecessary GitHub Actions runs and Heroku deployments
+- Examples of [skip ci] scenarios: README updates, CLAUDE.md changes, documentation files
+- Always run CI/CD for code changes that affect functionality or tests
+
 ### Model Design Principles
 - Use clear English field names with verbose_name for Chinese display
 - Define proper relationships with explicit related_name
