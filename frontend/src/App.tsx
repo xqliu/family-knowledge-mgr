@@ -3,7 +3,13 @@ import './App.css'
 
 function App() {
   const [apiStatus, setApiStatus] = useState<string>('检测中...')
-  const [familyData, setFamilyData] = useState<any>(null)
+  const [familyData, setFamilyData] = useState<{
+    stats?: {
+      total_members?: number
+      total_stories?: number
+      total_photos?: number
+    }
+  } | null>(null)
 
   useEffect(() => {
     // 测试API连接
