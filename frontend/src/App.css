@@ -59,6 +59,16 @@
   font-weight: 500;
 }
 
+.status-text {
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.status-success {
+  color: #38a169;
+  font-weight: 500;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

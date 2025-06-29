@@ -34,9 +34,9 @@ function App() {
       <main className="app-main">
         <div className="status-card">
           <h2>系统状态</h2>
-          <p>API状态: <span className="status">{apiStatus}</span></p>
-          <p>前端: React + TypeScript + Vite ✅</p>
-          <p>后端: Django + API ✅</p>
+          <p><span className="status-text">API状态:</span> <span className="status">{apiStatus}</span></p>
+          <p><span className="status-text">前端:</span> <span className="status-success">React + TypeScript + Vite ✅</span></p>
+          <p><span className="status-text">后端:</span> <span className="status-success">Django + API ✅</span></p>
         </div>
 
         {familyData && (
