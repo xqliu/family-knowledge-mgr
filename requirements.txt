@@ -14,6 +14,14 @@ dj-database-url>=2.1.0  # Heroku DATABASE_URL 解析
 # === 开发便利包 ===
 django-extensions>=3.2.3  # 开发工具（shell_plus 等）
 
+# === 测试相关包 ===
+pytest>=8.0.0  # 测试框架
+pytest-django>=4.8.0  # Django 测试集成
+pytest-cov>=4.0.0  # 代码覆盖率
+factory-boy>=3.3.0  # 测试数据工厂
+pytest-mock>=3.12.0  # Mock 支持
+pytest-xdist>=3.5.0  # 并行测试
+
 # ================================
 # 第二阶段再添加的包（AI功能）：
 # ================================

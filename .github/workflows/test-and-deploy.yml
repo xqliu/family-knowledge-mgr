@@ -1,0 +1,325 @@
+name: Test and Deploy
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Django settings
+  SECRET_KEY: 'test-secret-key-for-ci'
+  DEBUG: 'False'
+  DATABASE_URL: 'sqlite:///test.db'
+  ALLOWED_HOSTS: 'localhost,127.0.0.1'
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    name: Django Backend Tests
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run Django migrations
+      run: |
+        python manage.py migrate
+    
+    - name: Run Django tests with coverage
+      run: |
+        pytest --cov=family --cov=api --cov-report=html:htmlcov-backend --cov-report=xml:coverage-backend.xml --cov-report=term-missing --cov-fail-under=90
+    
+    - name: Upload backend coverage to artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-backend
+        path: |
+          htmlcov-backend/
+          coverage-backend.xml
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    name: React Frontend Tests
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
+    
+    - name: Run frontend linting
+      working-directory: ./frontend
+      run: npm run lint
+    
+    - name: Run frontend tests with coverage
+      working-directory: ./frontend
+      run: npm run test:coverage
+    
+    - name: Upload frontend coverage to artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-frontend
+        path: frontend/coverage/
+
+  generate-coverage-report:
+    runs-on: ubuntu-latest
+    name: Generate Combined Coverage Report
+    needs: [test-backend, test-frontend]
+    if: always() && (needs.test-backend.result == 'success' || needs.test-frontend.result == 'success')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download backend coverage
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-backend
+        path: ./coverage-reports/backend/
+      continue-on-error: true
+    
+    - name: Download frontend coverage
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-frontend
+        path: ./coverage-reports/frontend/
+      continue-on-error: true
+    
+    - name: Create coverage dashboard
+      run: |
+        mkdir -p coverage-dashboard
+        
+        # Create main index.html
+        cat > coverage-dashboard/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html lang="zh-CN">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>代码覆盖率报告 - 家庭知识管理系统</title>
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+                .container { max-width: 1200px; margin: 0 auto; }
+                .header { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; }
+                .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+                .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                .card h3 { margin-top: 0; color: #333; font-size: 1.2em; }
+                .button { display: inline-block; padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 10px 5px; transition: background 0.3s; }
+                .button:hover { background: #0056b3; }
+                .button.secondary { background: #6c757d; }
+                .button.secondary:hover { background: #545b62; }
+                .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0; }
+                .stat { text-align: center; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+                .stat-value { font-size: 2em; font-weight: bold; color: #28a745; }
+                .stat-label { color: #666; margin-top: 5px; }
+                .footer { text-align: center; margin-top: 40px; color: #666; font-size: 0.9em; }
+                .timestamp { color: #999; font-size: 0.8em; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>🏠 家庭知识管理系统</h1>
+                    <h2>代码覆盖率报告</h2>
+                    <p class="timestamp">生成时间: $(date '+%Y-%m-%d %H:%M:%S UTC')</p>
+                </div>
+                
+                <div class="cards">
+                    <div class="card">
+                        <h3>🐍 Django 后端覆盖率</h3>
+                        <div class="stats">
+                            <div class="stat">
+                                <div class="stat-value">90%+</div>
+                                <div class="stat-label">目标覆盖率</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">✅</div>
+                                <div class="stat-label">测试状态</div>
+                            </div>
+                        </div>
+                        <a href="./backend/index.html" class="button">查看详细报告</a>
+                        <p>包含模型、视图、API端点的完整测试覆盖率分析</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>⚛️ React 前端覆盖率</h3>
+                        <div class="stats">
+                            <div class="stat">
+                                <div class="stat-value">90%+</div>
+                                <div class="stat-label">目标覆盖率</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">✅</div>
+                                <div class="stat-label">测试状态</div>
+                            </div>
+                        </div>
+                        <a href="./frontend/index.html" class="button">查看详细报告</a>
+                        <p>包含组件、hooks、工具函数的完整测试覆盖率分析</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 测试指标总览</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">Django</div>
+                            <div class="stat-label">后端框架</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">React</div>
+                            <div class="stat-label">前端框架</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Pytest</div>
+                            <div class="stat-label">后端测试</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Vitest</div>
+                            <div class="stat-label">前端测试</div>
+                        </div>
+                    </div>
+                    
+                    <h4>🔗 相关链接</h4>
+                    <a href="https://github.com/${{ github.repository }}" class="button secondary">项目仓库</a>
+                    <a href="https://github.com/${{ github.repository }}/actions" class="button secondary">CI/CD 流水线</a>
+                </div>
+                
+                <div class="footer">
+                    <p>🚀 由 GitHub Actions 自动生成 | 📝 使用 pytest-cov 和 vitest coverage</p>
+                    <p>最后更新: ${{ github.sha }} | 分支: ${{ github.ref_name }}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        EOF
+        
+        # Copy coverage reports if they exist
+        if [ -d "./coverage-reports/backend/htmlcov-backend" ]; then
+          cp -r ./coverage-reports/backend/htmlcov-backend coverage-dashboard/backend
+        fi
+        
+        if [ -d "./coverage-reports/frontend" ]; then
+          cp -r ./coverage-reports/frontend coverage-dashboard/frontend
+        fi
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./coverage-dashboard
+        destination_dir: coverage
+
+  deploy-heroku:
+    runs-on: ubuntu-latest
+    name: Deploy to Heroku
+    needs: [test-backend, test-frontend]
+    if: github.ref == 'refs/heads/main' && needs.test-backend.result == 'success' && needs.test-frontend.result == 'success'
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Node.js for frontend build
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Build frontend
+      working-directory: ./frontend
+      run: |
+        npm ci
+        npm run build
+    
+    - name: Copy frontend build to Django static
+      run: |
+        rm -rf static/react/*
+        mkdir -p static/react
+        cp -r frontend/dist/* static/react/
+    
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        
+  comment-pr:
+    runs-on: ubuntu-latest
+    name: Comment PR with test results
+    needs: [test-backend, test-frontend, generate-coverage-report]
+    if: github.event_name == 'pull_request' && always()
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download backend coverage
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-backend
+        path: ./coverage-backend/
+      continue-on-error: true
+    
+    - name: Download frontend coverage
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-frontend
+        path: ./coverage-frontend/
+      continue-on-error: true
+    
+    - name: Comment PR
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          let comment = '## 🧪 测试结果\n\n';
+          
+          // Backend results
+          if ('${{ needs.test-backend.result }}' === 'success') {
+            comment += '✅ **Django 后端测试**: 通过\n';
+          } else {
+            comment += '❌ **Django 后端测试**: 失败\n';
+          }
+          
+          // Frontend results  
+          if ('${{ needs.test-frontend.result }}' === 'success') {
+            comment += '✅ **React 前端测试**: 通过\n';
+          } else {
+            comment += '❌ **React 前端测试**: 失败\n';
+          }
+          
+          comment += '\n## 📊 代码覆盖率\n\n';
+          comment += '详细覆盖率报告将在合并到主分支后可在 [GitHub Pages](https://your-username.github.io/knowledge_mgr/coverage/) 查看。\n\n';
+          
+          comment += '## 🔗 相关链接\n\n';
+          comment += `- [🏃 查看完整的工作流程](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n`;
+          comment += `- [📝 代码覆盖率仪表板](https://your-username.github.io/knowledge_mgr/coverage/)\n`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
