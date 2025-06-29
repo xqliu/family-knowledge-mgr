@@ -9,7 +9,7 @@ def health_check(request):
     """健康检查端点"""
     return JsonResponse({
         'status': 'ok',
-        'message': 'Family Knowledge Management API is running'
+        'message': 'API运行正常'
     })
 
 

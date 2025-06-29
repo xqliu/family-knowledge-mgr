@@ -27,8 +27,8 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🏠 家庭知识管理系统</h1>
-        <p className="subtitle">Family Knowledge Management System</p>
+        <h1>🏠 家庭知识库</h1>
+        <p className="subtitle">Family Knowledge Hub</p>
       </header>
 
       <main className="app-main">
