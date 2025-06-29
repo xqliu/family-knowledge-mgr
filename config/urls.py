@@ -34,7 +34,7 @@ urlpatterns = [
     re_path(r'^app/vite\.svg$', serve, {'document_root': os.path.join(settings.BASE_DIR, 'static/react'), 'path': 'vite.svg'}, name='react_vite_svg'),
     
     # React SPA - 仅在/app/路径下提供前端
-    re_path(r'^app/.*$', TemplateView.as_view(template_name='index.html'), name='frontend'),
+    re_path(r'^app/.*$', serve, {'document_root': os.path.join(settings.STATIC_ROOT, 'react'), 'path': 'index.html'}, name='frontend'),
     
     # 根路径重定向到app
     path('', TemplateView.as_view(template_name='redirect.html'), name='root_redirect'),
