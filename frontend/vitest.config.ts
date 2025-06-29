@@ -12,6 +12,8 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html', 'clover', 'json'],
       reportsDirectory: './coverage',
+      enabled: true,
+      reportOnFailure: true,
       exclude: [
         'node_modules/',
         'src/test-setup.ts',
@@ -21,15 +23,6 @@ export default defineConfig({
         'coverage/',
         '**/*.d.ts'
       ],
-      // Temporarily disable thresholds to debug coverage generation
-      // thresholds: {
-      //   global: {
-      //     branches: 50,
-      //     functions: 50,
-      //     lines: 50,
-      //     statements: 50
-      //   }
-      // },
       skipFull: false,
       all: true
     }
