@@ -91,10 +91,9 @@ jobs:
     - name: Upload frontend coverage to artifacts
       uses: actions/upload-artifact@v4
       if: always()
-      working-directory: ./frontend
       with:
         name: coverage-frontend
-        path: coverage/
+        path: frontend/coverage/
         if-no-files-found: warn
 
   generate-coverage-report:
