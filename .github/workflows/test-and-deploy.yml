@@ -213,7 +213,7 @@ jobs:
                 <div class="header">
                     <h1>🏠 家庭知识管理系统</h1>
                     <h2>代码覆盖率报告</h2>
-                    <p class="timestamp">生成时间: $(date '+%Y-%m-%d %H:%M:%S') UTC</p>
+                    <p class="timestamp">生成时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') GMT+8</p>
                 </div>
                 
                 <div class="cards">
