@@ -137,25 +137,27 @@ jobs:
         if [ -f "./coverage-reports/frontend/coverage-final.json" ]; then
           echo "Found coverage-final.json"
           echo "=== JSON content structure ==="
-          python3 -c "import json; data=json.load(open('./coverage-reports/frontend/coverage-final.json')); print('Keys:', list(data.keys())); print('Total keys:', list(data.get('total', {}).keys()) if 'total' in data else 'No total key')"
+          python3 -c "import json; data=json.load(open('./coverage-reports/frontend/coverage-final.json')); print('Keys:', list(data.keys())); print('Total keys:', list(data.get('total', {}).keys()) if 'total' in data else 'No total key'); print('Sample file structure:'); first_key = list(data.keys())[0]; print('First file keys:', list(data[first_key].keys()) if data else 'Empty')"
           
-          # Create a simple Python script for coverage extraction
+          # Create a simple Python script for Istanbul-format coverage extraction
           echo 'import json' > /tmp/extract_coverage.py
           echo 'try:' >> /tmp/extract_coverage.py
           echo '    with open("./coverage-reports/frontend/coverage-final.json") as f:' >> /tmp/extract_coverage.py
           echo '        data = json.load(f)' >> /tmp/extract_coverage.py
-          echo '    # Calculate overall coverage from individual files' >> /tmp/extract_coverage.py
-          echo '    total_lines = 0' >> /tmp/extract_coverage.py
-          echo '    covered_lines = 0' >> /tmp/extract_coverage.py
+          echo '    # Calculate coverage from Istanbul format (statementMap + s)' >> /tmp/extract_coverage.py
+          echo '    total_statements = 0' >> /tmp/extract_coverage.py
+          echo '    covered_statements = 0' >> /tmp/extract_coverage.py
           echo '    for file_path, file_data in data.items():' >> /tmp/extract_coverage.py
-          echo '        if "lines" in file_data:' >> /tmp/extract_coverage.py
-          echo '            lines_data = file_data["lines"]' >> /tmp/extract_coverage.py
-          echo '            if "total" in lines_data and "covered" in lines_data:' >> /tmp/extract_coverage.py
-          echo '                total_lines += lines_data["total"]' >> /tmp/extract_coverage.py
-          echo '                covered_lines += lines_data["covered"]' >> /tmp/extract_coverage.py
-          echo '    if total_lines > 0:' >> /tmp/extract_coverage.py
-          echo '        coverage_pct = (covered_lines / total_lines) * 100' >> /tmp/extract_coverage.py
-          echo '        print(f"{coverage_pct:.0f}%")' >> /tmp/extract_coverage.py
+          echo '        if "statementMap" in file_data and "s" in file_data:' >> /tmp/extract_coverage.py
+          echo '            statements = file_data["statementMap"]' >> /tmp/extract_coverage.py
+          echo '            execution_counts = file_data["s"]' >> /tmp/extract_coverage.py
+          echo '            for stmt_id in statements.keys():' >> /tmp/extract_coverage.py
+          echo '                total_statements += 1' >> /tmp/extract_coverage.py
+          echo '                if stmt_id in execution_counts and execution_counts[stmt_id] > 0:' >> /tmp/extract_coverage.py
+          echo '                    covered_statements += 1' >> /tmp/extract_coverage.py
+          echo '    if total_statements > 0:' >> /tmp/extract_coverage.py
+          echo '        coverage_pct = (covered_statements / total_statements) * 100' >> /tmp/extract_coverage.py
+          echo '        print(str(int(coverage_pct)) + "%")' >> /tmp/extract_coverage.py
           echo '    else:' >> /tmp/extract_coverage.py
           echo '        print("Unknown")' >> /tmp/extract_coverage.py
           echo 'except Exception as e:' >> /tmp/extract_coverage.py
