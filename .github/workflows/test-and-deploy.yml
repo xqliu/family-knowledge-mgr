@@ -120,7 +120,44 @@ jobs:
       run: |
         mkdir -p coverage-dashboard
         
-        # Create main index.html
+        # Extract backend coverage percentage
+        BACKEND_COVERAGE="Unknown"
+        if [ -f "./coverage-reports/backend/coverage-backend.xml" ]; then
+          BACKEND_COVERAGE=$(grep -o 'line-rate="[0-9.]*"' ./coverage-reports/backend/coverage-backend.xml | head -1 | sed 's/line-rate="//;s/"//' | awk '{printf "%.0f%%", $1*100}')
+        fi
+        
+        # Extract frontend coverage percentage  
+        FRONTEND_COVERAGE="Unknown"
+        if [ -f "./coverage-reports/frontend/coverage-final.json" ]; then
+          FRONTEND_COVERAGE=$(python3 -c "
+import json, sys
+try:
+    with open('./coverage-reports/frontend/coverage-final.json') as f:
+        data = json.load(f)
+    total = data.get('total', {})
+    lines = total.get('lines', {})
+    pct = lines.get('pct', 0)
+    print(f'{pct:.0f}%')
+except:
+    print('Unknown')
+")
+        fi
+        
+        # Determine status icons
+        BACKEND_STATUS="❌"
+        FRONTEND_STATUS="❌"
+        
+        if [[ "$BACKEND_COVERAGE" =~ ^[0-9]+% ]]; then
+          BACKEND_PCT=$(echo "$BACKEND_COVERAGE" | sed 's/%//')
+          [ "$BACKEND_PCT" -ge 80 ] && BACKEND_STATUS="✅"
+        fi
+        
+        if [[ "$FRONTEND_COVERAGE" =~ ^[0-9]+% ]]; then
+          FRONTEND_PCT=$(echo "$FRONTEND_COVERAGE" | sed 's/%//')
+          [ "$FRONTEND_PCT" -ge 90 ] && FRONTEND_STATUS="✅"
+        fi
+        
+        # Create main index.html with real data
         cat > coverage-dashboard/index.html << EOF
         <!DOCTYPE html>
         <html lang="zh-CN">
@@ -160,11 +197,11 @@ jobs:
                         <h3>🐍 Django 后端覆盖率</h3>
                         <div class="stats">
                             <div class="stat">
-                                <div class="stat-value">90%+</div>
-                                <div class="stat-label">目标覆盖率</div>
+                                <div class="stat-value">$BACKEND_COVERAGE</div>
+                                <div class="stat-label">实际覆盖率</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value">✅</div>
+                                <div class="stat-value">$BACKEND_STATUS</div>
                                 <div class="stat-label">测试状态</div>
                             </div>
                         </div>
@@ -176,11 +213,11 @@ jobs:
                         <h3>⚛️ React 前端覆盖率</h3>
                         <div class="stats">
                             <div class="stat">
-                                <div class="stat-value">90%+</div>
-                                <div class="stat-label">目标覆盖率</div>
+                                <div class="stat-value">$FRONTEND_COVERAGE</div>
+                                <div class="stat-label">实际覆盖率</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value">✅</div>
+                                <div class="stat-value">$FRONTEND_STATUS</div>
                                 <div class="stat-label">测试状态</div>
                             </div>
                         </div>
