@@ -1,13 +1,14 @@
 {
   "name": "family-knowledge-mgr",
   "version": "1.0.0",
-  "description": "Family Knowledge Management System",
+  "private": true,
   "scripts": {
     "build": "cd frontend && npm ci && npm run build",
+    "dev": "cd frontend && npm run dev",
     "heroku-postbuild": "npm run build"
   },
   "engines": {
-    "node": "20.x",
-    "npm": "10.x"
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }
