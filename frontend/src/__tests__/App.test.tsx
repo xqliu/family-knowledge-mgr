@@ -1,22 +1,15 @@
 import React from 'react'
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, waitFor } from '../test-utils'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { render, screen, waitFor, act } from '../test-utils'
+import { mockFetch } from '../test-setup'
 import App from '../App'
 
-// Mock fetch globally
-const mockFetch = vi.fn()
-global.fetch = mockFetch
-
 describe('App Component', () => {
-  beforeEach(() => {
-    mockFetch.mockClear()
-  })
-
   afterEach(() => {
     vi.resetAllMocks()
   })
 
-  it('renders main heading and subtitle', () => {
+  it('renders main heading and subtitle', async () => {
     // Mock successful API responses
     mockFetch
       .mockResolvedValueOnce({
@@ -30,25 +23,18 @@ describe('App Component', () => {
         })
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     expect(screen.getByText('🏠 家庭知识库')).toBeInTheDocument()
     expect(screen.getByText('Family Knowledge Hub')).toBeInTheDocument()
   })
 
   it('displays initial API status as checking', () => {
-    mockFetch
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ message: 'API运行正常' })
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          stats: { total_members: 0, total_stories: 0, total_photos: 0 }
-        })
-      })
-
+    // Mock fetch with a promise that never resolves to keep it in loading state
+    mockFetch.mockImplementation(() => new Promise(() => {}))
+    
     render(<App />)
     
     expect(screen.getByText(/检测中.../)).toBeInTheDocument()
@@ -67,7 +53,9 @@ describe('App Component', () => {
         })
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     await waitFor(() => {
       expect(screen.getByText((content, element) => 
@@ -98,7 +86,9 @@ describe('App Component', () => {
         json: async () => mockFamilyData
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     await waitFor(() => {
       expect(screen.getByText('家庭概览')).toBeInTheDocument()
@@ -115,7 +105,9 @@ describe('App Component', () => {
   it('handles API connection failure', async () => {
     mockFetch.mockRejectedValue(new Error('Network error'))
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     await waitFor(() => {
       expect(screen.getByText((content, element) => 
@@ -139,7 +131,9 @@ describe('App Component', () => {
         json: async () => mockFamilyData
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     await waitFor(() => {
       expect(screen.getByText((content, element) => 
@@ -156,7 +150,7 @@ describe('App Component', () => {
     expect(zeros).toHaveLength(3) // Should have 3 zeros for members, stories, photos
   })
 
-  it('displays system status information', () => {
+  it('displays system status information', async () => {
     mockFetch
       .mockResolvedValueOnce({
         ok: true,
@@ -169,14 +163,16 @@ describe('App Component', () => {
         })
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     expect(screen.getByText('系统状态')).toBeInTheDocument()
     expect(screen.getByText(/React \+ TypeScript \+ Vite/)).toBeInTheDocument()
     expect(screen.getByText(/Django \+ API/)).toBeInTheDocument()
   })
 
-  it('displays quick access links', () => {
+  it('displays quick access links', async () => {
     mockFetch
       .mockResolvedValueOnce({
         ok: true,
@@ -189,7 +185,9 @@ describe('App Component', () => {
         })
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     expect(screen.getByText('快速访问')).toBeInTheDocument()
     
@@ -202,7 +200,7 @@ describe('App Component', () => {
     expect(familyLink.closest('a')).toHaveAttribute('href', '/api/family/overview/')
   })
 
-  it('displays footer text', () => {
+  it('displays footer text', async () => {
     mockFetch
       .mockResolvedValueOnce({
         ok: true,
@@ -215,12 +213,14 @@ describe('App Component', () => {
         })
       })
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     expect(screen.getByText(/单体部署架构演示/)).toBeInTheDocument()
   })
 
-  it('does not render family data section when no data is available', () => {
+  it('does not render family data section when no data is available', async () => {
     mockFetch
       .mockResolvedValueOnce({
         ok: true,
@@ -228,7 +228,9 @@ describe('App Component', () => {
       })
       .mockRejectedValueOnce(new Error('Family data fetch failed'))
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     expect(screen.queryByText('家庭概览')).not.toBeInTheDocument()
   })
@@ -242,7 +244,9 @@ describe('App Component', () => {
       })
       .mockRejectedValueOnce(new Error('Family overview failed'))
 
-    render(<App />)
+    await act(async () => {
+      render(<App />)
+    })
     
     await waitFor(() => {
       expect(screen.getByText((content, element) => 

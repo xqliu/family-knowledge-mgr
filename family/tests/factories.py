@@ -30,7 +30,7 @@ class PersonFactory(DjangoModelFactory):
     gender = factory.Iterator(['M', 'F', 'O'])
     bio = Faker('text', max_nb_chars=500)
     email = Faker('email')
-    phone = Faker('phone_number')
+    phone = Faker('numerify', text='###-####-####')  # Fixed length phone number
 
 
 class LocationFactory(DjangoModelFactory):
@@ -52,7 +52,7 @@ class InstitutionFactory(DjangoModelFactory):
     name = Faker('company')
     institution_type = factory.Iterator(['hospital', 'school', 'company', 'government', 'religious', 'other'])
     website = Faker('url')
-    phone = Faker('phone_number')
+    phone = Faker('numerify', text='###-####-####')  # Fixed length phone number
     email = Faker('email')
     address = Faker('address')
     established_date = Faker('date_between', start_date='-50y', end_date='today')

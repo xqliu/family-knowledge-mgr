@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'family.middleware.SimpleAuthMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -81,25 +82,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# 开发环境可选择SQLite
-if config('USE_SQLITE', default=False, cast=bool):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# Always use PostgreSQL - family knowledge system requires PostgreSQL with pgvector
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='family_knowledge'),
+        'USER': config('DB_USER', default='family_user'),
+        'PASSWORD': config('DB_PASSWORD', default='family_dev_pass'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME', default='family_knowledge'),
-            'USER': config('DB_USER', default='family_user'),
-            'PASSWORD': config('DB_PASSWORD', default='family_dev_pass'),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
-        }
-    }
+}
 
 
 # Password validation

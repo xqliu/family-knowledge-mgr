@@ -186,6 +186,7 @@ ALLOWED_HOSTS=localhost,127.0.0.1,.herokuapp.com
 
 ## Important Constraints
 
+- **Database**: ALWAYS use PostgreSQL - this system requires PostgreSQL with pgvector extension for AI/RAG functionality. Never use SQLite.
 - **Memory Limit**: Must operate within Heroku's 512MB memory constraint
 - **Chinese Support**: Full Chinese language support required
 - **Security**: Family data privacy is critical - implement proper access controls
