@@ -1,0 +1,60 @@
+codecov:
+  require_ci_to_pass: false
+  notify:
+    wait_for_ci: false
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+        base: auto
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+
+comment:
+  layout: "reach,diff,flags,tree,footer"
+  behavior: default
+  require_changes: false
+
+flags:
+  backend:
+    paths:
+      - family/
+      - api/
+      - config/
+    carryforward: true
+  frontend:
+    paths:
+      - frontend/src/
+    carryforward: true
+
+component_management:
+  default_rules:
+    statuses:
+      - type: project
+        target: auto
+      - type: patch
+        target: 80%
+  individual_components:
+    - component_id: backend
+      name: Django Backend
+      flag_regexes:
+        - ^backend$
+      paths:
+        - family/**
+        - api/**
+        - config/**
+    - component_id: frontend
+      name: React Frontend
+      flag_regexes:
+        - ^frontend$
+      paths:
+        - frontend/src/**
