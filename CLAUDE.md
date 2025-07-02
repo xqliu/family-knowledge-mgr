@@ -192,3 +192,38 @@ ALLOWED_HOSTS=localhost,127.0.0.1,.herokuapp.com
 - **Security**: Family data privacy is critical - implement proper access controls
 - **Simplicity**: Follow KISS principle - avoid over-engineering
 - **API Usage**: Manage Anthropic API quota carefully with caching and fallbacks
+
+## Production Deployment Information
+
+### Heroku Configuration
+- **App Name**: `family-knowledge-mgr`
+- **Production URL**: `https://llbrother.org`
+- **Log Access**: `heroku logs --tail --app=family-knowledge-mgr`
+- **Dyno Management**: 
+  - Scale down when sleeping: `heroku ps:scale web=0 --app=family-knowledge-mgr`
+  - Scale up when needed: `heroku ps:scale web=1 --app=family-knowledge-mgr`
+
+### URL Structure
+- `/app/` - React frontend (requires authentication)
+- `/api/` - Django REST API (requires authentication)
+- `/admin/` - Django admin interface
+
+### Authentication Architecture
+- **Method**: Django admin login system
+- **React App Protection**: Custom `protected_react_serve` view with `@login_required` decorator (`family/views.py:8`)
+- **API Protection**: Custom `@api_login_required` decorator (`api/decorators.py`)
+- **Login Flow**: Unauthenticated users redirected to `/admin/login/?next=/app/`
+
+### Key Technical Notes
+- **Middleware Order**: Authentication middleware must come before custom middleware in settings
+- **Static Serving**: React app served through protected Django view (not direct serve)
+- **Virtual Environment**: Always activate `family_venv/bin/activate` for local development
+
+### Authentication Test Commands
+```bash
+# API should return 401 when not authenticated
+curl https://llbrother.org/api/family/overview/
+
+# App route should return 302 redirect to login
+curl -I https://llbrother.org/app/
+```
