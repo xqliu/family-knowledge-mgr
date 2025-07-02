@@ -4,7 +4,7 @@
   "description": "Family Knowledge Management System",
   "scripts": {
     "build": "cd frontend && npm ci && npm run build",
-    "heroku-postbuild": "npm run build && python manage.py collectstatic --noinput"
+    "heroku-postbuild": "npm run build"
   },
   "engines": {
     "node": "20.x",
