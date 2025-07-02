@@ -95,6 +95,9 @@ coverage-dashboard/
 # Test artifacts
 test.dbscreenshots/
 ..bfg-report/
-package.json
-package-lock.json
 node_modules/
+# Don't ignore root package.json (needed for Heroku)
+!package.json
+# But ignore package.json in subdirectories if not needed
+frontend/package-lock.json
+screenshots/
