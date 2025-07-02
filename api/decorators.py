@@ -6,6 +6,7 @@ def api_login_required(view_func):
     """Custom login_required decorator for API views that returns JSON 401 instead of redirect."""
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
+        # Check if user is authenticated
         if not request.user.is_authenticated:
             return JsonResponse({
                 'error': 'Authentication required',

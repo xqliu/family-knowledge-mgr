@@ -20,6 +20,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from family.views import protected_react_serve
 import os
 
 urlpatterns = [
@@ -33,8 +34,8 @@ urlpatterns = [
     re_path(r'^app/assets/(?P<path>.*)$', serve, {'document_root': os.path.join(settings.BASE_DIR, 'static/react/assets')}, name='react_assets'),
     re_path(r'^app/vite\.svg$', serve, {'document_root': os.path.join(settings.BASE_DIR, 'static/react'), 'path': 'vite.svg'}, name='react_vite_svg'),
     
-    # React SPA - 仅在/app/路径下提供前端
-    re_path(r'^app/.*$', serve, {'document_root': os.path.join(settings.STATIC_ROOT, 'react'), 'path': 'index.html'}, name='frontend'),
+    # React SPA - 仅在/app/路径下提供前端 (需要认证)
+    re_path(r'^app/.*$', protected_react_serve, name='frontend'),
     
     # 根路径重定向到app
     path('', TemplateView.as_view(template_name='redirect.html'), name='root_redirect'),
