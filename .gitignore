@@ -97,3 +97,4 @@ test.dbscreenshots/
 ..bfg-report/
 package.json
 package-lock.json
+node_modules/
