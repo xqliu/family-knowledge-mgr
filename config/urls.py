@@ -30,6 +30,9 @@ urlpatterns = [
     # API路由 - 为前端提供接口
     path('api/', include('api.urls')),
     
+    # AI Integration - AI功能接口
+    path('api/ai/', include('ai_integration.urls')),
+    
     # React静态资源服务 - 为/app/路径下的资源提供服务
     re_path(r'^app/assets/(?P<path>.*)$', serve, {'document_root': os.path.join(settings.BASE_DIR, 'static/react/assets')}, name='react_assets'),
     re_path(r'^app/vite\.svg$', serve, {'document_root': os.path.join(settings.BASE_DIR, 'static/react'), 'path': 'vite.svg'}, name='react_vite_svg'),

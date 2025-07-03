@@ -186,12 +186,21 @@ ALLOWED_HOSTS=localhost,127.0.0.1,.herokuapp.com
 
 ## Important Constraints
 
-- **Database**: ALWAYS use PostgreSQL - this system requires PostgreSQL with pgvector extension for AI/RAG functionality. Never use SQLite.
+- **Database**: ALWAYS use PostgreSQL - this system requires PostgreSQL with pgvector extension for AI/RAG functionality. **NEVER USE SQLITE UNDER ANY CIRCUMSTANCES** - even for testing. Always use PostgreSQL with pgvector for all environments including CI/CD testing.
 - **Memory Limit**: Must operate within Heroku's 512MB memory constraint
 - **Chinese Support**: Full Chinese language support required
 - **Security**: Family data privacy is critical - implement proper access controls
 - **Simplicity**: Follow KISS principle - avoid over-engineering
 - **API Usage**: Manage Anthropic API quota carefully with caching and fallbacks
+
+## CRITICAL DATABASE RULE
+**SQLITE IS ABSOLUTELY FORBIDDEN** - This system MUST use PostgreSQL with pgvector extension in ALL environments:
+- Development: PostgreSQL + pgvector
+- Testing: PostgreSQL + pgvector  
+- CI/CD: PostgreSQL + pgvector
+- Production: PostgreSQL + pgvector
+
+The vector fields and AI functionality require pgvector. SQLite cannot be used even for testing. If tests fail due to pgvector, use mocking instead of changing the database.
 
 ## Production Deployment Information
 

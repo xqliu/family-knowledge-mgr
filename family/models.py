@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from pgvector.django import VectorField
 
 
 class Person(models.Model):
@@ -109,6 +110,10 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    # AI Integration fields
+    content_embedding = VectorField(dimensions=1536, null=True, blank=True)
+    embedding_updated = models.DateTimeField(null=True, blank=True)
+    
     class Meta:
         ordering = ['-start_date']
     
@@ -139,6 +144,10 @@ class Story(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    # AI Integration fields
+    content_embedding = VectorField(dimensions=1536, null=True, blank=True)
+    embedding_updated = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         ordering = ['-created_at']
@@ -235,6 +244,10 @@ class Health(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     
+    # AI Integration fields
+    content_embedding = VectorField(dimensions=1536, null=True, blank=True)
+    embedding_updated = models.DateTimeField(null=True, blank=True)
+    
     class Meta:
         ordering = ['-date']
     
@@ -272,6 +285,10 @@ class Heritage(models.Model):
     events = models.ManyToManyField(Event, related_name='heritage', blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    # AI Integration fields
+    content_embedding = VectorField(dimensions=1536, null=True, blank=True)
+    embedding_updated = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
         return self.title

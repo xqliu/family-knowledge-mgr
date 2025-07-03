@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ChatInterface } from './components/chat'
 import './App.css'
 
 function App() {
@@ -66,6 +67,14 @@ function App() {
             </div>
           </div>
         )}
+
+        <div className="chat-card">
+          <h2>🤖 AI智慧助手</h2>
+          <p className="chat-description">
+            询问关于家庭记忆、传统、健康、事件等问题，获得智能回答和相关资料。
+          </p>
+          <ChatInterface className="app-chat" />
+        </div>
 
         <div className="links-card">
           <h2>快速访问</h2>

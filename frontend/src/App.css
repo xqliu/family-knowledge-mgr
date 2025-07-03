@@ -44,9 +44,15 @@
   box-sizing: border-box;
 }
 
+/* Chat card should span full width on larger screens */
+.chat-card {
+  grid-column: 1 / -1;
+}
+
 .status-card,
 .data-card,
-.links-card {
+.links-card,
+.chat-card {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
@@ -56,7 +62,8 @@
 
 .status-card h2,
 .data-card h2,
-.links-card h2 {
+.links-card h2,
+.chat-card h2 {
   margin: 0 0 1rem 0;
   color: #2d3748;
   font-size: 1.25rem;
@@ -176,7 +183,8 @@
   
   .status-card,
   .data-card,
-  .links-card {
+  .links-card,
+  .chat-card {
     padding: 1rem;
     margin: 0;
   }
@@ -207,5 +215,28 @@
     line-height: 1.4;
     word-break: keep-all;
     overflow-wrap: break-word;
+  }
+}
+
+/* Chat-specific styling */
+.chat-description {
+  margin: 0 0 1.5rem 0;
+  color: #4a5568;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.app-chat {
+  margin-top: 0;
+}
+
+/* Make the chat interface more prominent */
+.chat-card .chat-interface {
+  min-height: 500px;
+}
+
+@media (max-width: 768px) {
+  .chat-card .chat-interface {
+    min-height: 400px;
   }
 }

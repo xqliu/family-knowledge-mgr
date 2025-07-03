@@ -15,7 +15,7 @@ services:
     command: sleep infinity
 
   db:
-    image: postgres:15
+    image: pgvector/pgvector:pg15
     environment:
       POSTGRES_DB: ${DB_NAME:-family_knowledge}
       POSTGRES_USER: ${DB_USER:-family_user}
@@ -24,6 +24,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-family_user} -d ${DB_NAME:-family_knowledge}"]
       interval: 30s
