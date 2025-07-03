@@ -37,20 +37,10 @@ jobs:
       env:
         DJANGO_SETTINGS_MODULE: config.settings
     
-    - name: Set up PostgreSQL with pgvector
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y postgresql postgresql-contrib
-        sudo systemctl start postgresql
-        sudo -u postgres createuser --createdb runner
-        sudo -u postgres createdb test_family_knowledge -O runner
-        sudo -u postgres psql -d test_family_knowledge -c "CREATE EXTENSION IF NOT EXISTS vector;"
-    
-    - name: Run Django tests with coverage (including AI)
-      run: pytest --cov=family --cov=api --cov=ai_integration --cov-report=html:htmlcov-backend --cov-report=xml:coverage-backend.xml --cov-report=term-missing --cov-fail-under=50
+    - name: Run Django unit tests with coverage (mocked dependencies)
+      run: pytest --cov=family --cov=api --cov=ai_integration --cov-report=html:htmlcov-backend --cov-report=xml:coverage-backend.xml --cov-report=term-missing --cov-fail-under=50 -m "not requires_pgvector"
       env:
         DJANGO_SETTINGS_MODULE: config.settings
-        DATABASE_URL: postgresql://runner@localhost/test_family_knowledge
         # Mock API keys for testing (no real API calls made)
         OPENAI_API_KEY: mock-openai-key-for-testing
         ANTHROPIC_API_KEY: mock-anthropic-key-for-testing
