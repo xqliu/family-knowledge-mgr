@@ -2,8 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '../../../test-utils';
 import { ChatInterface } from '../ChatInterface';
 
-// Mock fetch
-global.fetch = vi.fn();
+// Mock fetch with proper typing
+const mockFetch = vi.fn() as vi.MockedFunction<typeof fetch>;
+global.fetch = mockFetch;
 
 describe('ChatInterface', () => {
   beforeEach(() => {
@@ -55,10 +56,10 @@ describe('ChatInterface', () => {
       }
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve(mockResponse)
-    });
+    } as Response);
 
     render(<ChatInterface />);
     
@@ -81,7 +82,7 @@ describe('ChatInterface', () => {
   });
 
   it('handles API errors gracefully', async () => {
-    (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+    mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
     render(<ChatInterface />);
     
@@ -107,10 +108,10 @@ describe('ChatInterface', () => {
       }
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve(mockResponse)
-    });
+    } as Response);
 
     render(<ChatInterface />);
     
@@ -146,10 +147,10 @@ describe('ChatInterface', () => {
       }
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve(mockResponse)
-    });
+    } as Response);
 
     render(<ChatInterface />);
     
