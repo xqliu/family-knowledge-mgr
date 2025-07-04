@@ -236,3 +236,31 @@ curl https://llbrother.org/api/family/overview/
 # App route should return 302 redirect to login
 curl -I https://llbrother.org/app/
 ```
+
+## Session Management
+
+### Auto-Sleep Behavior
+When the user indicates session end with phrases like "bye", "good bye", "going to rest", etc., automatically scale down the Heroku dyno to save resources:
+```bash
+heroku ps:scale web=0 --app=family-knowledge-mgr
+```
+
+### React Frontend Architecture
+
+#### Current Frontend Stack
+- **Framework**: React 19.1.0 with TypeScript and Vite build system
+- **Testing**: Vitest + React Testing Library with 99.18% code coverage
+- **Styling**: CSS modules with KISS design principles
+- **Build**: Optimized for Heroku's 512MB memory constraint
+
+#### Key Frontend Components
+- **App.tsx**: Main application layout with floating chat interface
+- **ChatInterface.tsx**: AI conversation component with RAG integration  
+- **BottomChat.tsx**: Floating chat bubble positioned bottom-right (350px width on desktop)
+- **Mobile Responsive**: Full-width minus margins on mobile devices
+
+#### Frontend Development Standards
+- **Code Coverage**: Maintain 99%+ test coverage with comprehensive unit tests
+- **CSS Architecture**: Use KISS principles, avoid redundant styles, fix root causes not symptoms
+- **Mobile-First**: Responsive design with proper viewport handling for iOS devices
+- **Build Optimization**: Bundle size monitoring, tree shaking, code splitting
