@@ -16,9 +16,6 @@ def django_db_setup():
     """
     settings.DATABASES['default']['NAME'] = 'test_' + settings.DATABASES['default']['NAME']
     
-    # Setup test environment
-    setup_test_environment()
-    
     # Create test database with pgvector
     with connection.cursor() as cursor:
         try:
@@ -32,9 +29,6 @@ def django_db_setup():
     call_command('migrate', '--run-syncdb', verbosity=0, interactive=False)
     
     yield
-    
-    # Teardown
-    teardown_test_environment()
 
 
 @pytest.fixture(autouse=True)

@@ -1,0 +1,29 @@
+[run]
+source = .
+omit = 
+    */tests/*
+    */test_*.py
+    *_test.py
+    */migrations/*
+    */venv/*
+    */family_venv/*
+    */node_modules/*
+    manage.py
+    */settings.py
+    */wsgi.py
+    */asgi.py
+    conftest.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+
+[html]
+directory = backend-coverage
+
+[xml]
+output = backend-coverage.xml
