@@ -3,31 +3,25 @@ import { ChatInterface } from './components/chat'
 import './App.css'
 
 function App() {
-  const [apiStatus, setApiStatus] = useState<string>('检测中...')
-  const [familyData, setFamilyData] = useState<{
-    stats?: {
-      total_members?: number
-      total_stories?: number
-      total_photos?: number
-    }
-  } | null>(null)
+  const [recentActivities, setRecentActivities] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // 测试API连接
-    fetch('/api/health/')
+    // 获取今日家庭动态
+    fetch('/api/family/overview/')
       .then(res => res.json())
-      .then(data => {
-        setApiStatus(data.message)
-        // 获取家庭数据
-        return fetch('/api/family/overview/')
-      })
-      .then(res => res.json())
-      .then(data => {
-        setFamilyData(data)
+      .then(() => {
+        // 模拟今日动态数据
+        setRecentActivities([
+          { id: 1, type: 'birthday', content: '妈妈生日提醒', detail: '3天后', icon: '🎂' },
+          { id: 2, type: 'photo', content: '新照片: 家庭聚餐', detail: '今天上传', icon: '📸' },
+          { id: 3, type: 'story', content: '爷爷分享了新故事', detail: '2小时前', icon: '📝' }
+        ])
+        setIsLoading(false)
       })
       .catch(err => {
-        console.error('API连接失败:', err)
-        setApiStatus('API连接失败')
+        console.error('获取数据失败:', err)
+        setIsLoading(false)
       })
   }, [])
 
@@ -36,65 +30,88 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <h1>🏠 家庭知识库</h1>
-          <p className="subtitle">Family Knowledge Hub</p>
+          <div className="header-actions">
+            <button className="ai-toggle desktop-only">🤖 AI助手</button>
+            <button className="user-menu">👤</button>
+          </div>
         </div>
       </header>
 
       <main className="app-main">
-        <div className="status-card">
-          <h2>系统状态</h2>
-          <p><span className="status-text">API状态:</span> <span className="status">{apiStatus} ✅</span></p>
-          <p><span className="status-text">前端:</span> <span className="status-success">React + TypeScript + Vite ✅</span></p>
-          <p><span className="status-text">后端:</span> <span className="status-success">Django + API ✅</span></p>
-        </div>
+        {/* 今日家庭动态 - Hero Section */}
+        <section className="hero-section">
+          <h2>今日家庭动态</h2>
+          <div className="activities-grid">
+            {isLoading ? (
+              <div className="loading">加载中...</div>
+            ) : (
+              recentActivities.map(activity => (
+                <div key={activity.id} className="activity-card">
+                  <div className="activity-icon">{activity.icon}</div>
+                  <div className="activity-content">
+                    <h3>{activity.content}</h3>
+                    <p>{activity.detail}</p>
+                  </div>
+                  <button className="activity-action">查看详情</button>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
 
-        {familyData && (
-          <div className="data-card">
-            <h2>家庭概览</h2>
-            <div className="stats">
-              <div className="stat">
-                <span className="number">{familyData.stats?.total_members || 0}</span>
-                <span className="label">家庭成员</span>
-              </div>
-              <div className="stat">
-                <span className="number">{familyData.stats?.total_stories || 0}</span>
-                <span className="label">家庭故事</span>
-              </div>
-              <div className="stat">
-                <span className="number">{familyData.stats?.total_photos || 0}</span>
-                <span className="label">家庭照片</span>
-              </div>
+        {/* 快速操作和主要功能 */}
+        <div className="content-grid">
+          <section className="quick-actions">
+            <h2>快速操作</h2>
+            <div className="actions-grid">
+              <button className="action-button primary">
+                <span className="icon">➕</span>
+                <span className="text">添加内容</span>
+              </button>
+              <button className="action-button">
+                <span className="icon">🔍</span>
+                <span className="text">智能搜索</span>
+              </button>
+              <button className="action-button">
+                <span className="icon">📋</span>
+                <span className="text">待办事项</span>
+              </button>
+              <button className="action-button">
+                <span className="icon">📊</span>
+                <span className="text">家庭报告</span>
+              </button>
             </div>
-          </div>
-        )}
+          </section>
 
-        <div className="chat-card">
-          <h2>🤖 AI智慧助手</h2>
-          <p className="chat-description">
-            询问关于家庭记忆、传统、健康、事件等问题，获得智能回答和相关资料。
-          </p>
-          <ChatInterface className="app-chat" />
-        </div>
-
-        <div className="links-card">
-          <h2>快速访问</h2>
-          <div className="links">
-            <a href="/admin/" className="link-button" target="_blank">
-              📊 Django Admin
-            </a>
-            <a href="/api/health/" className="link-button" target="_blank">
-              🔍 API健康检查
-            </a>
-            <a href="/api/family/overview/" className="link-button" target="_blank">
-              👨‍👩‍👧‍👦 家庭数据API
-            </a>
-          </div>
+          <section className="main-functions">
+            <h2>主要功能</h2>
+            <div className="functions-grid">
+              <button className="function-button">
+                <span className="icon">👥</span>
+                <span className="text">家庭成员</span>
+              </button>
+              <button className="function-button">
+                <span className="icon">📖</span>
+                <span className="text">家庭故事</span>
+              </button>
+              <button className="function-button">
+                <span className="icon">🎉</span>
+                <span className="text">重要事件</span>
+              </button>
+              <button className="function-button">
+                <span className="icon">📸</span>
+                <span className="text">照片回忆</span>
+              </button>
+            </div>
+            <button className="more-functions">更多功能 →</button>
+          </section>
         </div>
       </main>
 
-      <footer className="app-footer">
-        <div className="footer-content">
-          <p>✨ 单体部署架构演示 - React前端 + Django后端</p>
+      {/* AI Chat Bottom Input */}
+      <footer className="chat-footer">
+        <div className="chat-input-container">
+          <ChatInterface className="bottom-chat" />
         </div>
       </footer>
     </div>

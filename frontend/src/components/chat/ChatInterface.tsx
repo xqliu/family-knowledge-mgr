@@ -3,6 +3,7 @@ import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
 import type { ChatSession } from './types';
 import './ChatInterface.css';
+import './BottomChat.css';
 
 interface ChatInterfaceProps {
   className?: string;
@@ -125,6 +126,51 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     return token || '';
   };
 
+  // Check if this is the bottom chat (simplified version)
+  const isBottomChat = className.includes('bottom-chat');
+
+  if (isBottomChat) {
+    return (
+      <div className={`chat-interface ${className}`}>
+        <MessageInput 
+          onSendMessage={handleSendMessage}
+          disabled={isLoading}
+          placeholder="🤖 询问家庭知识，比如：爷爷的创业故事、妈妈的生日安排..."
+        />
+        
+        {/* Show messages in modal/overlay when there are active conversations */}
+        {messages.length > 0 && (
+          <div className="chat-overlay">
+            <div className="chat-modal">
+              <div className="chat-modal-header">
+                <h3>🤖 AI助手对话</h3>
+                <button 
+                  className="close-chat"
+                  onClick={() => setMessages([])}
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="chat-modal-container" ref={chatContainerRef}>
+                <MessageList messages={messages} isLoading={isLoading} />
+              </div>
+              
+              <div className="chat-modal-input">
+                <MessageInput 
+                  onSendMessage={handleSendMessage}
+                  disabled={isLoading}
+                  placeholder="继续对话..."
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Full chat interface for desktop sidebar or dedicated chat pages
   return (
     <div className={`chat-interface ${className}`}>
       <div className="chat-header">
