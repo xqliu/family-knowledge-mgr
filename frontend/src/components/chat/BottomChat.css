@@ -3,11 +3,47 @@
   position: relative;
 }
 
+.bottom-chat-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.chat-history-btn {
+  background: #667eea;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  height: 44px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-history-btn:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.chat-history-btn:active {
+  transform: translateY(0);
+}
+
 .bottom-chat .message-input {
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background: white;
+  flex: 1;
+  min-width: 0;
 }
 
 .bottom-chat .message-input textarea {
@@ -155,6 +191,35 @@
   background: #5a67d8;
 }
 
+/* Empty chat message styles */
+.empty-chat-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: #718096;
+  min-height: 200px;
+}
+
+.empty-chat-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-chat-message p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+.empty-chat-hint {
+  font-size: 0.875rem !important;
+  color: #718096 !important;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .chat-overlay {
@@ -180,6 +245,16 @@
     padding: 0.75rem;
   }
   
+  .bottom-chat-container {
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  
+  .bottom-chat .message-input {
+    flex: 1;
+    min-width: 0;
+  }
+  
   .bottom-chat .message-input textarea {
     padding: 0.75rem;
     min-height: 44px;
@@ -188,6 +263,13 @@
   .bottom-chat .message-input button {
     padding: 0.75rem 1.25rem;
     font-size: 0.875rem;
+  }
+  
+  .chat-history-btn {
+    height: 44px;
+    width: 44px;
+    padding: 0.5rem;
+    font-size: 1rem;
   }
 }
 
@@ -198,5 +280,24 @@
   
   .bottom-chat .message-input textarea {
     font-size: 0.9rem;
+  }
+  
+  .bottom-chat-container {
+    gap: 0.375rem;
+  }
+  
+  .chat-history-btn {
+    height: 40px;
+    width: 40px;
+    font-size: 0.875rem;
+  }
+  
+  .empty-chat-message {
+    padding: 1.5rem;
+    min-height: 150px;
+  }
+  
+  .empty-chat-icon {
+    font-size: 2.5rem;
   }
 }

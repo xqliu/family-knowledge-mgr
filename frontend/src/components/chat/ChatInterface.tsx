@@ -18,6 +18,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [showChatModal, setShowChatModal] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Generate session ID on mount
@@ -132,28 +133,50 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   if (isBottomChat) {
     return (
       <div className={`chat-interface ${className}`}>
-        <MessageInput 
-          onSendMessage={handleSendMessage}
-          disabled={isLoading}
-          placeholder="🤖 询问家庭知识，比如：爷爷的创业故事、妈妈的生日安排..."
-        />
+        <div className="bottom-chat-container">
+          <MessageInput 
+            onSendMessage={handleSendMessage}
+            disabled={isLoading}
+            placeholder="🤖 询问家庭知识，比如：爷爷的创业故事、妈妈的生日安排..."
+          />
+          
+          {/* Chat history button */}
+          <button 
+            className="chat-history-btn"
+            onClick={() => setShowChatModal(true)}
+            title="查看对话历史"
+          >
+            💬
+          </button>
+        </div>
         
-        {/* Show messages in modal/overlay when there are active conversations */}
-        {messages.length > 0 && (
+        {/* Show messages in modal/overlay when there are active conversations or when manually opened */}
+        {(messages.length > 0 || showChatModal) && (
           <div className="chat-overlay">
             <div className="chat-modal">
               <div className="chat-modal-header">
                 <h3>🤖 AI助手对话</h3>
                 <button 
                   className="close-chat"
-                  onClick={() => setMessages([])}
+                  onClick={() => {
+                    setMessages([]);
+                    setShowChatModal(false);
+                  }}
                 >
                   ×
                 </button>
               </div>
               
               <div className="chat-modal-container" ref={chatContainerRef}>
-                <MessageList messages={messages} isLoading={isLoading} />
+                {messages.length === 0 ? (
+                  <div className="empty-chat-message">
+                    <div className="empty-chat-icon">🤖</div>
+                    <p>还没有对话记录</p>
+                    <p className="empty-chat-hint">在下方输入框开始与AI助手对话吧！</p>
+                  </div>
+                ) : (
+                  <MessageList messages={messages} isLoading={isLoading} />
+                )}
               </div>
               
               <div className="chat-modal-input">
