@@ -1,11 +1,13 @@
 """
 Comprehensive tests for API decorators targeting 90%+ branch coverage
+Converted from test_api_decorators_simple.py to proper pytest format
 """
 import pytest
 import json
 from unittest.mock import Mock
 from django.test import RequestFactory
 from django.http import JsonResponse, HttpResponse
+from functools import wraps
 from api.decorators import api_login_required
 
 
