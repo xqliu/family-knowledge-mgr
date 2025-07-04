@@ -2,8 +2,16 @@ import { useState, useEffect } from 'react'
 import { ChatInterface } from './components/chat'
 import './App.css'
 
+interface ActivityItem {
+  id: number
+  type: 'birthday' | 'photo' | 'story' | 'health' | 'event'
+  content: string
+  detail: string
+  icon: string
+}
+
 function App() {
-  const [recentActivities, setRecentActivities] = useState<any[]>([])
+  const [recentActivities, setRecentActivities] = useState<ActivityItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
