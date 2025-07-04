@@ -7,6 +7,7 @@ import logging
 from typing import List, Optional, Dict, Any
 from django.utils import timezone
 from django.conf import settings
+from django.db import models
 from openai import OpenAI
 from ..models import EmbeddingCache
 
