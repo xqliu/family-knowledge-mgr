@@ -310,23 +310,25 @@ html, body {
   color: #5a67d8;
 }
 
-/* Chat Footer */
+/* Floating Chat Bubble */
 .chat-footer {
-  background: white;
-  border-top: 1px solid #e2e8f0;
-  padding: 1rem;
-  position: sticky;
-  bottom: 0;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  width: 100%;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: auto;
+  max-width: 400px;
   box-sizing: border-box;
 }
 
 .chat-input-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  min-width: 300px;
   box-sizing: border-box;
 }
 
@@ -430,14 +432,15 @@ html, body {
   }
   
   .chat-footer {
-    padding: 0.75rem;
-    width: 100%;
+    bottom: 10px;
+    right: 10px;
+    max-width: calc(100vw - 20px);
   }
   
   .chat-input-container {
-    padding: 0 0.5rem;
-    width: calc(100% - 1rem);
-    max-width: none;
+    width: calc(100vw - 20px);
+    min-width: auto;
+    padding: 0.75rem;
   }
 }
 
