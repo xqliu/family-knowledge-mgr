@@ -164,4 +164,117 @@ describe('ChatInterface', () => {
       expect(screen.getByText('这是回答')).toBeInTheDocument();
     });
   });
+
+  it('handles HTTP error responses (!response.ok)', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      json: () => Promise.resolve({})
+    } as Response);
+
+    render(<ChatInterface />);
+    
+    const exampleButton = screen.getByText('告诉我一些家庭传统故事');
+    fireEvent.click(exampleButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('抱歉，处理您的问题时出现了问题。请稍后再试。')).toBeInTheDocument();
+    });
+  });
+
+  it('handles API error responses (data.error)', async () => {
+    const errorResponse = {
+      error: 'API服务暂时不可用'
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(errorResponse)
+    } as Response);
+
+    render(<ChatInterface />);
+    
+    const exampleButton = screen.getByText('告诉我一些家庭传统故事');
+    fireEvent.click(exampleButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('抱歉，处理您的问题时出现了问题。请稍后再试。')).toBeInTheDocument();
+    });
+  });
+
+  it('calls onSessionUpdate callback when provided', async () => {
+    const mockResponse = {
+      query: '测试问题',
+      response: '测试回答',
+      sources: [],
+      metadata: {
+        query_type: 'general',
+        confidence: 0.8,
+        processing_time: 1.0,
+        sources_count: 0,
+        language: 'zh-CN'
+      }
+    };
+
+    const mockOnSessionUpdate = vi.fn();
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockResponse)
+    } as Response);
+
+    render(<ChatInterface onSessionUpdate={mockOnSessionUpdate} />);
+    
+    const exampleButton = screen.getByText('告诉我一些家庭传统故事');
+    fireEvent.click(exampleButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('测试回答')).toBeInTheDocument();
+    });
+
+    // Verify onSessionUpdate was called
+    expect(mockOnSessionUpdate).toHaveBeenCalledTimes(1);
+    
+    const sessionUpdate = mockOnSessionUpdate.mock.calls[0][0];
+    expect(sessionUpdate).toHaveProperty('id');
+    expect(sessionUpdate).toHaveProperty('messages');
+    expect(sessionUpdate).toHaveProperty('createdAt');
+    expect(sessionUpdate).toHaveProperty('updatedAt');
+    expect(sessionUpdate.messages).toHaveLength(2); // User message + AI response
+    expect(sessionUpdate.messages[0].sender).toBe('user');
+    expect(sessionUpdate.messages[1].sender).toBe('ai');
+  });
+
+  it('does not call onSessionUpdate when callback is not provided', async () => {
+    const mockResponse = {
+      query: '测试问题',
+      response: '测试回答',
+      sources: [],
+      metadata: {
+        query_type: 'general',
+        confidence: 0.8,
+        processing_time: 1.0,
+        sources_count: 0,
+        language: 'zh-CN'
+      }
+    };
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockResponse)
+    } as Response);
+
+    // Render without onSessionUpdate callback
+    render(<ChatInterface />);
+    
+    const exampleButton = screen.getByText('告诉我一些家庭传统故事');
+    fireEvent.click(exampleButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('测试回答')).toBeInTheDocument();
+    });
+
+    // Should not crash and should complete normally
+    expect(screen.getByText('测试回答')).toBeInTheDocument();
+  });
 });
