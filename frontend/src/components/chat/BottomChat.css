@@ -75,8 +75,6 @@
   max-height: 120px;
   background: transparent;
   flex: 1;
-  color: #374151;
-  font-family: inherit;
 }
 
 .bottom-chat .message-textarea::placeholder {
@@ -268,6 +266,7 @@
   font-size: 3rem;
   margin-bottom: 1rem;
   opacity: 0.7;
+  color: #9ca3af;
 }
 
 .empty-chat-message p {
@@ -315,11 +314,6 @@
     padding: 0.75rem;
     min-height: 44px;
     font-size: 16px; /* Prevent zoom on iOS */
-    color: #374151;
-  }
-  
-  .bottom-chat .message-textarea::placeholder {
-    color: #9ca3af;
   }
   
   .bottom-chat .send-button {
@@ -343,11 +337,6 @@
   .bottom-chat .message-textarea {
     font-size: 16px; /* Prevent zoom on iOS */
     padding: 0.75rem;
-    color: #374151;
-  }
-  
-  .bottom-chat .message-textarea::placeholder {
-    color: #9ca3af;
   }
   
   .bottom-chat-container {
