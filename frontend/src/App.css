@@ -1,10 +1,21 @@
 /* KISS Design - Optimized Layout */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   background: #f8fafc;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -308,17 +319,21 @@
   bottom: 0;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .chat-input-container {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .bottom-chat {
   margin: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Responsive Design */
@@ -416,10 +431,13 @@
   
   .chat-footer {
     padding: 0.75rem;
+    width: 100%;
   }
   
   .chat-input-container {
     padding: 0 0.5rem;
+    width: calc(100% - 1rem);
+    max-width: none;
   }
 }
 
