@@ -75,6 +75,13 @@
   max-height: 120px;
   background: transparent;
   flex: 1;
+  color: #374151;
+  font-family: inherit;
+}
+
+.bottom-chat .message-textarea::placeholder {
+  color: #9ca3af;
+  opacity: 1;
 }
 
 .bottom-chat .message-textarea:focus {
@@ -87,32 +94,55 @@
 }
 
 .bottom-chat .send-button {
-  background: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 0 12px 12px 0;
   padding: 0;
   width: 44px;
   height: 44px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.2s;
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: none;
 }
 
 .bottom-chat .send-button:hover:not(:disabled) {
-  background: #5a67d8;
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  transform: none;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.bottom-chat .send-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.bottom-chat .send-button:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-.bottom-chat .send-button:disabled {
-  background: #a0aec0;
-  cursor: not-allowed;
-  transform: none;
+.bottom-chat .send-button .send-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.bottom-chat .send-button .send-icon.loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Chat Modal/Overlay */
@@ -285,6 +315,11 @@
     padding: 0.75rem;
     min-height: 44px;
     font-size: 16px; /* Prevent zoom on iOS */
+    color: #374151;
+  }
+  
+  .bottom-chat .message-textarea::placeholder {
+    color: #9ca3af;
   }
   
   .bottom-chat .send-button {
@@ -308,6 +343,11 @@
   .bottom-chat .message-textarea {
     font-size: 16px; /* Prevent zoom on iOS */
     padding: 0.75rem;
+    color: #374151;
+  }
+  
+  .bottom-chat .message-textarea::placeholder {
+    color: #9ca3af;
   }
   
   .bottom-chat-container {

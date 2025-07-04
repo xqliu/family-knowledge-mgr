@@ -369,6 +369,13 @@
   resize: none;
   outline: none;
   transition: border-color 0.2s;
+  color: #374151;
+  background: #ffffff;
+}
+
+.message-textarea::placeholder {
+  color: #9ca3af;
+  opacity: 1;
 }
 
 .message-textarea:focus {
