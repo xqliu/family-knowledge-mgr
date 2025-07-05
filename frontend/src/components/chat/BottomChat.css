@@ -270,7 +270,7 @@
   
   .chat-container {
     position: fixed;
-    inset: 20px;
+    inset: 12px;
     border-radius: 12px;
   }
   
