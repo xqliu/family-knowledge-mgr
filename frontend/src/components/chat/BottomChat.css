@@ -207,13 +207,13 @@
 
 .chat-input-area .message-textarea {
   border: none;
-  background: transparent;
+  background: #ffffff;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
   resize: none;
   min-height: 40px;
   max-height: 100px;
-  color: #000000;
+  color: #374151;
 }
 
 .chat-input-area .message-textarea::placeholder {
