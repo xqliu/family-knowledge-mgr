@@ -12,7 +12,6 @@ export const BottomChat: React.FC<BottomChatProps> = ({ onSessionUpdate }) => {
   const [messages, setMessages] = useState<ChatSession['messages']>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +41,6 @@ export const BottomChat: React.FC<BottomChatProps> = ({ onSessionUpdate }) => {
 
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await fetch('/api/ai/chat/', {
@@ -95,7 +93,6 @@ export const BottomChat: React.FC<BottomChatProps> = ({ onSessionUpdate }) => {
 
     } catch (err) {
       console.error('Chat error:', err);
-      setError(err instanceof Error ? err.message : 'An error occurred');
       
       // Add error message to chat
       const errorMessage = {

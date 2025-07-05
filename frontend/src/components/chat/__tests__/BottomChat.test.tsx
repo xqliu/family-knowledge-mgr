@@ -63,7 +63,7 @@ describe('BottomChat', () => {
       sources: []
     };
     
-    (global.fetch as any).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => mockResponse
     });
@@ -98,7 +98,7 @@ describe('BottomChat', () => {
       sources: []
     };
     
-    (global.fetch as any).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => mockResponse
     });
@@ -123,7 +123,7 @@ describe('BottomChat', () => {
   });
 
   it('shows error message when API call fails', async () => {
-    (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+    vi.mocked(global.fetch).mockRejectedValueOnce(new Error('Network error'));
 
     render(<BottomChat />);
     const floatingBtn = screen.getByTitle('打开家庭知识助手');
@@ -145,7 +145,7 @@ describe('BottomChat', () => {
       sources: []
     };
     
-    (global.fetch as any).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => mockResponse
     });
