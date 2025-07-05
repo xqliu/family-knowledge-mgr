@@ -262,6 +262,11 @@ heroku ps:scale web=0 --app=family-knowledge-mgr
 #### Frontend Development Standards
 - **Code Coverage**: Maintain 99%+ test coverage with comprehensive unit tests
 - **CSS Architecture**: Use KISS principles, avoid redundant styles, fix root causes not symptoms
+- **CSS Fix Principle**: ALWAYS fix CSS issues at the root cause, not by adding more specific selectors
+  - **❌ Wrong**: Using `button.send-button` with `padding: 0 !important` to override global styles
+  - **✅ Correct**: Fix global button styles to use conditional defaults (`button:not([class])`) 
+  - **Avoid**: CSS specificity wars, stacked overrides, and `!important` for standard styling
+  - **Prefer**: Neutral CSS resets + semantic component styles without conflicts
 - **Mobile-First**: Responsive design with proper viewport handling for iOS devices
 - **Build Optimization**: Bundle size monitoring, tree shaking, code splitting
 - **Pre-Commit Checklist**: Before committing any code changes, ALWAYS run:

@@ -34,30 +34,46 @@ h1 {
   line-height: 1.1;
 }
 
+/* Global button reset - neutral base styles */
 button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+/* Default button styling - only applies to buttons without specific classes */
+button:not([class]) {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid #e0e0e0;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  background-color: #f9f9f9;
+  color: #374151;
+  transition: all 0.2s;
 }
-button:hover {
+
+button:not([class]):hover {
+  background-color: #e0e0e0;
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+button:not([class]):focus,
+button:not([class]):focus-visible {
+  outline: 2px solid #646cff;
+  outline-offset: 2px;
 }
 
-/* Keep light mode styles but remove media query since we're forcing light mode */
+/* Keep light mode link styles */
 a:hover {
   color: #747bff;
-}
-
-button {
-  background-color: #f9f9f9;
 }
