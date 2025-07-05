@@ -264,3 +264,7 @@ heroku ps:scale web=0 --app=family-knowledge-mgr
 - **CSS Architecture**: Use KISS principles, avoid redundant styles, fix root causes not symptoms
 - **Mobile-First**: Responsive design with proper viewport handling for iOS devices
 - **Build Optimization**: Bundle size monitoring, tree shaking, code splitting
+- **Pre-Commit Checklist**: Before committing any code changes, ALWAYS run:
+  - `npm run lint` - Check code style and catch common errors
+  - `npm test -- --run` - Run all unit tests and ensure nothing is broken
+  - Only commit if both lint and tests pass successfully
