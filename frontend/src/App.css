@@ -310,33 +310,7 @@ html, body {
   color: #5a67d8;
 }
 
-/* Floating Chat Bubble */
-.chat-footer {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  width: auto;
-  max-width: 400px;
-  box-sizing: border-box;
-}
-
-.chat-input-container {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  width: 350px;
-  min-width: 300px;
-  box-sizing: border-box;
-}
-
-.bottom-chat {
-  margin: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
+/* Chat component is now self-contained with its own positioning */
 
 /* Responsive Design */
 @media (max-width: 768px) {

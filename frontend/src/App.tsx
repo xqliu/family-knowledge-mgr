@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChatInterface } from './components/chat'
+import { BottomChat } from './components/chat'
 import './App.css'
 
 interface ActivityItem {
@@ -116,12 +116,8 @@ function App() {
         </div>
       </main>
 
-      {/* AI Chat Bottom Input */}
-      <footer className="chat-footer">
-        <div className="chat-input-container">
-          <ChatInterface className="bottom-chat" />
-        </div>
-      </footer>
+      {/* AI Chat Component - Self-positioned */}
+      <BottomChat />
     </div>
   )
 }

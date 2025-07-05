@@ -2,21 +2,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
 import type { ChatSession } from './types';
-import './ChatInterface.css';
+import './BottomChat.css';
 
-interface ChatInterfaceProps {
-  className?: string;
+interface BottomChatProps {
   onSessionUpdate?: (session: ChatSession) => void;
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
-  className = '', 
-  onSessionUpdate 
-}) => {
+export const BottomChat: React.FC<BottomChatProps> = ({ onSessionUpdate }) => {
   const [messages, setMessages] = useState<ChatSession['messages']>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Generate session ID on mount
@@ -115,85 +112,94 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   };
 
-  const handleClearChat = () => {
-    setMessages([]);
-    setError(null);
-  };
-
   const getCsrfToken = (): string => {
     const token = document.querySelector('[name=csrfmiddlewaretoken]')?.getAttribute('value');
     return token || '';
   };
 
-  // Full chat interface for desktop sidebar or dedicated chat pages
+  const toggleChat = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const quickPrompts = [
+    "爷爷的故事",
+    "家族传统",
+    "健康记录"
+  ];
+
+  const handleQuickPrompt = (prompt: string) => {
+    handleSendMessage(prompt);
+  };
+
   return (
-    <div className={`chat-interface ${className}`}>
-      <div className="chat-header">
-        <h3>家庭智慧助手</h3>
-        <p className="chat-subtitle">询问关于家庭记忆、传统和智慧的问题</p>
+    <div className="bottom-chat">
+      {/* Collapsed state - floating button */}
+      {!isExpanded && (
         <button 
-          className="clear-chat-btn"
-          onClick={handleClearChat}
-          disabled={messages.length === 0}
+          className="chat-floating-btn"
+          onClick={toggleChat}
+          title="打开家庭知识助手"
         >
-          清空对话
+          💬
         </button>
-      </div>
-
-      {error && (
-        <div className="error-banner">
-          <span className="error-icon">⚠️</span>
-          <span className="error-message">{error}</span>
-          <button 
-            className="error-dismiss"
-            onClick={() => setError(null)}
-          >
-            ×
-          </button>
-        </div>
       )}
-
-      <div 
-        className="chat-container"
-        ref={chatContainerRef}
-      >
-        {messages.length === 0 ? (
-          <div className="chat-welcome">
-            <div className="welcome-icon">🏠</div>
-            <h4>欢迎使用家庭智慧助手</h4>
-            <p>您可以询问关于家庭故事、传统、健康记录、重要事件等问题。</p>
-            <div className="example-queries">
-              <h5>示例问题：</h5>
-              <button 
-                className="example-query"
-                onClick={() => handleSendMessage('告诉我一些家庭传统故事')}
-              >
-                告诉我一些家庭传统故事
-              </button>
-              <button 
-                className="example-query"
-                onClick={() => handleSendMessage('我们家有哪些重要的庆祝活动？')}
-              >
-                我们家有哪些重要的庆祝活动？
-              </button>
-              <button 
-                className="example-query"
-                onClick={() => handleSendMessage('分享一些家族智慧')}
-              >
-                分享一些家族智慧
-              </button>
+      
+      {/* Expanded state - chat interface */}
+      {isExpanded && (
+        <div className="chat-container">
+          <div className="chat-header">
+            <h3>💬 家庭知识助手</h3>
+            <button 
+              className="chat-close-btn"
+              onClick={toggleChat}
+              title="关闭"
+            >
+              ✕
+            </button>
+          </div>
+          
+          <div className="chat-body">
+            {/* Welcome message */}
+            {messages.length === 0 && (
+              <div className="chat-welcome">
+                <div className="welcome-icon">🤖</div>
+                <p className="welcome-text">
+                  询问家庭知识，比如：爷爷的创业故事、妈妈的生日安排...
+                </p>
+                
+                {/* Quick prompts */}
+                <div className="quick-prompts">
+                  {quickPrompts.map((prompt, index) => (
+                    <button
+                      key={index}
+                      className="quick-prompt-btn"
+                      onClick={() => handleQuickPrompt(prompt)}
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Messages area */}
+            <div className="chat-messages" ref={chatContainerRef}>
+              {messages.length > 0 && (
+                <MessageList messages={messages} isLoading={isLoading} />
+              )}
             </div>
           </div>
-        ) : (
-          <MessageList messages={messages} isLoading={isLoading} />
-        )}
-      </div>
-
-      <MessageInput 
-        onSendMessage={handleSendMessage}
-        disabled={isLoading}
-        placeholder="询问关于家庭的问题..."
-      />
+          
+          {/* Input area */}
+          <div className="chat-input-area">
+            <MessageInput 
+              onSendMessage={handleSendMessage}
+              disabled={isLoading}
+              placeholder="输入您的问题..."
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
