@@ -37,7 +37,6 @@ describe('App Component', () => {
       render(<App />)
     })
     
-    expect(screen.getByText('🤖 AI助手')).toBeInTheDocument()
     expect(screen.getByText('👤')).toBeInTheDocument()
   })
 

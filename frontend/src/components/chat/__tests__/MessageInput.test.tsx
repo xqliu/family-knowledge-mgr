@@ -62,7 +62,7 @@ describe('MessageInput', () => {
     fireEvent.change(textarea, { target: { value: 'Test message' } });
     
     expect(sendButton).not.toBeDisabled();
-    expect(screen.getByText('➤')).toBeInTheDocument(); // Send icon
+    expect(screen.getByText('↑')).toBeInTheDocument(); // Send icon
   });
 
   it('calls onSendMessage when form is submitted', () => {

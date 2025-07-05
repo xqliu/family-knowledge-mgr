@@ -39,7 +39,6 @@ function App() {
         <div className="header-content">
           <h1>🏠 家庭知识库</h1>
           <div className="header-actions">
-            <button className="ai-toggle desktop-only">🤖 AI助手</button>
             <button className="user-menu">👤</button>
           </div>
         </div>
