@@ -74,7 +74,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             {disabled ? (
               <span className="send-icon loading">⏳</span>
             ) : (
-              <span className="send-icon">➤</span>
+              <span className="send-icon">↑</span>
             )}
           </button>
         </div>
