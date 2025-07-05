@@ -98,10 +98,8 @@
 
 /* Chat body */
 .chat-body {
-  flex: 1;
+  flex: 0 1 auto;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
   background: #f5f5f5;
   min-height: 0;
 }
@@ -180,6 +178,8 @@
   padding: 1rem;
   background: #ffffff;
   border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 /* Override MessageInput styles for new design */
