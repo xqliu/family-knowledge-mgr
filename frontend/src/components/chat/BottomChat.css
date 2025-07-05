@@ -33,6 +33,12 @@
 }
 
 /* Chat container (expanded state) */
+/* CRITICAL: Mobile Layout Requirements
+ * DO NOT add overflow:hidden to .chat-container or .chat-body
+ * This causes the input area to be hidden on iOS devices
+ * The chat must remain scrollable without clipping content
+ * Tested fix for iPhone display issues - keep layout simple
+ */
 .chat-container {
   width: 350px;
   height: 500px;
@@ -41,7 +47,6 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   animation: slideUp 0.3s ease-out;
 }
 
@@ -97,7 +102,7 @@
 /* Chat body */
 .chat-body {
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   background: #f5f5f5;
@@ -150,8 +155,6 @@
 
 /* Messages area */
 .chat-messages {
-  flex: 1;
-  overflow-y: auto;
   padding: 1rem;
   background: transparent;
 }
@@ -267,13 +270,11 @@
   
   .chat-container {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     border-radius: 0;
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
   }
   
   .chat-header {
