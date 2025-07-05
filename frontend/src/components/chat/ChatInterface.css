@@ -392,7 +392,7 @@
   width: 40px;
   height: 40px;
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   background: #667eea;
   color: #ffffff;
   cursor: pointer;
