@@ -38,8 +38,10 @@
  * Tested fix for iPhone display issues - keep layout simple
  */
 .chat-container {
-  width: 350px;
-  height: 500px;
+  width: min(400px, 90vw);
+  height: min(600px, 85vh);
+  max-width: 500px;
+  max-height: 700px;
   background: white;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -270,8 +272,10 @@
   
   .chat-container {
     position: fixed;
-    inset: 12px;
+    inset: 10px;
     border-radius: 12px;
+    width: auto;
+    height: auto;
   }
   
   .chat-header {
